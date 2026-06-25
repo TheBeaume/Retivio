@@ -1,47 +1,31 @@
 import React, { useState, useEffect } from "react";
-import Header from "./components/Header";
-import Sidebar from "./components/Sidebar";
-import CustomerTable from "./components/CustomerTable";
-import AnalyticsSummary from "./components/AnalyticsSummary";
-import ActionButtons from "./components/ActionButtons";
-import NewCustomerForm from "./components/NewCustomerForm";
-import VisitEntry from "./components/VisitEntry";
-import SearchBar from "./components/SearchBar";
-import ActionRequired from "./components/ActionRequired";
-import QuickActions from "./components/QuickActions";
-import RecentActivity from "./components/RecentActivity";
-import GrowthSnapshot from "./components/GrowthSnapshot";
-import TopCustomers from "./components/TopCustomers";
-import CampaignPerformance from "./components/CampaignPerformance";
-import RevenueTrend from "./components/RevenueTrend";
-import AIRecommendations from "./components/AIRecommendations";
-import { supabase } from "./lib/supabase";
-import { Routes, Route, Navigate } from "react-router-dom";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
-import Dashboard from "./pages/Dashboard";
+import Header from "../components/Header";
+import Sidebar from "../components/Sidebar";
+import CustomerTable from "../components/CustomerTable";
+import AnalyticsSummary from "../components/AnalyticsSummary";
+import ActionButtons from "../components/ActionButtons";
+import NewCustomerForm from "../components/NewCustomerForm";
+import VisitEntry from "../components/VisitEntry";
+import SearchBar from "../components/SearchBar";
+import ActionRequired from "../components/ActionRequired";
+import QuickActions from "../components/QuickActions";
+import RecentActivity from "../components/RecentActivity";
+import GrowthSnapshot from "../components/GrowthSnapshot";
+import TopCustomers from "../components/TopCustomers";
+import CampaignPerformance from "../components/CampaignPerformance";
+import RevenueTrend from "../components/RevenueTrend";
+import AIRecommendations from "../components/AIRecommendations";
+import { supabase } from "../lib/supabase";
 
-function App() {
+function Dashboard() {
 const [customers, setCustomers] = useState([]);  
   const [search, setSearch] = useState("");
 const [sidebarOpen, setSidebarOpen] = useState(false);
 const [activePage, setActivePage] = useState("dashboard");
-const [session, setSession] = useState(null);
-const [loading, setLoading] = useState(true);
-
 const fetchCustomers = async () => {
-const {
-  data: { user },
-} = await supabase.auth.getUser();
-if (!user) {
-  setCustomers([]);
-  return;
-}
-
-const { data, error } = await supabase
-  .from("customers")
-  .select("*")
-  .eq("user_id", user.id);
+  const { data, error } = await supabase
+    .from("customers")
+    .select("*");
 
   if (error) {
     console.log(error);
@@ -65,21 +49,6 @@ const formatted = data.map((c) => ({
 useEffect(() => {
   fetchCustomers();
 }, []);
-useEffect(() => {
-  supabase.auth.getSession().then(({ data: { session } }) => {
-    setSession(session);
-    setLoading(false);
-  });
-
-  const {
-    data: { subscription },
-  } = supabase.auth.onAuthStateChange((_event, session) => {
-    setSession(session);
-    setLoading(false);
-  });
-
-  return () => subscription.unsubscribe();
-}, []);
   const filteredCustomers = customers.filter(
     (customer) =>
       customer.name
@@ -87,10 +56,6 @@ useEffect(() => {
         .includes(search.toLowerCase()) ||
       customer.phone.includes(search)
   );
-if (loading) {
-  return <div>Loading...</div>;
-}
-
 
  return (
   <Routes>
@@ -229,4 +194,4 @@ if (loading) {
 );
 }
 
-export default App;
+export default Dashboard;
