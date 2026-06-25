@@ -19,7 +19,7 @@ import { supabase } from "./lib/supabase";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-import Dashboard from "./pages/Dashboard";
+
 
 function App() {
 const [customers, setCustomers] = useState([]);  
@@ -98,13 +98,8 @@ if (loading) {
     <Route path="/signup" element={<Signup />} />
 <Route
   path="/"
-  element={
-    <ProtectedRoute>
-      <Dashboard />
-    </ProtectedRoute>
-  }
-/>
-
+  element={(
+    <>
 <div className="min-h-screen flex bg-gray-100">
 
 {sidebarOpen && (
