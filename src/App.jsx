@@ -98,8 +98,13 @@ if (loading) {
     <Route path="/signup" element={<Signup />} />
 <Route
   path="/"
-  element={(
-    <>
+  element={
+    <ProtectedRoute>
+      <Dashboard />
+    </ProtectedRoute>
+  }
+/>
+
 <div className="min-h-screen flex bg-gray-100">
 
 {sidebarOpen && (

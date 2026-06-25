@@ -57,14 +57,9 @@ useEffect(() => {
       customer.phone.includes(search)
   );
 
- return (
-  <Routes>
-    <Route path="/login" element={<Login />} />
-    <Route path="/signup" element={<Signup />} />
-<Route
-  path="/"
-  element={(
-    <>
+return (
+  <>
+
 <div className="min-h-screen flex bg-gray-100">
 
 {sidebarOpen && (
@@ -185,12 +180,8 @@ useEffect(() => {
         </div>
       </div>
     </div>
-</>
-  )}
-/>
 
-    <Route path="*" element={<Navigate to="/" />} />
-  </Routes>
+</>
 );
 }
 
