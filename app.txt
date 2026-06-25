@@ -68,7 +68,6 @@ useEffect(() => {
   path="/"
   element={(
     <>
-<div className="min-h-screen flex bg-gray-100">
 
 {sidebarOpen && (
   <>
@@ -195,6 +194,4 @@ useEffect(() => {
     <Route path="*" element={<Navigate to="/" />} />
   </Routes>
 );
-}
-
 export default App;
