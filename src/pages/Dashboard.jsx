@@ -19,6 +19,7 @@ import { supabase } from "../lib/supabase";
 import CampaignBuilder from "../components/CampaignBuilder";
 import Settings from "../components/Settings";
 import RetivioSites from "../components/RetivioSites";
+import Reports from "../components/Reports";
 
 function Dashboard() {
 const [customers, setCustomers] = useState([]);  
@@ -162,14 +163,8 @@ return (
 )}
 
 {activePage === "reports" && (
-  <div className="bg-white p-4 rounded shadow">
-   
-    <p>
-      Reports module coming soon...
-    </p>
-  </div>
+  <Reports />
 )}
-
 {activePage === "settings" && (
   <Settings />
 )}
