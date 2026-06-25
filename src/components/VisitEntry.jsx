@@ -1,0 +1,153 @@
+import React, { useState } from "react";
+import { supabase } from "../lib/supabase";
+function VisitEntry({ customers, setCustomers }) {
+const [phone, setPhone] = useState("");
+const [service, setService] = useState("");
+const [amount, setAmount] = useState("");
+
+const updateVisit = async () => {
+  const existingCustomer = customers.find(
+    (c) => c.phone === phone
+  );
+
+  if (!existingCustomer) {
+    alert("Customer Not Found");
+    return;
+  }
+
+  const newVisits = existingCustomer.visits + 1;
+  const newSpend =
+    existingCustomer.totalSpend + Number(amount);
+
+  let nextDue = "-";
+
+  if (service === "Hair Spa") nextDue = "30 Days";
+  if (service === "Facial") nextDue = "45 Days";
+  if (service === "Cleanup") nextDue = "20 Days";
+  if (service === "Hair Color") nextDue = "60 Days";
+  if (service === "Hair Cut") nextDue = "30 Days";
+
+  const loyalty =
+    newVisits >= 10
+      ? "VIP"
+      : newVisits >= 5
+      ? "Gold"
+      : "Silver";
+
+const { data, error } = await supabase
+    .from("customers")
+    .update({
+      service: service,
+      last_visit: new Date().toLocaleDateString(),
+      next_due: nextDue,
+      visits: newVisits,
+      total_spend: newSpend,
+      loyalty: loyalty,
+      status: "Active",
+    })
+.eq("phone", phone)
+.select("*")
+.single();
+console.log(data);
+console.log(error);
+console.log("Updated:", data);
+console.log("Customer ID:", existingCustomer.id);
+
+  if (error) {
+    alert(error.message);
+    return;
+  }
+
+  const updatedCustomers = customers.map((c) =>
+    c.id === existingCustomer.id
+      ? {
+          ...c,
+          service,
+          lastVisit: new Date().toLocaleDateString(),
+          nextDue,
+          visits: newVisits,
+          totalSpend: newSpend,
+          loyalty,
+          status: "Active",
+        }
+      : c
+  );
+
+  setCustomers(updatedCustomers);
+
+  setPhone("");
+  setService("");
+  setAmount("");
+
+  alert("Visit Updated Successfully");
+};
+return (
+<div className="bg-white p-4 rounded shadow mt-6">
+<h2 className="text-xl font-bold mb-4">
+Visit Entry
+</h2>
+
+  <input
+    type="text"
+    placeholder="Mobile Number"
+    value={phone}
+    onChange={(e) =>
+      setPhone(e.target.value)
+    }
+    className="border p-2 w-full mb-3"
+  />
+
+  <select
+    value={service}
+    onChange={(e) =>
+      setService(e.target.value)
+    }
+    className="border p-2 w-full mb-3"
+  >
+    <option value="">
+      Select Service
+    </option>
+
+    <option value="Hair Spa">
+      Hair Spa
+    </option>
+
+    <option value="Facial">
+      Facial
+    </option>
+
+    <option value="Cleanup">
+      Cleanup
+    </option>
+
+    <option value="Hair Color">
+      Hair Color
+    </option>
+
+    <option value="Hair Cut">
+      Hair Cut
+    </option>
+  </select>
+
+  <input
+    type="number"
+    placeholder="Bill Amount"
+    value={amount}
+    onChange={(e) =>
+      setAmount(e.target.value)
+    }
+    className="border p-2 w-full mb-3"
+  />
+
+  <button
+    onClick={updateVisit}
+    className="bg-green-600 text-white px-4 py-2 rounded"
+  >
+    Update Visit
+  </button>
+</div>
+
+);
+}
+
+export default VisitEntry;
