@@ -2,6 +2,16 @@ import React, { useState } from "react";
 
 function ActionButtons() {
 const [message, setMessage] = useState("");
+const openWhatsApp = (phone) => {
+  if (!message) return;
+
+  const cleaned = phone.replace(/\D/g, "");
+
+  window.open(
+    `https://wa.me/91${cleaned}?text=${encodeURIComponent(message)}`,
+    "_blank"
+  );
+};
 
 return (
 <>
@@ -51,7 +61,15 @@ return (
       <pre className="whitespace-pre-wrap">
         {message}
       </pre>
-    </div>
+<button
+  onClick={() => openWhatsApp("7082101255")}
+  className="mt-4 bg-green-600 text-white px-4 py-2 rounded"
+>
+  Open in WhatsApp
+</button>
+
+
+  </div>
   )}
 </>
 

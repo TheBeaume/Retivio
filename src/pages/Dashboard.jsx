@@ -16,6 +16,9 @@ import CampaignPerformance from "../components/CampaignPerformance";
 import RevenueTrend from "../components/RevenueTrend";
 import AIRecommendations from "../components/AIRecommendations";
 import { supabase } from "../lib/supabase";
+import CampaignBuilder from "../components/CampaignBuilder";
+import Settings from "../components/Settings";
+import RetivioSites from "../components/RetivioSites";
 
 function Dashboard() {
 const [customers, setCustomers] = useState([]);  
@@ -153,8 +156,9 @@ return (
   </>
 )}
 
-{activePage === "campaigns" && (
-  <ActionButtons />
+{activePage === "campaigns" && <CampaignBuilder customers={customers} />}
+{activePage === "sites" && (
+  <RetivioSites />
 )}
 
 {activePage === "reports" && (
@@ -167,15 +171,7 @@ return (
 )}
 
 {activePage === "settings" && (
-  <div className="bg-white p-4 rounded shadow">
-    <h2 className="text-xl font-bold">
-      Settings
-    </h2>
-
-    <p>
-      Settings module coming soon...
-    </p>
-  </div>
+  <Settings />
 )}
         </div>
       </div>
