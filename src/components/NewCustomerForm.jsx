@@ -20,10 +20,14 @@ function NewCustomerForm({ customers, setCustomers }) {
       alert("Customer already exists");
       return;
     }
+const {
+  data: { user },
+} = await supabase.auth.getUser();
 
-    const { error } = await supabase
-      .from("customers")
-      .insert([
+const { error } = await supabase
+  .from("customers")
+  .insert([
+
         {
           name,
           phone,
@@ -34,6 +38,7 @@ function NewCustomerForm({ customers, setCustomers }) {
           total_spend: 0,
           loyalty: "Silver",
           status: "New",
+user_id: user.id,
         },
       ]);
 

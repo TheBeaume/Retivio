@@ -1,6 +1,15 @@
 import React from "react";
+import { supabase } from "../lib/supabase";
+import { useNavigate } from "react-router-dom";
 
 function Header({ setSidebarOpen }) {
+const navigate = useNavigate();
+
+async function handleLogout() {
+  await supabase.auth.signOut();
+  navigate("/login");
+}
+
   return (
     <header className="bg-gradient-to-r from-purple-900 via-purple-700 to-purple-600 text-white shadow-xl px-5 py-4">
       <div className="flex items-center justify-between">
@@ -36,7 +45,14 @@ function Header({ setSidebarOpen }) {
             👤
             <span className="ml-2">
               Owner
-            </span>
+<button
+  onClick={handleLogout}
+  className="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-xl font-semibold"
+>
+  Logout
+</button> 
+
+           </span>
           </div>
 
         </div>
