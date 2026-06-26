@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
+import CustomerLookup from "./CustomerLookup";
 
 export default function Appointments() {
   const [showForm, setShowForm] = useState(false);
@@ -13,11 +14,42 @@ export default function Appointments() {
     time: "",
     notes: "",
   });
-
+const [customerFound, setCustomerFound] = useState(false);
+const [customerInfo, setCustomerInfo] = useState(null);
   useEffect(() => {
     loadAppointments();
   }, []);
+async function findCustomer(phone) {
+  if (phone.length < 10) {
+    setCustomerFound(false);
+    setCustomerInfo(null);
+    return;
+  }
 
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const { data } = await supabase
+    .from("customers")
+    .select("*")
+    .eq("phone", phone)
+    .eq("user_id", user.id)
+    .single();
+
+  if (data) {
+    setCustomerFound(true);
+    setCustomerInfo(data);
+
+    setForm((prev) => ({
+      ...prev,
+      customer: data.name,
+    }));
+  } else {
+    setCustomerFound(false);
+    setCustomerInfo(null);
+  }
+}
   async function loadAppointments() {
     const {
       data: { user },
@@ -47,13 +79,48 @@ export default function Appointments() {
     } = await supabase.auth.getUser();
 
     if (!user) return;
+let customerId = null;
 
+if (!customerFound) {
+
+  const { data: customer, error: customerError } = await supabase
+    .from("customers")
+    .insert([
+      {
+        user_id: user.id,
+        name: form.customer,
+        phone: form.phone,
+        service: form.service,
+        last_visit: form.date,
+        next_due: "-",
+        visits: 1,
+        total_spend: 0,
+        loyalty: "Silver",
+        status: "New",
+      },
+    ])
+    .select()
+    .single();
+
+  if (customerError) {
+    alert(customerError.message);
+    return;
+  }
+
+  customerId = customer.id;
+
+} else {
+
+  customerId = customerInfo.id;
+
+}
     const { error } = await supabase
       .from("appointments")
       .insert([
         {
           user_id: user.id,
-          service: form.service,
+customer_id: customerId, 
+         service: form.service,
           appointment_date: form.date,
           appointment_time: form.time,
           notes: form.notes,
@@ -159,23 +226,52 @@ export default function Appointments() {
 
           <div className="grid md:grid-cols-2 gap-4">
 <input
-              placeholder="Customer Name"
-              value={form.customer}
-              onChange={(e) =>
-                setForm({ ...form, customer: e.target.value })
-              }
-              className="border rounded-lg p-3"
-            />
+  placeholder="Customer Name"
+  value={form.customer}
+  readOnly={customerFound}
+  onChange={(e) =>
+    setForm({ ...form, customer: e.target.value })
+  }
+  className={`border rounded-lg p-3 ${
+    customerFound ? "bg-gray-100 cursor-not-allowed" : ""
+  }`}
+/>
 
-            <input
-              placeholder="Phone Number"
-              value={form.phone}
-              onChange={(e) =>
-                setForm({ ...form, phone: e.target.value })
-              }
-              className="border rounded-lg p-3"
-            />
+<input
+  placeholder="Mobile Number"
+  value={form.phone}
+  onChange={(e) => {
+    const phone = e.target.value;
 
+    setForm({
+      ...form,
+      phone,
+    });
+
+    if (phone.length === 10) {
+      findCustomer(phone);
+    }
+  }}
+  className="border rounded-lg p-3"
+/>
+
+{customerFound && customerInfo && (
+
+  <div className="md:col-span-2 bg-green-50 border border-green-200 rounded-xl p-4">
+
+    <h3 className="font-bold text-green-700">
+      ✅ Existing Customer
+    </h3>
+
+    <p>👤 {customerInfo.name}</p>
+    <p>📞 {customerInfo.phone}</p>
+    <p>⭐ {customerInfo.loyalty}</p>
+    <p>💇 Last Service: {customerInfo.service}</p>
+    <p>📅 Visits: {customerInfo.visits}</p>
+
+  </div>
+
+)}
             <input
               placeholder="Service"
               value={form.service}
