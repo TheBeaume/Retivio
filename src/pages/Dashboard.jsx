@@ -3,7 +3,6 @@ import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import CustomerTable from "../components/CustomerTable";
 import AnalyticsSummary from "../components/AnalyticsSummary";
-import ActionButtons from "../components/ActionButtons";
 import NewCustomerForm from "../components/NewCustomerForm";
 import VisitEntry from "../components/VisitEntry";
 import SearchBar from "../components/SearchBar";
@@ -20,6 +19,7 @@ import CampaignBuilder from "../components/CampaignBuilder";
 import Settings from "../components/Settings";
 import RetivioSites from "../components/RetivioSites";
 import Reports from "../components/Reports";
+import ActionButtons from "../components/ActionButtons";
 
 function Dashboard() {
 const [customers, setCustomers] = useState([]);  
