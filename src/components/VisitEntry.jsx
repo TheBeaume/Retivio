@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { supabase } from "../lib/supabase";
+import { addCustomerVisit } from "../services/customerVisitService";
+
 function VisitEntry({ customers, setCustomers }) {
 const [phone, setPhone] = useState("");
 const [service, setService] = useState("");
@@ -9,7 +11,7 @@ const updateVisit = async () => {
   const existingCustomer = customers.find(
     (c) => c.phone === phone
   );
-
+console.log("Existing Customer:", existingCustomer);
   if (!existingCustomer) {
     alert("Customer Not Found");
     return;
@@ -57,6 +59,17 @@ console.log("Customer ID:", existingCustomer.id);
     alert(error.message);
     return;
   }
+try {
+  await addCustomerVisit({
+    customer_id: existingCustomer.id,
+    service,
+    amount: Number(amount),
+    visit_date: new Date().toISOString().split("T")[0],
+  });
+} catch (e) {
+  alert(e.message);
+  return;
+}
 
   const updatedCustomers = customers.map((c) =>
     c.id === existingCustomer.id

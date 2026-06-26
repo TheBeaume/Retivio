@@ -79,14 +79,25 @@ export default function CustomerProfile({ customer, onClose }) {
 
           <div className="grid grid-cols-2 gap-3">
 
-            <button className="bg-green-600 text-white py-3 rounded-xl">
-              💬 WhatsApp
-            </button>
-
-            <button className="bg-blue-600 text-white py-3 rounded-xl">
-              📞 Call
-            </button>
-
+<button
+  onClick={() =>
+    window.open(
+      `https://wa.me/91${customer.phone.replace(/\D/g, "")}`,
+      "_blank"
+    )
+  }
+  className="bg-green-600 text-white py-3 rounded-xl"
+>
+  💬 WhatsApp
+</button>
+<button
+  onClick={() =>
+    (window.location.href = `tel:${customer.phone}`)
+  }
+  className="bg-blue-600 text-white py-3 rounded-xl"
+>
+  📞 Call
+</button>
             <button className="bg-purple-600 text-white py-3 rounded-xl">
               ➕ Add Visit
             </button>
