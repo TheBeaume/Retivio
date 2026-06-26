@@ -19,7 +19,7 @@ import CampaignBuilder from "../components/CampaignBuilder";
 import Settings from "../components/Settings";
 import RetivioSites from "../components/RetivioSites";
 import Reports from "../components/Reports";
-import Appointments from "../components/Appointments";
+import WhatsAppDashboard from "../components/whatsapp/WhatsAppDashboard";
 
 function Dashboard() {
 const [customers, setCustomers] = useState([]);  
@@ -161,11 +161,11 @@ return (
 {activePage === "sites" && (
   <RetivioSites />
 )}
-{activePage === "appointments" && (
-  <Appointments />
-)}
 {activePage === "reports" && (
   <Reports />
+)}
+{activePage === "whatsapp" && (
+  <WhatsAppDashboard />
 )}
 {activePage === "settings" && (
   <Settings />

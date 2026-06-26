@@ -1,7 +1,7 @@
-import React from "react";
-
+import { useState } from "react";
+import CustomerProfile from "./CustomerProfile";
 function CustomerTable({ customers }) {
-
+const [selectedCustomer, setSelectedCustomer] = useState(null);
   const sendWhatsApp = (customer) => {
     let offer = "10% OFF";
 
@@ -66,8 +66,10 @@ Book your next ${customer.service} and enjoy ${offer}.
     );
   };
 
-  return (
+return (
+  <>
     <div className="bg-white rounded-lg shadow p-4 mt-6">
+
       <h2 className="text-xl font-bold mb-4">
         Customer List
       </h2>
@@ -93,7 +95,14 @@ Book your next ${customer.service} and enjoy ${offer}.
           <tbody>
             {customers.map((c, i) => (
               <tr key={i} className="hover:bg-gray-50">
-                <td className="border p-2">{c.name}</td>
+<td className="border p-2">
+  <button
+    onClick={() => setSelectedCustomer(c)}
+    className="text-purple-700 font-semibold hover:underline"
+  >
+    {c.name}
+  </button>
+</td>                
                 <td className="border p-2">{c.phone}</td>
                 <td className="border p-2">{c.service}</td>
                 <td className="border p-2">{c.lastVisit}</td>
@@ -139,6 +148,15 @@ Book your next ${customer.service} and enjoy ${offer}.
         </table>
       </div>
     </div>
+
+    {selectedCustomer && (
+      <CustomerProfile
+        customer={selectedCustomer}
+        onClose={() => setSelectedCustomer(null)}
+      />
+    )}
+
+  </>
   );
 }
 
