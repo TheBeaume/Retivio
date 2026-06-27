@@ -141,7 +141,6 @@ if (error) {
 }
 
 alert("Status updated successfully");
-
 await loadAppointments();
     setForm({
       customer: "",
@@ -223,6 +222,28 @@ const { error } = await supabase
 if (error) {
   alert(error.message);
   return;
+}
+if (status === "Completed") {
+  const followupDate = new Date();
+  followupDate.setDate(followupDate.getDate() + 30);
+
+  const { error: followupError } = await supabase
+    .from("follow_ups")
+    .insert({
+      user_id: user.id,
+      customer_id: appointment.id,
+      customer_name: appointment.customer_name,
+      phone: appointment.phone,
+      service: appointment.service,
+      followup_date: followupDate.toISOString().split("T")[0],
+      status: "Pending",
+      priority: "Medium",
+      notes: "Auto-created after appointment completion",
+    });
+
+  if (followupError) {
+    console.error(followupError);
+  }
 }
 await loadAppointments();
 } catch (e) {
