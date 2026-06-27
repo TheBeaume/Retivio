@@ -44,7 +44,35 @@ if (!hasFilter) {
         if (new Date(c.nextDue) > today)
           return false;
       }
+if (filters.inactive30) {
+  if (!c.lastVisit) return false;
 
+  const days =
+    (today - new Date(c.lastVisit)) /
+    (1000 * 60 * 60 * 24);
+
+  if (days < 30) return false;
+}
+
+if (filters.inactive60) {
+  if (!c.lastVisit) return false;
+
+  const days =
+    (today - new Date(c.lastVisit)) /
+    (1000 * 60 * 60 * 24);
+
+  if (days < 60) return false;
+}
+
+if (filters.inactive90) {
+  if (!c.lastVisit) return false;
+
+  const days =
+    (today - new Date(c.lastVisit)) /
+    (1000 * 60 * 60 * 24);
+
+  if (days < 90) return false;
+}
       if (filters.vip && c.loyalty !== "VIP")
         return false;
 
