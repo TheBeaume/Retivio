@@ -202,7 +202,8 @@ async function updateAppointment() {
 
   alert("Appointment Updated!");
 }
-async function updateAppointmentStatus(id, status) {
+async function updateAppointmentStatus(appointment, status) {
+  const id = appointment.id;
 try {
 const {
   data: { user },
@@ -545,7 +546,7 @@ className="bg-blue-500 text-white px-3 py-1 rounded-lg text-sm"
 </button>
 <button
   onClick={() =>
-    updateAppointmentStatus(appointment.id, "Completed")
+updateAppointmentStatus(appointment, "Completed")
   }
 disabled={appointment.status !== "Pending"}
   className="bg-green-600 text-white px-3 py-1 rounded-lg text-sm"
@@ -556,7 +557,7 @@ disabled={appointment.status !== "Pending"}
 <button
   onClick={() => {
     if (window.confirm("Cancel this appointment?")) {
-      updateAppointmentStatus(appointment.id, "Cancelled");
+updateAppointmentStatus(appointment, "Cancelled")
     }
   }}
 disabled={appointment.status !== "Pending"} 
