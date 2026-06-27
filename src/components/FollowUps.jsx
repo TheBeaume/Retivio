@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
-import FollowUpCard from "./FollowUpCard";
 
 export default function FollowUps() {
   const [followUps, setFollowUps] = useState([]);
@@ -29,26 +28,6 @@ export default function FollowUps() {
 
     setFollowUps(data || []);
   }
-
-
-function handleWhatsApp(item) {
-  window.open(
-    `https://wa.me/91${item.phone}?text=${encodeURIComponent(
-      `Hi ${item.customer_name} 🌸
-
-It's time for your next ${item.service}.
-
-Book your appointment today.
-
-- Team Retivio`
-    )}`
-  );
-}
-
-function handleCall(item) {
-  window.open(`tel:${item.phone}`);
-}
-
 async function markAsDone(id) {
   const { error } = await supabase
     .from("follow_ups")
@@ -88,23 +67,6 @@ async function createTestFollowUp() {
 
   loadFollowUps();
 }
-const today = new Date().toISOString().split("T")[0];
-
-const overdue = followUps.filter(
-  (f) => f.status !== "Done" && f.followup_date < today
-);
-
-const todayFollowUps = followUps.filter(
-  (f) => f.status !== "Done" && f.followup_date === today
-);
-
-const upcoming = followUps.filter(
-  (f) => f.status !== "Done" && f.followup_date > today
-);
-
-const completed = followUps.filter(
-  (f) => f.status === "Done"
-);
   return (
     <div className="space-y-6">
 
@@ -117,29 +79,7 @@ const completed = followUps.filter(
           Manage all customer follow-ups.
         </p>
       </div>
-<div className="grid md:grid-cols-4 gap-4">
 
-  <div className="bg-red-100 rounded-xl p-5">
-    <h3 className="text-red-700 font-bold">🔴 Overdue</h3>
-    <p className="text-3xl font-bold">{overdue.length}</p>
-  </div>
-
-  <div className="bg-green-100 rounded-xl p-5">
-    <h3 className="text-green-700 font-bold">🟢 Today</h3>
-    <p className="text-3xl font-bold">{todayFollowUps.length}</p>
-  </div>
-
-  <div className="bg-blue-100 rounded-xl p-5">
-    <h3 className="text-blue-700 font-bold">🔵 Upcoming</h3>
-    <p className="text-3xl font-bold">{upcoming.length}</p>
-  </div>
-
-  <div className="bg-gray-100 rounded-xl p-5">
-    <h3 className="text-gray-700 font-bold">⚪ Done</h3>
-    <p className="text-3xl font-bold">{completed.length}</p>
-  </div>
-
-</div>
       <div className="bg-white rounded-xl shadow p-6">
 
         <h2 className="text-2xl font-bold mb-6">
@@ -161,22 +101,74 @@ const completed = followUps.filter(
 
           <div className="space-y-4">
 
-{followUps.map((item) => (
-  <FollowUpCard
-    key={item.id}
-    item={item}
-    onWhatsApp={handleWhatsApp}
-    onCall={handleCall}
-    onDone={markAsDone}
-  />
-))}
+            {followUps.map((item) => (
+
+              <div
+                key={item.id}
+                className="border rounded-xl p-4 flex justify-between items-center"
+              >
+
+                <div>
+
+                  <h3 className="font-bold">
+                    👤 {item.customer_name}
+                  </h3>
+
+                  <p>📞 {item.phone}</p>
+
+                  <p>💇 {item.service}</p>
+
+                  <p>📅 {item.followup_date}</p>
+<div className="flex gap-2 mt-4">
+
+  <button
+    onClick={() =>
+      window.open(
+        `https://wa.me/91${item.phone}?text=${encodeURIComponent(
+          `Hi ${item.customer_name} 🌸
+
+It's time for your next ${item.service}.
+
+Book your appointment today.
+
+- Team Retivio`
+        )}`
+      )
+    }
+    className="bg-green-600 text-white px-3 py-1 rounded-lg text-sm"
+  >
+    💬 WhatsApp
+  </button>
+
+  <button
+    onClick={() => window.open(`tel:${item.phone}`)}
+    className="bg-blue-600 text-white px-3 py-1 rounded-lg text-sm"
+  >
+    📞 Call
+  </button>
+<button
+  onClick={() => markAsDone(item.id)}
+  className="bg-purple-600 text-white px-3 py-1 rounded-lg text-sm"
+>
+  ✅ Done
+</button>
+</div>
+                </div>
+
+                <span className="bg-purple-100 text-purple-700 px-3 py-1 rounded-full">
+                  {item.status}
+                </span>
+
               </div>
+
+            ))}
+
+          </div>
 
         )}
 
-</div>
+      </div>
 
     </div>
-
   );
 }
