@@ -25,6 +25,8 @@ const [filters, setFilters] = useState({
 });
 const [businessName, setBusinessName] = useState("Your Salon");
 const [selectedCustomers, setSelectedCustomers] = useState([]);
+
+const [showPreview, setShowPreview] = useState(false);
   const toggleFilter = (key) => {
     setFilters((prev) => ({
       ...prev,
@@ -104,7 +106,10 @@ if (filters.inactive90) {
     (sum, c) => sum + (c.totalSpend || 0),
     0
   );
-
+const previewCustomer =
+  filteredCustomers.find((c) =>
+    selectedCustomers.includes(c.id)
+) || filteredCustomers[0];
 useEffect(() => {
   loadBusinessName();
 }, []);
@@ -132,7 +137,7 @@ const openWhatsApp = () => {
     return;
   }
 
-  const customer = filteredCustomers[0];
+  const customer = previewCustomer;
   const phone = (customer.phone || "").replace(/\D/g, "");
 
   const message = `Hi ${customer.name} 👋
@@ -358,11 +363,10 @@ We look forward to welcoming you again.
 
             <div className="whitespace-pre-line text-gray-700">
 
-{`Hi ${filteredCustomers[0].name} 👋
-
+{`Hi ${previewCustomer?.name} 👋
 We hope you're doing well.
 
-It's time for your ${filteredCustomers[0].service}.
+It's time for your ${previewCustomer?.service}.
 
 ${
 offer === "No Offer"
@@ -400,14 +404,57 @@ ${businessName}`}
   customers={filteredCustomers}
   selectedCustomers={selectedCustomers}
   toggleCustomer={toggleCustomer}
+  setSelectedCustomers={setSelectedCustomers}
 />
+{showPreview && (
+  <div className="bg-white border rounded-xl shadow-lg p-6 mt-6">
+    <div className="flex justify-between items-center mb-4">
+      <h3 className="text-xl font-bold">
+        📋 Campaign Preview
+      </h3>
+
+      <button
+        onClick={() => setShowPreview(false)}
+        className="text-red-600 font-bold"
+      >
+        ✕
+      </button>
+    </div>
+
+    <p><strong>Campaign:</strong> {campaignType}</p>
+    <p><strong>Offer:</strong> {offer === "Custom" ? customOffer : offer}</p>
+    <p><strong>Tone:</strong> {tone}</p>
+    <p><strong>Customers Selected:</strong> {selectedCustomers.length}</p>
+    <p><strong>Estimated Revenue:</strong> ₹{estimatedRevenue}</p>
+
+    <div className="mt-4 bg-gray-50 rounded-lg p-4 whitespace-pre-line">
+{previewCustomer &&
+`Hi ${previewCustomer?.name} 👋
+
+We hope you're doing well.
+
+It's time for your ${previewCustomer?.service}.
+
+${offer === "No Offer"
+  ? ""
+  : offer === "Custom"
+  ? customOffer
+  : `Enjoy ${offer} on your next visit.`}
+
+Regards,
+
+${businessName}`}
+    </div>
+  </div>
+)}
       <div className="flex gap-4 mt-8">
 
-        <button
-          className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg"
-        >
-          Preview Campaign
-        </button>
+<button
+  onClick={() => setShowPreview(true)}
+  className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg"
+>
+  Preview Campaign
+</button>
 <button
   onClick={openWhatsApp}
   className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg"

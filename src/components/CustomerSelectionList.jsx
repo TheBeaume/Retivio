@@ -4,13 +4,30 @@ export default function CustomerSelectionList({
   customers,
   selectedCustomers,
   toggleCustomer,
+  setSelectedCustomers,
 }) {
   return (
     <div className="bg-white rounded-xl shadow p-4 mt-6">
       <h3 className="text-xl font-bold mb-4">
         👥 Customers
       </h3>
+<div className="flex gap-2 mb-4">
+  <button
+    onClick={() =>
+      setSelectedCustomers(customers.map((c) => c.id))
+    }
+    className="bg-purple-600 text-white px-3 py-1 rounded-lg text-sm"
+  >
+    Select All
+  </button>
 
+  <button
+    onClick={() => setSelectedCustomers([])}
+    className="bg-gray-300 px-3 py-1 rounded-lg text-sm"
+  >
+    Clear
+  </button>
+</div>
       {customers.length === 0 ? (
         <p className="text-gray-500">
           No customers found.
