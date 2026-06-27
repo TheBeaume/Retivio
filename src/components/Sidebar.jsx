@@ -104,6 +104,19 @@ function Sidebar({
 
 <li
   onClick={() => {
+    setActivePage("appointments");
+    setSidebarOpen(false);
+  }}
+  className={`p-4 rounded-xl cursor-pointer transition-all duration-300 ${
+    activePage === "appointments"
+      ? "bg-white/15 border-l-4 border-yellow-400 shadow-lg"
+      : "hover:bg-white/10"
+  }`}
+>
+  📅 Appointments
+</li>
+<li
+  onClick={() => {
     setActivePage("whatsapp");
     setSidebarOpen(false);
   }}

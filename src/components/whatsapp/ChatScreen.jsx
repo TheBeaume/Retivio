@@ -1,6 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 
 export default function ChatScreen({ selectedChat }) {
+const [selectedDate, setSelectedDate] = useState("");
+const [selectedService, setSelectedService] = useState("");
+const [selectedTime, setSelectedTime] = useState("");
+const [customService, setCustomService] = useState("");
+const [customTime, setCustomTime] = useState("");
+const [bookingConfirmed, setBookingConfirmed] = useState(false);
+
   return (
     <div className="flex flex-col min-h-screen bg-[#efeae2]">
 
@@ -40,35 +47,201 @@ export default function ChatScreen({ selectedChat }) {
         <div className="flex justify-start">
           <div className="bg-white rounded-2xl px-4 py-3 max-w-[80%] shadow">
             I want to book a Hair Spa.
+{bookingConfirmed && (
+  <div className="flex justify-end">
+    <div className="bg-green-200 rounded-2xl px-4 py-3 max-w-[80%] shadow">
+      <p>✅ Your appointment has been confirmed.</p>
+      <p>📅 {selectedDate || "Today"}</p>
+      <p>💇 {selectedService === "Other" ? customService : selectedService}</p>
+      <p>🕒 {selectedTime === "Custom" ? customTime : selectedTime}</p>
+    </div>
+  </div>
+)}
           </div>
         </div>
 
       </div>
 
-      {/* AI Suggestions */}
-      <div className="px-3 py-2 bg-white border-t">
+{/* Booking Assistant */}
 
-        <p className="text-xs text-gray-500 mb-2">
-          🤖 AI Suggestions
-        </p>
+<div className="bg-white border-t p-3 space-y-3">
 
-        <div className="flex gap-2 overflow-x-auto">
+  <p className="text-sm font-semibold">
+    📅 Booking Assistant
+  </p>
 
-          <button className="bg-green-100 px-3 py-2 rounded-full whitespace-nowrap text-sm">
-            📅 Book Appointment
-          </button>
+  <div className="flex gap-2 overflow-x-auto">
 
-          <button className="bg-blue-100 px-3 py-2 rounded-full whitespace-nowrap text-sm">
-            💰 Recommend Service
-          </button>
+<button
+  onClick={() => setSelectedDate("Today")}
+  className={`px-3 py-2 rounded-full whitespace-nowrap ${
+    selectedDate === "Today"
+      ? "bg-purple-600 text-white"
+      : "bg-purple-100"
+  }`}
+>
+  📅 Today
+</button>
 
-          <button className="bg-yellow-100 px-3 py-2 rounded-full whitespace-nowrap text-sm">
-            ⭐ Ask for Review
-          </button>
 
-        </div>
+<button
+  onClick={() => setSelectedDate("Tomorrow")}
+  className={`px-3 py-2 rounded-full whitespace-nowrap ${
+    selectedDate === "Tomorrow"
+      ? "bg-purple-600 text-white"
+      : "bg-purple-100"
+  }`}
+>
+  📅 Tomorrow
+</button>
+<button
+  onClick={() => setSelectedDate("Custom")}
+  className={`px-3 py-2 rounded-full whitespace-nowrap ${
+    selectedDate === "Custom"
+      ? "bg-purple-600 text-white"
+      : "bg-purple-100"
+  }`}
+>
+  📆 Choose Date
+</button>
+  </div>
 
-      </div>
+  <div className="flex gap-2 overflow-x-auto">
+
+<button
+  onClick={() => setSelectedService("Hair Spa")}
+  className={`px-3 py-2 rounded-full ${
+    selectedService === "Hair Spa"
+      ? "bg-green-600 text-white"
+      : "bg-green-100"
+  }`}
+>
+  💆 Hair Spa
+</button>
+<button
+  onClick={() => setSelectedService("Facial")}
+  className={`px-3 py-2 rounded-full ${
+    selectedService === "Facial"
+      ? "bg-green-600 text-white"
+      : "bg-green-100"
+  }`}
+>
+  ✨ Facial
+</button>
+<button
+  onClick={() => setSelectedService("Hair Cut")}
+  className={`px-3 py-2 rounded-full ${
+    selectedService === "Hair Cut"
+      ? "bg-green-600 text-white"
+      : "bg-green-100"
+  }`}
+>
+  ✂️ Hair Cut
+</button>
+<button
+  onClick={() => setSelectedService("Other")}
+  className={`px-3 py-2 rounded-full ${
+    selectedService === "Other"
+      ? "bg-green-600 text-white"
+      : "bg-green-100"
+  }`}
+>
+  ➕ Other Service
+</button>
+
+{selectedService === "Other" && (
+  <input
+    type="text"
+    placeholder="Enter Service Name..."
+    value={customService}
+    onChange={(e) => setCustomService(e.target.value)}
+    className="w-full border rounded-lg p-2 mt-3"
+  />
+)}
+  </div>
+
+  <div className="flex gap-2 overflow-x-auto">
+
+<button
+  onClick={() => setSelectedTime("10:00 AM")}
+  className={`px-3 py-2 rounded-full ${
+    selectedTime === "10:00 AM"
+      ? "bg-blue-600 text-white"
+      : "bg-blue-100"
+  }`}
+>
+  🕙 10:00 AM
+</button>
+
+<button
+  onClick={() => setSelectedTime("12:00 PM")}
+  className={`px-3 py-2 rounded-full ${
+    selectedTime === "12:00 PM"
+      ? "bg-blue-600 text-white"
+      : "bg-blue-100"
+  }`}
+>
+  🕛 12:00 PM
+</button>
+
+<button
+  onClick={() => setSelectedTime("2:00 PM")}
+  className={`px-3 py-2 rounded-full ${
+    selectedTime === "2:00 PM"
+      ? "bg-blue-600 text-white"
+      : "bg-blue-100"
+  }`}
+>
+  🕑 2:00 PM
+</button>
+
+<button
+  onClick={() => {
+    document.getElementById("customTimePicker").showPicker();
+  }}
+  className="..."
+>
+  🕒 Custom Time
+</button>
+
+<input
+  id="customTimePicker"
+  type="time"
+  value={customTime}
+  onChange={(e) => {
+    setCustomTime(e.target.value);
+    setSelectedTime(e.target.value);
+  }}
+  style={{ display: "none" }}
+/>
+  </div>
+
+<button
+  disabled={
+    bookingConfirmed ||
+    !selectedDate ||
+    !selectedService ||
+    !selectedTime ||
+    (selectedService === "Other" && !customService) ||
+    (selectedTime === "Custom" && !customTime)
+  }
+  onClick={() => setBookingConfirmed(true)}
+  className={`w-full py-3 rounded-xl font-semibold ${
+    bookingConfirmed ||
+    !selectedDate ||
+    !selectedService ||
+    !selectedTime ||
+    (selectedService === "Other" && !customService) ||
+    (selectedTime === "Custom" && !customTime)
+      ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+      : "bg-green-600 text-white"
+  }`}
+>
+  {bookingConfirmed
+    ? "✅ Booking Confirmed"
+    : "✅ Confirm Booking"}
+</button>
+</div>
 
       {/* Message Box */}
       <div className="bg-white border-t p-3 flex items-center gap-2">

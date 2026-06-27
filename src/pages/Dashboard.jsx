@@ -20,6 +20,7 @@ import Settings from "../components/Settings";
 import RetivioSites from "../components/RetivioSites";
 import Reports from "../components/Reports";
 import WhatsAppDashboard from "../components/whatsapp/WhatsAppDashboard";
+import Appointments from "../components/Appointments";
 
 function Dashboard() {
 const [customers, setCustomers] = useState([]);  
@@ -162,7 +163,10 @@ return (
   <RetivioSites />
 )}
 {activePage === "reports" && (
-  <Reports />
+ <Reports />
+)}
+{activePage === "appointments" && (
+  <Appointments />
 )}
 {activePage === "whatsapp" && (
   <WhatsAppDashboard />

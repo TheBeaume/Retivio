@@ -6,14 +6,15 @@ export default function Appointments() {
   const [showForm, setShowForm] = useState(false);
   const [appointments, setAppointments] = useState([]);
 
-  const [form, setForm] = useState({
-    customer: "",
-    phone: "",
-    service: "",
-    date: "",
-    time: "",
-    notes: "",
-  });
+const [form, setForm] = useState({
+  customer: "",
+  phone: "",
+  service: "",
+  bookingSource: "Manual",
+  date: "",
+  time: "",
+  notes: "",
+});
 const [customerFound, setCustomerFound] = useState(false);
 const [customerInfo, setCustomerInfo] = useState(null);
   useEffect(() => {
@@ -119,12 +120,15 @@ if (!customerFound) {
       .insert([
         {
           user_id: user.id,
-customer_id: customerId, 
-         service: form.service,
-          appointment_date: form.date,
-          appointment_time: form.time,
-          notes: form.notes,
-          status: "Scheduled",
+customer_id: customerId,
+customer_name: form.customer,
+phone: form.phone, 
+service: form.service,
+booking_source: form.bookingSource,
+appointment_date: form.date,
+appointment_time: form.time,
+notes: form.notes,
+status: "Pending",
         },
       ]);
 
@@ -325,6 +329,21 @@ alert(`Delete: ${id}`);
               }
               className="border rounded-lg p-3"
             />
+<select
+  value={form.bookingSource}
+  onChange={(e) =>
+    setForm({ ...form, bookingSource: e.target.value })
+  }
+  className="border rounded-lg p-3"
+>
+  <option value="Manual">📝 Manual</option>
+  <option value="WhatsApp">💬 WhatsApp</option>
+  <option value="Phone Call">📞 Phone Call</option>
+  <option value="Walk-in">🚶 Walk-in</option>
+  <option value="Website">🌐 Website</option>
+  <option value="Instagram">📷 Instagram</option>
+  <option value="Facebook">📘 Facebook</option>
+</select>
 
             <input
               type="date"
@@ -391,11 +410,28 @@ alert(`Delete: ${id}`);
 
                 <div>
 
-                  <h3 className="font-semibold text-lg">
-                    {appointment.service}
+<h3 className="font-semibold text-lg">
+  👤 {appointment.customer_name || "Customer"}
+</h3>
 
-                  </h3>
+<p className="text-sm text-gray-500">
+  📞 {appointment.phone || "-"}
+</p>
 
+<p className="mt-2 font-medium">
+  💇 {appointment.service}
+</p>
+
+<p className="text-sm text-gray-500">
+  💬 {appointment.booking_source || "Manual"}
+</p>
+<p className="text-sm text-gray-500">
+  📞 {appointment.phone || "N/A"}
+</p>
+
+<p className="font-medium mt-2">
+  💇 {appointment.service}
+</p>
 
                   <p className="text-sm text-gray-500">
                     📅 {appointment.appointment_date}
