@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
-import CustomerLookup from "./CustomerLookup";
 
 export default function Appointments() {
   const [showForm, setShowForm] = useState(false);
@@ -17,6 +16,10 @@ const [form, setForm] = useState({
 });
 const [customerFound, setCustomerFound] = useState(false);
 const [customerInfo, setCustomerInfo] = useState(null);
+
+const [isEditing, setIsEditing] = useState(false);
+const [editingId, setEditingId] = useState(null);
+
   useEffect(() => {
     loadAppointments();
   }, []);
@@ -132,13 +135,14 @@ status: "Pending",
         },
       ]);
 
-    if (error) {
-      alert(error.message);
-      return;
-    }
+if (error) {
+  alert(error.message);
+  return;
+}
 
-    await loadAppointments();
+alert("Status updated successfully");
 
+await loadAppointments();
     setForm({
       customer: "",
       phone: "",
@@ -153,6 +157,51 @@ status: "Pending",
     alert("Appointment Saved!");
 
   }
+async function updateAppointment() {
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) return;
+
+  const { error } = await supabase
+    .from("appointments")
+    .update({
+      customer_name: form.customer,
+      phone: form.phone,
+      service: form.service,
+      booking_source: form.bookingSource,
+      appointment_date: form.date,
+      appointment_time: form.time,
+      notes: form.notes,
+    })
+    .eq("id", editingId)
+    .eq("user_id", user.id);
+
+  if (error) {
+    alert(error.message);
+    return;
+  }
+
+  await loadAppointments();
+
+  setIsEditing(false);
+  setEditingId(null);
+
+  setForm({
+    customer: "",
+    phone: "",
+    service: "",
+    bookingSource: "Manual",
+    date: "",
+    time: "",
+    notes: "",
+  });
+
+  setShowForm(false);
+
+  alert("Appointment Updated!");
+}
 async function updateAppointmentStatus(id, status) {
 try {
 const {
@@ -182,7 +231,6 @@ await loadAppointments();
 }
 
 async function deleteAppointment(id) {
-alert(`Delete: ${id}`);
   const ok = window.confirm("Delete this appointment?");
 
   if (!ok) return;
@@ -192,11 +240,10 @@ alert(`Delete: ${id}`);
     .delete()
     .eq("id", id);
 
-  if (error) {
-    alert(error.message);
-    return;
-  }
-
+if (error) {
+  alert(error.message);
+  return;
+}
   await loadAppointments();
 }
   return (
@@ -215,7 +262,6 @@ alert(`Delete: ${id}`);
       </div>
 
       <div className="grid md:grid-cols-4 gap-6">
-
         <div className="bg-white rounded-xl shadow p-6">
           <p className="text-gray-500">
             Today's Appointments
@@ -261,7 +307,22 @@ alert(`Delete: ${id}`);
       <div className="flex justify-end">
 
         <button
-          onClick={() => setShowForm(!showForm)}
+onClick={() => {
+  setIsEditing(false);
+  setEditingId(null);
+
+  setForm({
+    customer: "",
+    phone: "",
+    service: "",
+    bookingSource: "Manual",
+    date: "",
+    time: "",
+    notes: "",
+  });
+
+  setShowForm(true);
+}}
           className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-xl"
         >
           ➕ New Appointment
@@ -271,8 +332,13 @@ alert(`Delete: ${id}`);
 
       {showForm && (
 
-        <div className="bg-white rounded-xl shadow p-6">
-
+<div
+  id="appointmentForm"
+  className="bg-white rounded-xl shadow p-6"
+>
+<h2 className="text-2xl font-bold mb-6">
+  {isEditing ? "✏️ Edit Appointment" : "➕ New Appointment"}
+</h2>
           <div className="grid md:grid-cols-2 gap-4">
 <input
   placeholder="Customer Name"
@@ -373,20 +439,20 @@ alert(`Delete: ${id}`);
               rows={3}
             />
 
-            <button
-              onClick={saveAppointment}
-              className="bg-purple-600 hover:bg-purple-700 text-white rounded-lg p-3 md:col-span-2"
-            >
-              Save Appointment
-            </button>
-
+<button
+  onClick={isEditing ? updateAppointment : saveAppointment}
+  className="bg-purple-600 hover:bg-purple-700 text-white rounded-lg p-3 md:col-span-2"
+>
+  {isEditing ? "💾 Update Appointment" : "💾 Save Appointment"}
+</button>
           </div>
 
         </div>
 
       )}
-<div className="bg-white rounded-xl shadow p-6">
+{!showForm && (
 
+<div className="bg-white rounded-xl shadow p-6">
         <h2 className="text-2xl font-bold mb-4">
           Appointment List
         </h2>
@@ -449,39 +515,63 @@ alert(`Delete: ${id}`);
 <div className="flex gap-2 mt-3">
 
 <button
-  onClick={() => alert("Edit clicked")}
-  className="bg-blue-500 text-white px-3 py-1 rounded-lg text-sm"
+  onClick={() => {
+    setForm({
+      customer: appointment.customer_name || "",
+      phone: appointment.phone || "",
+      service: appointment.service || "",
+      bookingSource: appointment.booking_source || "Manual",
+      date: appointment.appointment_date || "",
+      time: appointment.appointment_time || "",
+      notes: appointment.notes || "",
+    });
+
+    setEditingId(appointment.id);
+    setIsEditing(true);
+    setShowForm(true);
+setTimeout(() => {
+  document
+    .getElementById("appointmentForm")
+    ?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+}, 100); 
+ }}
+disabled={appointment.status !== "Pending"}  
+className="bg-blue-500 text-white px-3 py-1 rounded-lg text-sm"
 >
   ✏️ Edit
 </button>
 <button
-  onClick={() => {
-    alert("Complete clicked");
-    updateAppointmentStatus(appointment.id, "Completed");
-  }}
+  onClick={() =>
+    updateAppointmentStatus(appointment.id, "Completed")
+  }
+disabled={appointment.status !== "Pending"}
   className="bg-green-600 text-white px-3 py-1 rounded-lg text-sm"
 >
   ✅ Complete
 </button>
+
 <button
-  onClick={() =>
-    updateAppointmentStatus(appointment.id, "Cancelled")
-  }
-  className="bg-yellow-500 text-white px-3 py-1 rounded-lg text-sm"
+  onClick={() => {
+    if (window.confirm("Cancel this appointment?")) {
+      updateAppointmentStatus(appointment.id, "Cancelled");
+    }
+  }}
+disabled={appointment.status !== "Pending"} 
+ className="bg-yellow-500 text-white px-3 py-1 rounded-lg text-sm"
 >
   ❌ Cancel
 </button>
-
 <button
   onClick={() => deleteAppointment(appointment.id)}
   className="bg-red-600 text-white px-3 py-1 rounded-lg text-sm"
 >
   🗑 Delete
 </button>
-
 </div>
                 </div>
-
 <span
   className={`px-3 py-1 rounded-full text-sm font-medium ${
     appointment.status === "Completed"
@@ -502,7 +592,7 @@ alert(`Delete: ${id}`);
         )}
 
       </div>
-
+)}
     </div>
   );
 }
