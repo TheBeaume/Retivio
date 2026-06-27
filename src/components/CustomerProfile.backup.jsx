@@ -1,30 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { getCustomerVisits } from "../services/customerVisitService";
-
 export default function CustomerProfile({ customer, onClose }) {
-  const [visits, setVisits] = useState([]);
+const [visits, setVisits] = useState([]);
 
-  useEffect(() => {
-    async function loadVisits() {
-      if (!customer?.id) return;
-
-      try {
-        const data = await getCustomerVisits(customer.id);
-        setVisits(data);
-      } catch (err) {
-        console.error(err);
-      }
+useEffect(() => {
+  async function loadVisits() {
+    try {
+      const data = await getCustomerVisits(customer.id);
+      setVisits(data);
+    } catch (e) {
+      console.error(e);
     }
+  }
 
+  if (customer?.id) {
     loadVisits();
-  }, [customer]);
-
-  if (!customer) return null;
+  }
+}, [customer]); 
+ if (!customer) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/40 z-50 flex justify-end">
+    <div className="fixed inset-0 bg-black/40 flex justify-end z-50">
 
-      <div className="bg-white w-full md:w-[420px] h-full overflow-y-auto">
+      <div className="bg-white w-full md:w-[420px] h-full overflow-y-auto shadow-xl">
 
         <div className="bg-purple-700 text-white p-5 flex justify-between items-center">
 
@@ -72,7 +70,8 @@ export default function CustomerProfile({ customer, onClose }) {
             </div>
 
           </div>
-<div>
+
+          <div>
 
             <h3 className="font-bold mb-3">
               Customer Details
@@ -96,27 +95,25 @@ export default function CustomerProfile({ customer, onClose }) {
 
           <div className="grid grid-cols-2 gap-3">
 
-            <button
-              onClick={() =>
-                window.open(
-                  `https://wa.me/91${customer.phone.replace(/\D/g, "")}`,
-                  "_blank"
-                )
-              }
-              className="bg-green-600 text-white py-3 rounded-xl"
-            >
-              💬 WhatsApp
-            </button>
-
-            <button
-              onClick={() =>
-                (window.location.href = `tel:${customer.phone}`)
-              }
-              className="bg-blue-600 text-white py-3 rounded-xl"
-            >
-              📞 Call
-            </button>
-
+<button
+  onClick={() =>
+    window.open(
+      `https://wa.me/91${customer.phone.replace(/\D/g, "")}`,
+      "_blank"
+    )
+  }
+  className="bg-green-600 text-white py-3 rounded-xl"
+>
+  💬 WhatsApp
+</button>
+<button
+  onClick={() =>
+    (window.location.href = `tel:${customer.phone}`)
+  }
+  className="bg-blue-600 text-white py-3 rounded-xl"
+>
+  📞 Call
+</button>
             <button className="bg-purple-600 text-white py-3 rounded-xl">
               ➕ Add Visit
             </button>
@@ -126,49 +123,40 @@ export default function CustomerProfile({ customer, onClose }) {
             </button>
 
           </div>
-<div>
+</div>
+
+          <div>
 
             <h3 className="font-bold mb-3">
               📜 Visit History
             </h3>
 
             {visits.length === 0 ? (
-
               <p className="text-gray-500">
                 No visits found.
               </p>
-
             ) : (
-
-              <div className="space-y-3">
-
+              <div className="space-y-2">
                 {visits.map((visit) => (
-
                   <div
                     key={visit.id}
-                    className="border rounded-xl p-3"
+                    className="border rounded-lg p-3"
                   >
                     <p className="font-semibold">
                       {visit.service}
                     </p>
 
-                    <p className="text-sm text-gray-600">
-                      ₹{visit.amount}
-                    </p>
+                    <p>₹{visit.amount}</p>
 
-                    <p className="text-xs text-gray-500">
+                    <p className="text-sm text-gray-500">
                       {visit.visit_date}
                     </p>
 
                   </div>
-
                 ))}
-
               </div>
-
             )}
-
-          </div>
+</div>
 
         </div>
 
@@ -177,4 +165,3 @@ export default function CustomerProfile({ customer, onClose }) {
     </div>
   );
 }
-
