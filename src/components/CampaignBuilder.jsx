@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { supabase } from "../lib/supabase";
+import CustomerSelectionList from "./CustomerSelectionList";
 export default function CampaignBuilder({ customers = [] }) {
   const [campaignType, setCampaignType] = useState("Reactivation");
   const [offer, setOffer] = useState("No Offer");
@@ -23,13 +24,20 @@ const [filters, setFilters] = useState({
   haircut: false,
 });
 const [businessName, setBusinessName] = useState("Your Salon");
+const [selectedCustomers, setSelectedCustomers] = useState([]);
   const toggleFilter = (key) => {
     setFilters((prev) => ({
       ...prev,
       [key]: !prev[key],
     }));
   };
-
+function toggleCustomer(id) {
+  setSelectedCustomers((prev) =>
+    prev.includes(id)
+      ? prev.filter((x) => x !== id)
+      : [...prev, id]
+  );
+}
   const filteredCustomers = useMemo(() => {
     const today = new Date();
 const hasFilter = Object.values(filters).some(Boolean);
@@ -313,7 +321,9 @@ We look forward to welcoming you again.
         <h3 className="text-xl font-bold mb-4">
           📊 Campaign Preview
         </h3>
-
+<div className="mb-4 text-sm font-medium text-purple-700">
+  Selected Customers: {selectedCustomers.length}
+</div>
         <div className="grid grid-cols-2 gap-4">
 
           <div className="bg-white rounded-lg p-4 shadow">
@@ -386,6 +396,11 @@ ${businessName}`}
 
       </div>
 
+<CustomerSelectionList
+  customers={filteredCustomers}
+  selectedCustomers={selectedCustomers}
+  toggleCustomer={toggleCustomer}
+/>
       <div className="flex gap-4 mt-8">
 
         <button
