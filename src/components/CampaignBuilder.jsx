@@ -6,14 +6,22 @@ export default function CampaignBuilder({ customers = [] }) {
   const [customOffer, setCustomOffer] = useState("");
   const [tone, setTone] = useState("Friendly");
 
-  const [filters, setFilters] = useState({
-    due: false,
-    vip: false,
-    gold: false,
-    hairSpa: false,
-    facial: false,
-    haircut: false,
-  });
+
+
+const [filters, setFilters] = useState({
+  due: false,
+
+  inactive30: false,
+  inactive60: false,
+  inactive90: false,
+
+  vip: false,
+  gold: false,
+
+  hairSpa: false,
+  facial: false,
+  haircut: false,
+});
 const [businessName, setBusinessName] = useState("Your Salon");
   const toggleFilter = (key) => {
     setFilters((prev) => ({
@@ -198,7 +206,32 @@ We look forward to welcoming you again.
             />{" "}
             Due Customers
           </label>
+<label>
+  <input
+    type="checkbox"
+    checked={filters.inactive30}
+    onChange={() => toggleFilter("inactive30")}
+  />{" "}
+  30+ Days Inactive
+</label>
 
+<label>
+  <input
+    type="checkbox"
+    checked={filters.inactive60}
+    onChange={() => toggleFilter("inactive60")}
+  />{" "}
+  60+ Days Inactive
+</label>
+
+<label>
+  <input
+    type="checkbox"
+    checked={filters.inactive90}
+    onChange={() => toggleFilter("inactive90")}
+  />{" "}
+  90+ Days Inactive
+</label>
           <label>
             <input
               type="checkbox"
