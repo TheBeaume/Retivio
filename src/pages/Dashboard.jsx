@@ -159,7 +159,7 @@ return (
   </>
 )}
 {activePage === "followups" && (
-  <FollowUps />
+<FollowUps />
 )}
 {activePage === "campaigns" && <CampaignBuilder customers={customers} />}
 {activePage === "sites" && (

@@ -29,8 +29,7 @@ export default function FollowUps() {
 
     setFollowUps(data || []);
   }
-
-
+async function markAsDone(id) {
 function handleWhatsApp(item) {
   window.open(
     `https://wa.me/91${item.phone}?text=${encodeURIComponent(
@@ -48,8 +47,6 @@ Book your appointment today.
 function handleCall(item) {
   window.open(`tel:${item.phone}`);
 }
-
-async function markAsDone(id) {
   const { error } = await supabase
     .from("follow_ups")
     .update({ status: "Done" })
@@ -172,11 +169,12 @@ const completed = followUps.filter(
 ))}
               </div>
 
+
+          </div>
+
         )}
 
-</div>
-
-    </div>
+      </div>
 
   );
 }
