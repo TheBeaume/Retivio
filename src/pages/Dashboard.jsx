@@ -16,6 +16,7 @@ import RevenueTrend from "../components/RevenueTrend";
 import AIRecommendations from "../components/AIRecommendations";
 import { supabase } from "../lib/supabase";
 import CampaignBuilder from "../components/CampaignBuilder";
+import FollowUps from "../components/FollowUps";
 import Settings from "../components/Settings";
 import RetivioSites from "../components/RetivioSites";
 import Reports from "../components/Reports";
@@ -157,7 +158,9 @@ return (
     />
   </>
 )}
-
+{activePage === "followups" && (
+  <FollowUps />
+)}
 {activePage === "campaigns" && <CampaignBuilder customers={customers} />}
 {activePage === "sites" && (
   <RetivioSites />
