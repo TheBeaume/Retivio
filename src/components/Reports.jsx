@@ -8,7 +8,6 @@ const [appointments, setAppointments] = useState(0);
 const [todayAppointments, setTodayAppointments] = useState(0);
 const [completedAppointments, setCompletedAppointments] = useState(0);
 const [cancelledAppointments, setCancelledAppointments] = useState(0);
-const [campaigns, setCampaigns] = useState(0);
 
 useEffect(() => {
   loadCustomers();
