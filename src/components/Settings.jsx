@@ -57,10 +57,15 @@ if (!user) {
 
 const { error } = await supabase
   .from("business_settings")
-  .upsert({
-    user_id: user.id,
-    ...form,
-  });
+  .upsert(
+    {
+      user_id: user.id,
+      ...form,
+    },
+    {
+      onConflict: "user_id",
+    }
+  );
 if (error) {
   alert(error.message);
 } else {
