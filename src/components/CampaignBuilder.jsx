@@ -131,6 +131,73 @@ async function loadBusinessName() {
     setBusinessName(data.business_name);
   }
 }
+function generateMessage(customer) {
+  if (!customer) return "";
+
+  const offerText =
+    offer === "No Offer"
+      ? ""
+      : offer === "Custom"
+      ? customOffer
+      : `Enjoy ${offer} on your next visit.`;
+
+  let greeting = `Hi ${customer.name} 👋`;
+  let closing = `Regards,\n\n${businessName}`;
+
+  if (tone === "Professional") {
+    greeting = `Dear ${customer.name},`;
+    closing = `Kind Regards,\n\n${businessName}`;
+  } else if (tone === "Luxury") {
+    greeting = `✨ Dear ${customer.name},`;
+    closing = `Warm Regards,\n\n${businessName}`;
+  }
+
+  switch (campaignType) {
+    case "Birthday":
+      return `${greeting}
+
+🎉 Happy Birthday!
+
+Wishing you happiness, health and beauty always.
+
+${offerText}
+
+${closing}`;
+
+    case "Festival":
+      return `${greeting}
+
+🌸 Warm wishes from ${businessName}!
+
+${offerText}
+
+We look forward to seeing you soon.
+
+${closing}`;
+
+    case "VIP":
+      return `${greeting}
+
+💎 Thank you for being one of our valued VIP customers.
+
+${offerText}
+
+We can't wait to welcome you again.
+
+${closing}`;
+
+    default:
+      return `${greeting}
+
+We hope you're doing well.
+
+It's time for your ${customer.service}.
+
+${offerText}
+
+${closing}`;
+  }
+}
 const openWhatsApp = () => {
   if (filteredCustomers.length === 0) {
     alert("Please select at least one customer.");
@@ -140,17 +207,8 @@ const openWhatsApp = () => {
   const customer = previewCustomer;
   const phone = (customer.phone || "").replace(/\D/g, "");
 
-  const message = `Hi ${customer.name} 👋
+const message = generateMessage(customer);
 
-We hope you're doing well.
-
-It's time for your ${customer.service}.
-
-Enjoy ${offer} on your next visit.
-
-We look forward to welcoming you again.
-
-- ${businessName}`;
 
   window.open(
     `https://wa.me/91${phone}?text=${encodeURIComponent(message)}`,
@@ -363,24 +421,9 @@ We look forward to welcoming you again.
 
             <div className="whitespace-pre-line text-gray-700">
 
-{`Hi ${previewCustomer?.name} 👋
-We hope you're doing well.
-
-It's time for your ${previewCustomer?.service}.
-
-${
-offer === "No Offer"
-? ""
-: offer === "Custom"
-? customOffer
-: `Enjoy ${offer} on your next visit.`
-}
-
-We look forward to welcoming you again.
-
-Regards,
-
-${businessName}`}
+<div className="mt-4 bg-gray-50 rounded-lg p-4 whitespace-pre-line">
+  {previewCustomer && generateMessage(previewCustomer)}
+</div>
 
             </div>
 
@@ -428,22 +471,8 @@ ${businessName}`}
     <p><strong>Estimated Revenue:</strong> ₹{estimatedRevenue}</p>
 
     <div className="mt-4 bg-gray-50 rounded-lg p-4 whitespace-pre-line">
-{previewCustomer &&
-`Hi ${previewCustomer?.name} 👋
+{previewCustomer && generateMessage(previewCustomer)}
 
-We hope you're doing well.
-
-It's time for your ${previewCustomer?.service}.
-
-${offer === "No Offer"
-  ? ""
-  : offer === "Custom"
-  ? customOffer
-  : `Enjoy ${offer} on your next visit.`}
-
-Regards,
-
-${businessName}`}
     </div>
   </div>
 )}

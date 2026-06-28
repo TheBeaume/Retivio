@@ -55,24 +55,17 @@ if (!user) {
   return;
 }
 
-alert(user.id);
-const { data, error } = await supabase
+const { error } = await supabase
   .from("business_settings")
   .upsert({
     user_id: user.id,
     ...form,
-  })
-  .select();
-
-console.log("DATA:", data);
-console.log("ERROR:", error);
-
+  });
 if (error) {
   alert(error.message);
 } else {
   alert("Business settings saved successfully.");
 }
-    alert("Business settings saved successfully.");
 
     setLoading(false);
   }
