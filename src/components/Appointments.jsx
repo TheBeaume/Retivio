@@ -140,7 +140,6 @@ if (error) {
   return;
 }
 
-alert("Status updated successfully");
 await loadAppointments();
     setForm({
       customer: "",
