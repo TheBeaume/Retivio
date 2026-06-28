@@ -22,8 +22,8 @@ async function loadCustomers() {
 
 const { data, error } = await supabase
   .from("customers")
-  .select("*");
-
+  .select("*")
+  .eq("user_id", user.id);
 if (error) {
   console.log(error);
   return;

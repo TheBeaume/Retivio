@@ -4,7 +4,10 @@ import { supabase } from "../lib/supabase";
 export default function Appointments() {
   const [showForm, setShowForm] = useState(false);
   const [appointments, setAppointments] = useState([]);
-
+const [search, setSearch] = useState("");
+const [dateFilter, setDateFilter] = useState("Today");
+const [statusFilter, setStatusFilter] = useState("All");
+const [sortBy, setSortBy] = useState("Time");
 const [form, setForm] = useState({
   customer: "",
   phone: "",
@@ -65,18 +68,117 @@ async function findCustomer(phone) {
       .from("appointments")
       .select("*")
       .eq("user_id", user.id)
-      .order("appointment_date", {
-        ascending: true,
-      });
-
+.order("appointment_date", {
+  ascending: true,
+})
+.order("appointment_time", {
+  ascending: true,
+});
     if (error) {
       console.log(error);
       return;
     }
-
     setAppointments(data || []);
   }
+const filteredAppointments = appointments
+  .filter((appointment) => {
+    const today = new Date().toISOString().split("T")[0];
 
+    const matchesSearch =
+      appointment.customer_name
+        ?.toLowerCase()
+        .includes(search.toLowerCase()) ||
+      appointment.phone?.includes(search) ||
+      appointment.service
+        ?.toLowerCase()
+        .includes(search.toLowerCase());
+
+    const matchesStatus =
+      statusFilter === "All" ||
+      appointment.status === statusFilter;
+
+let matchesDate = true;
+
+const current = new Date();
+const tomorrow = new Date(current);
+tomorrow.setDate(current.getDate() + 1);
+
+const appointmentDate = new Date(appointment.appointment_date);
+
+switch (dateFilter) {
+  case "Today":
+    matchesDate =
+      appointment.appointment_date === today;
+    break;
+
+  case "Tomorrow":
+    matchesDate =
+      appointment.appointment_date ===
+      tomorrow.toISOString().split("T")[0];
+    break;
+
+  case "This Week": {
+    const start = new Date(current);
+    start.setHours(0, 0, 0, 0);
+    start.setDate(current.getDate() - current.getDay());
+
+    const end = new Date(start);
+    end.setDate(start.getDate() + 6);
+
+    matchesDate =
+      appointmentDate >= start &&
+      appointmentDate <= end;
+    break;
+  }
+
+  case "This Month":
+    matchesDate =
+      appointmentDate.getMonth() === current.getMonth() &&
+      appointmentDate.getFullYear() === current.getFullYear();
+    break;
+
+  case "This Year":
+    matchesDate =
+      appointmentDate.getFullYear() === current.getFullYear();
+    break;
+
+  case "All":
+    matchesDate = true;
+    break;
+
+  default:
+    matchesDate = true;
+}
+
+return (
+  matchesSearch &&
+  matchesStatus &&
+  matchesDate
+);
+  })
+
+.sort((a, b) => {
+  switch (sortBy) {
+
+    case "Time":
+      return a.appointment_time.localeCompare(b.appointment_time);
+
+    case "Newest Date":
+      return new Date(b.appointment_date) - new Date(a.appointment_date);
+
+    case "Oldest Date":
+      return new Date(a.appointment_date) - new Date(b.appointment_date);
+
+    case "Customer Name (A-Z)":
+      return a.customer_name.localeCompare(b.customer_name);
+
+    case "Customer Name (Z-A)":
+      return b.customer_name.localeCompare(a.customer_name);
+
+    default:
+      return 0;
+  }
+});
   async function saveAppointment() {
     const {
       data: { user },
@@ -289,7 +391,13 @@ if (error) {
           </p>
 
           <h2 className="text-3xl font-bold mt-2">
-            {appointments.length}
+{
+  appointments.filter(
+    a =>
+      a.appointment_date ===
+      new Date().toISOString().split("T")[0]
+  ).length
+}
           </h2>
         </div>
 
@@ -309,7 +417,7 @@ if (error) {
           </p>
 
           <h2 className="text-3xl font-bold mt-2">
-            {appointments.filter(a => a.status === "Scheduled").length}
+{appointments.filter(a => a.status === "Pending").length}
           </h2>
         </div>
 
@@ -318,14 +426,71 @@ if (error) {
             Cancelled
           </p>
 
-          <h2 className="text-3xl font-bold mt-2">
-            {appointments.filter(a => a.status === "Cancelled").length}
+<h2 className="text-3xl font-bold mt-2">
+  {
+    appointments.filter(
+      a =>
+        a.status === "Cancelled" &&
+        a.appointment_date ===
+          new Date().toISOString().split("T")[0]
+    ).length
+  }
+</h2>          <h2 className="text-3xl font-bold mt-2">
+
           </h2>
         </div>
 
       </div>
 
-      <div className="flex justify-end">
+<div className="flex flex-col md:flex-row gap-4 justify-between items-center mb-6">
+
+  <input
+    type="text"
+    placeholder="🔍 Search customer..."
+    value={search}
+    onChange={(e) => setSearch(e.target.value)}
+    className="border rounded-lg px-4 py-2 w-full md:w-72"
+  />
+
+  <div className="flex gap-2 flex-wrap">
+
+    <select
+      value={dateFilter}
+      onChange={(e) => setDateFilter(e.target.value)}
+      className="border rounded-lg px-3 py-2"
+    >
+<option>Today</option>
+<option>Tomorrow</option>
+<option>This Week</option>
+<option>This Month</option>
+<option>Custom Date</option>
+<option>All</option>
+    </select>
+
+    <select
+      value={statusFilter}
+      onChange={(e) => setStatusFilter(e.target.value)}
+      className="border rounded-lg px-3 py-2"
+    >
+      <option>All</option>
+      <option>Pending</option>
+      <option>Completed</option>
+      <option>Cancelled</option>
+    </select>
+
+<select
+  value={sortBy}
+  onChange={(e) => setSortBy(e.target.value)}
+  className="border rounded-lg px-3 py-2"
+>
+  <option>Time</option>
+  <option>Newest Date</option>
+  <option>Oldest Date</option>
+  <option>Customer Name (A-Z)</option>
+  <option>Customer Name (Z-A)</option>
+</select>
+  </div>
+
 
         <button
 onClick={() => {
@@ -488,8 +653,7 @@ onClick={() => {
 
           <div className="space-y-3">
 
-            {appointments.map((appointment) => (
-
+{filteredAppointments.map((appointment) => (
               <div
                 key={appointment.id}
                 className="flex justify-between items-center border rounded-xl p-4"
@@ -498,11 +662,11 @@ onClick={() => {
                 <div>
 
 <h3 className="font-semibold text-lg">
-  👤 {appointment.customer_name || "Customer"}
+👤 {appointment.customer_name}
 </h3>
 
 <p className="text-sm text-gray-500">
-  📞 {appointment.phone || "-"}
+📞 {appointment.phone || "No phone"}
 </p>
 
 <p className="mt-2 font-medium">
@@ -512,21 +676,16 @@ onClick={() => {
 <p className="text-sm text-gray-500">
   💬 {appointment.booking_source || "Manual"}
 </p>
-<p className="text-sm text-gray-500">
-  📞 {appointment.phone || "N/A"}
-</p>
 
-<p className="font-medium mt-2">
-  💇 {appointment.service}
-</p>
+<div className="flex items-center gap-4 text-sm text-gray-500">
+  <span>
+    📅 {appointment.appointment_date}
+  </span>
 
-                  <p className="text-sm text-gray-500">
-                    📅 {appointment.appointment_date}
-                  </p>
-
-                  <p className="text-sm text-gray-500">
-                    🕒 {appointment.appointment_time}
-                  </p>
+  <span>
+    🕒 {appointment.appointment_time}
+  </span>
+</div>
 
                   {appointment.notes && (
                     <p className="text-sm text-gray-500">
@@ -595,7 +754,12 @@ disabled={appointment.status !== "Pending"}
                 </div>
 <span
   className={`px-3 py-1 rounded-full text-sm font-medium ${
-    appointment.status === "Completed"
+appointments.filter(
+  a =>
+    a.status === "Completed" &&
+    a.appointment_date ===
+      new Date().toISOString().split("T")[0]
+).length
       ? "bg-green-100 text-green-700"
       : appointment.status === "Cancelled"
       ? "bg-red-100 text-red-700"

@@ -29,9 +29,15 @@ const [customers, setCustomers] = useState([]);
 const [sidebarOpen, setSidebarOpen] = useState(false);
 const [activePage, setActivePage] = useState("dashboard");
 const fetchCustomers = async () => {
+const {
+  data: { user },
+} = await supabase.auth.getUser();
+
+if (!user) return;
   const { data, error } = await supabase
     .from("customers")
-    .select("*");
+.select("*")
+.eq("user_id", user.id);
 
   if (error) {
     console.log(error);
