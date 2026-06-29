@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { supabase } from "../lib/supabase";
 import { useNavigate } from "react-router-dom";
+import NotificationPanel from "./NotificationPanel";
 function Header({ setSidebarOpen }) {
 const navigate = useNavigate();
-
+const [showNotifications, setShowNotifications] = useState(false);
 async function handleLogout() {
   await supabase.auth.signOut();
   navigate("/login");
@@ -35,10 +36,20 @@ async function handleLogout() {
         {/* Right */}
         <div className="flex items-center gap-3">
 
-          <button className="bg-white/10 backdrop-blur-md border border-white/20 w-10 h-10 rounded-xl hover:bg-white/20 transition">
-            🔔
-          </button>
+<div className="relative">
+  <button
+    onClick={() => setShowNotifications(!showNotifications)}
+    className="bg-white/10 backdrop-blur-md border border-white/20 w-10 h-10 rounded-xl hover:bg-white/20 transition"
+  >
+    🔔
+  </button>
 
+  {showNotifications && (
+    <NotificationPanel
+      onClose={() => setShowNotifications(false)}
+    />
+  )}
+</div>
           <div className="hidden md:flex items-center bg-white/10 backdrop-blur-md border border-white/20 rounded-xl px-4 py-2">
             👤
             <span className="ml-2">

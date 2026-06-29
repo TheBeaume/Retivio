@@ -15,13 +15,6 @@ function AnalyticsSummary({ customers }) {
   const vipMembers = customers.filter(
     (c) => c.loyalty === "VIP"
   ).length;
-const today = new Date();
-
-const dueCustomers = customers.filter((c) => {
-  if (!c.nextDue) return false;
-
-  return new Date(c.nextDue) <= today;
-}).length;
 
   const cards = [
     {
@@ -48,16 +41,10 @@ const dueCustomers = customers.filter((c) => {
       icon: "👑",
       color: "bg-purple-50",
     },
-{
-  title: "Due Customers",
-  value: dueCustomers,
-  icon: "🔴",
-  color: "bg-red-50",
-},
   ];
 
   return (
-   <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mt-6">
+<div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
       {cards.map((card, index) => (
         <div
           key={index}
@@ -68,9 +55,6 @@ const dueCustomers = customers.filter((c) => {
               {card.icon}
             </span>
 
-            <span className="text-xs text-green-600 font-semibold">
-              +12%
-            </span>
           </div>
 
           <p className="text-gray-500 text-sm mt-3">

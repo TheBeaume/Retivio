@@ -19,7 +19,7 @@ const [bookingConfirmed, setBookingConfirmed] = useState(false);
   👩 {selectedChat?.name || "Customer"}
 </h2>
           <p className="text-sm text-green-100">
-{selectedChat ? "Online" : "No customer selected"}
+{selectedChat ? "AI Assistant Online" : "Demo Conversation"}
           </p>
         </div>
 
@@ -40,13 +40,13 @@ const [bookingConfirmed, setBookingConfirmed] = useState(false);
 
         <div className="flex justify-end">
           <div className="bg-green-200 rounded-2xl px-4 py-3 max-w-[80%] shadow">
-            Welcome to The Beaume 🌸
+Welcome to Retivio AI Booking Assistant 🤖
           </div>
         </div>
 
         <div className="flex justify-start">
           <div className="bg-white rounded-2xl px-4 py-3 max-w-[80%] shadow">
-            I want to book a Hair Spa.
+I'd like to book an appointment.
 {bookingConfirmed && (
   <div className="flex justify-end">
     <div className="bg-green-200 rounded-2xl px-4 py-3 max-w-[80%] shadow">
@@ -67,7 +67,7 @@ const [bookingConfirmed, setBookingConfirmed] = useState(false);
 <div className="bg-white border-t p-3 space-y-3">
 
   <p className="text-sm font-semibold">
-    📅 Booking Assistant
+🤖 AI Booking Assistant
   </p>
 
   <div className="flex gap-2 overflow-x-auto">
@@ -236,13 +236,16 @@ const [bookingConfirmed, setBookingConfirmed] = useState(false);
       ? "bg-gray-300 text-gray-500 cursor-not-allowed"
       : "bg-green-600 text-white"
   }`}
+
 >
   {bookingConfirmed
-    ? "✅ Booking Confirmed"
-    : "✅ Confirm Booking"}
+    ? "✅ Demo Booking Confirmed"
+    : "🚀 Confirm Demo Booking"}
 </button>
 </div>
-
+<p className="text-xs text-center text-gray-500">
+  Demo Mode • Real WhatsApp integration is coming soon.
+</p>
       {/* Message Box */}
       <div className="bg-white border-t p-3 flex items-center gap-2">
 

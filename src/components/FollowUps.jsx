@@ -42,6 +42,26 @@ async function markAsDone(id) {
   loadFollowUps();
 }
 
+function getStatusColor(item) {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const followDate = new Date(item.followup_date);
+
+  if (item.status === "Done") {
+    return "bg-gray-100 text-gray-700";
+  }
+
+  if (followDate < today) {
+    return "bg-red-100 text-red-700";
+  }
+
+  if (followDate.getTime() === today.getTime()) {
+    return "bg-orange-100 text-orange-700";
+  }
+
+  return "bg-green-100 text-green-700";
+}
   return (
     <div className="space-y-6">
 
@@ -125,7 +145,9 @@ Book your appointment today.
 </div>
                 </div>
 
-                <span className="bg-purple-100 text-purple-700 px-3 py-1 rounded-full">
+<span
+  className={`${getStatusColor(item)} px-3 py-1 rounded-full font-semibold`}
+>
                   {item.status}
                 </span>
 

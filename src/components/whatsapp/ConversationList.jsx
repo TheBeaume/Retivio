@@ -39,7 +39,7 @@ export default function ConversationList({ onSelectChat }) {
       <div className="sticky top-0 bg-green-600 text-white p-4">
 
         <h1 className="text-2xl font-bold">
-          💬 WhatsApp Booking
+💬 AI WhatsApp Booking (Beta)
         </h1>
 
         <input

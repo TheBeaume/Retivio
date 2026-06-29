@@ -108,19 +108,6 @@ into Regular Customers
         >
           📢 Campaigns
         </li>
-<li
-          onClick={() => {
-            setActivePage("sites");
-            setSidebarOpen(false);
-          }}
-          className={`p-4 rounded-xl cursor-pointer transition-all dur>
-            activePage === "sites"
-              ? "bg-white/15 border-l-4 border-yellow-400 shadow-lg"
-              : "hover:bg-white/10"
-          }`}
-        >
-          🌐 Retivio Sites
-        </li>
 
 <li
   onClick={() => {
