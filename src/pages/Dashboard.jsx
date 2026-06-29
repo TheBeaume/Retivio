@@ -18,6 +18,7 @@ import RetivioSites from "../components/RetivioSites";
 import Reports from "../components/Reports";
 import WhatsAppDashboard from "../components/whatsapp/WhatsAppDashboard";
 import Appointments from "../components/Appointments";
+import FeedbackCard from "../components/FeedbackCard";
 
 function Dashboard() {
 const [customers, setCustomers] = useState([]);  
@@ -88,20 +89,20 @@ return (
 <div className="flex-1 overflow-x-hidden">
         <Header setSidebarOpen={setSidebarOpen} />
 <div className="p-3 md:p-6">
-          <h1 className="text-2xl md:text-4xl font-bold">
-  Dashboard
-</h1>
-
-<p className="text-gray-500 mt-1">
-  Welcome back! Here's what's happening today.
-</p>
 
 
 {activePage === "dashboard" && (
   <>
+    <h1 className="text-2xl md:text-4xl font-bold">
+      Dashboard
+    </h1>
+
+    <p className="text-gray-500 mt-1">
+      Welcome back! Here's what's happening today.
+    </p>
+
     <AnalyticsSummary customers={customers} />
-
-
+<FeedbackCard />
 <QuickActions
   setActivePage={setActivePage}
 />
