@@ -15,6 +15,23 @@ useEffect(() => {
   }
 }, [customer]);
 const updateVisit = async () => {
+if (!service) {
+  alert("Please select a service");
+  return;
+}
+
+if (!amount || Number(amount) <= 0) {
+  alert("Please enter a valid bill amount");
+  return;
+}
+const {
+  data: { user },
+} = await supabase.auth.getUser();
+
+if (!user) {
+  alert("User not found");
+  return;
+}
   const existingCustomer = customers.find(
     (c) => c.phone === phone
   );
@@ -76,6 +93,56 @@ try {
 } catch (e) {
   alert(e.message);
   return;
+}
+
+let followupDate = new Date();
+
+if (service === "Hair Spa")
+  followupDate.setDate(followupDate.getDate() + 30);
+
+if (service === "Facial")
+  followupDate.setDate(followupDate.getDate() + 45);
+
+if (service === "Cleanup")
+  followupDate.setDate(followupDate.getDate() + 20);
+
+if (service === "Hair Color")
+  followupDate.setDate(followupDate.getDate() + 60);
+
+if (service === "Hair Cut")
+  followupDate.setDate(followupDate.getDate() + 30);
+
+const { data: existingFollowUp } = await supabase
+  .from("follow_ups")
+  .select("id")
+  .eq("customer_id", existingCustomer.id)
+  .eq("status", "Pending")
+  .maybeSingle();
+
+if (existingFollowUp) {
+  await supabase
+    .from("follow_ups")
+    .update({
+      service,
+      followup_date: followupDate.toISOString().split("T")[0],
+      priority: "Medium",
+      notes: `${service} follow-up`,
+    })
+    .eq("id", existingFollowUp.id);
+} else {
+  await supabase
+    .from("follow_ups")
+    .insert({
+      user_id: user.id,
+      customer_id: existingCustomer.id,
+      customer_name: existingCustomer.name,
+      phone: existingCustomer.phone,
+      service,
+      followup_date: followupDate.toISOString().split("T")[0],
+      status: "Pending",
+      priority: "Medium",
+      notes: `${service} follow-up`,
+    });
 }
 
   const updatedCustomers = customers.map((c) =>

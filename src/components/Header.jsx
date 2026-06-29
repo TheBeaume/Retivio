@@ -1,7 +1,6 @@
 import React from "react";
 import { supabase } from "../lib/supabase";
 import { useNavigate } from "react-router-dom";
-
 function Header({ setSidebarOpen }) {
 const navigate = useNavigate();
 
@@ -22,18 +21,17 @@ async function handleLogout() {
           >
             ☰
           </button>
+<div>
+  <h1 className="text-2xl font-extrabold tracking-wide">
+    Retivio
+  </h1>
 
-          <div>
-            <h1 className="text-2xl font-extrabold tracking-wide">
-              Retivio
-            </h1>
+  <p className="text-[11px] text-purple-200 tracking-wide">
+    Turn Visitors into Regular Customers
+  </p>
+</div>
 
-            <p className="text-[11px] text-purple-200 tracking-wide">
-Turn Visitors into Regular Customers
-            </p>
-          </div>
-        </div>
-
+</div>
         {/* Right */}
         <div className="flex items-center gap-3">
 

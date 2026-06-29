@@ -41,32 +41,7 @@ async function markAsDone(id) {
 
   loadFollowUps();
 }
-async function createTestFollowUp() {
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
 
-  if (!user) return;
-
-  const { error } = await supabase.from("follow_ups").insert({
-    user_id: user.id,
-    customer_id: crypto.randomUUID(),
-    customer_name: "Demo Customer",
-    phone: "9876543210",
-    service: "Hair Spa",
-    followup_date: new Date().toISOString().split("T")[0],
-    status: "Pending",
-    priority: "Medium",
-    notes: "Test follow-up",
-  });
-
-  if (error) {
-    alert(error.message);
-    return;
-  }
-
-  loadFollowUps();
-}
   return (
     <div className="space-y-6">
 
@@ -85,12 +60,7 @@ async function createTestFollowUp() {
         <h2 className="text-2xl font-bold mb-6">
           Pending Follow-ups
         </h2>
-<button
-  onClick={createTestFollowUp}
-  className="mb-6 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg"
->
-  ➕ Create Test Follow-up
-</button>
+
         {followUps.length === 0 ? (
 
           <p className="text-gray-500">
