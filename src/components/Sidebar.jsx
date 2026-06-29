@@ -1,12 +1,19 @@
 import React from "react";
-
+import { supabase } from "../lib/supabase";
+import { useNavigate } from "react-router-dom";
 function Sidebar({
   setSidebarOpen,
   activePage,
   setActivePage,
 }) {
+const navigate = useNavigate();
+
+async function handleLogout() {
+  await supabase.auth.signOut();
+  navigate("/login");
+}
   return (
-    <div className="fixed top-0 left-0 z-50 w-72 h-screen bg-gradient-to-b from-purple-900 via-purple-700 to-purple-600 text-white p-6 shadow-2xl">
+    <div className="fixed top-0 left-0 z-50 w-64 h-screen overflow-y-auto bg-gradient-to-b from-purple-900 via-purple-700 to-purple-600 text-white p-6 shadow-2xl">
 
       {/* Header */}
       <div className="flex justify-between items-center mb-8">
@@ -17,7 +24,8 @@ function Sidebar({
           </h2>
 
           <p className="text-sm text-purple-200">
-            Salon Growth AI
+Turn Visitors
+into Regular Customers
           </p>
         </div>
 
@@ -31,8 +39,7 @@ function Sidebar({
       </div>
 
       {/* Menu */}
-      <ul className="space-y-3">
-
+<ul className="space-y-3 pb-6">
         <li
           onClick={() => {
             setActivePage("dashboard");
@@ -173,8 +180,7 @@ function Sidebar({
       </ul>
 
       {/* Bottom */}
-      <div className="absolute bottom-6 left-6 right-6 border-t border-white/20 pt-4">
-
+   <div  className="mt-8 border-t border-white/20 pt-4">
         <div className="bg-white/10 rounded-xl p-3">
 
           <p className="text-sm text-purple-200">
@@ -186,7 +192,12 @@ function Sidebar({
           </h3>
 
         </div>
-
+<button
+  onClick={handleLogout}
+  className="w-full mt-4 bg-red-600 hover:bg-red-700 text-white py-3 rounded-xl font-semibold transition"
+>
+  🚪 Logout
+</button>
       </div>
 
     </div>

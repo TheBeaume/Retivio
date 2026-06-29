@@ -1,9 +1,13 @@
 import React from "react";
 
 function RecentActivity({ customers }) {
-  const recentCustomers = [...customers]
-    .reverse()
-    .slice(0, 5);
+const recentCustomers = [...customers]
+  .sort(
+    (a, b) =>
+      new Date(b.lastVisit || 0) -
+      new Date(a.lastVisit || 0)
+  )
+  .slice(0, 5);
 
   return (
     <div className="bg-white rounded-lg shadow p-4 mt-6">

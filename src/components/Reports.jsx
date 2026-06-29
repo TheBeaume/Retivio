@@ -38,14 +38,16 @@ const revenue = data.reduce(
 setTotalRevenue(revenue);
 const { count: appointmentCount } = await supabase
   .from("appointments")
-  .select("*", { count: "exact", head: true });
+.select("*", { count: "exact", head: true })
+.eq("user_id", user.id);
 
 setAppointments(appointmentCount || 0);
 const today = new Date().toISOString().split("T")[0];
 
 const { data: appointmentData } = await supabase
   .from("appointments")
-  .select("status, appointment_date");
+.select("status, appointment_date")
+.eq("user_id", user.id);
 
 if (appointmentData) {
   setTodayAppointments(
@@ -74,7 +76,7 @@ if (appointmentData) {
         📈 Business Reports
       </h1>
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 
         <div className="bg-white rounded-xl shadow p-6">
           <p className="text-gray-500">Revenue</p>
@@ -95,13 +97,8 @@ if (appointmentData) {
 <h2 className="text-3xl font-bold mt-2">
   {appointments}
 </h2>
-        </div>
 
-        <div className="bg-white rounded-xl shadow p-6">
-          <p className="text-gray-500">Campaigns</p>
-          <h2 className="text-3xl font-bold mt-2">0</h2>
-        </div>
-
+</div>
       </div>
 
       <div className="bg-white rounded-xl shadow p-6">
@@ -135,6 +132,6 @@ if (appointmentData) {
         </div>
       </div>
 
-    </div>
+</div>
   );
 }

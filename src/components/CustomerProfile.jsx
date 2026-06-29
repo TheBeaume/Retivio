@@ -18,6 +18,13 @@ export default function CustomerProfile({ customer, onClose }) {
 
     loadVisits();
   }, [customer]);
+useEffect(() => {
+  document.body.style.overflow = "hidden";
+
+  return () => {
+    document.body.style.overflow = "auto";
+  };
+}, []);
 
   if (!customer) return null;
 
@@ -115,14 +122,6 @@ export default function CustomerProfile({ customer, onClose }) {
               className="bg-blue-600 text-white py-3 rounded-xl"
             >
               📞 Call
-            </button>
-
-            <button className="bg-purple-600 text-white py-3 rounded-xl">
-              ➕ Add Visit
-            </button>
-
-            <button className="bg-orange-500 text-white py-3 rounded-xl">
-              📣 Campaign
             </button>
 
           </div>

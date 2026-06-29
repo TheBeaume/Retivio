@@ -6,14 +6,10 @@ import AnalyticsSummary from "../components/AnalyticsSummary";
 import NewCustomerForm from "../components/NewCustomerForm";
 import VisitEntry from "../components/VisitEntry";
 import SearchBar from "../components/SearchBar";
-import ActionRequired from "../components/ActionRequired";
 import QuickActions from "../components/QuickActions";
 import RecentActivity from "../components/RecentActivity";
 import GrowthSnapshot from "../components/GrowthSnapshot";
 import TopCustomers from "../components/TopCustomers";
-import CampaignPerformance from "../components/CampaignPerformance";
-import RevenueTrend from "../components/RevenueTrend";
-import AIRecommendations from "../components/AIRecommendations";
 import { supabase } from "../lib/supabase";
 import CampaignBuilder from "../components/CampaignBuilder";
 import FollowUps from "../components/FollowUps";
@@ -100,23 +96,15 @@ return (
   Welcome back! Here's what's happening today.
 </p>
 
-          <p className="mt-4">
-            Welcome back!
-          </p>
 
 {activePage === "dashboard" && (
   <>
     <AnalyticsSummary customers={customers} />
 
-    <RevenueTrend />
 
-<AIRecommendations customers={customers} />
-
-    <ActionRequired />
-
-    <QuickActions
-      setActivePage={setActivePage}
-    />
+<QuickActions
+  setActivePage={setActivePage}
+/>
 
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
 
@@ -131,8 +119,6 @@ return (
   <GrowthSnapshot
     customers={customers}
   />
-
-  <CampaignPerformance />
 
 </div>
   </>

@@ -15,7 +15,7 @@ function TopCustomers({ customers }) {
 
         {topCustomers.map((customer, index) => (
           <div
-            key={index}
+key={customer.id}
             className="flex justify-between items-center border-b pb-2"
           >
             <div>

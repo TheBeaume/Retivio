@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
 import { addCustomerVisit } from "../services/customerVisitService";
 
@@ -6,7 +6,14 @@ function VisitEntry({ customers, setCustomers }) {
 const [phone, setPhone] = useState("");
 const [service, setService] = useState("");
 const [amount, setAmount] = useState("");
-
+const customer = customers.find(
+  (c) => c.phone === phone
+);
+useEffect(() => {
+  if (customer) {
+    setService(customer.service || "");
+  }
+}, [customer]);
 const updateVisit = async () => {
   const existingCustomer = customers.find(
     (c) => c.phone === phone
@@ -110,6 +117,23 @@ Visit Entry
     className="border p-2 w-full mb-3"
   />
 
+{customer && (
+  <div className="bg-green-50 border border-green-200 rounded-lg p-3 mb-3">
+    <p className="font-semibold text-green-700">
+      ✅ Customer Found
+    </p>
+
+    <p>👤 {customer.name}</p>
+
+    <p>⭐ {customer.loyalty}</p>
+
+    <p>💰 ₹{customer.totalSpend}</p>
+
+    <p>📅 Last Visit: {customer.lastVisit}</p>
+
+    <p>🔁 Visits: {customer.visits}</p>
+  </div>
+)}
   <select
     value={service}
     onChange={(e) =>

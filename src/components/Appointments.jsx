@@ -6,6 +6,7 @@ export default function Appointments() {
   const [appointments, setAppointments] = useState([]);
 const [search, setSearch] = useState("");
 const [dateFilter, setDateFilter] = useState("Today");
+const [customDate, setCustomDate] = useState("");
 const [statusFilter, setStatusFilter] = useState("All");
 const [sortBy, setSortBy] = useState("Time");
 const [form, setForm] = useState({
@@ -142,6 +143,11 @@ switch (dateFilter) {
       appointmentDate.getFullYear() === current.getFullYear();
     break;
 
+case "Custom Date":
+  matchesDate =
+    appointment.appointment_date === customDate;
+  break;
+
   case "All":
     matchesDate = true;
     break;
@@ -161,8 +167,9 @@ return (
   switch (sortBy) {
 
     case "Time":
-      return a.appointment_time.localeCompare(b.appointment_time);
-
+return (a.appointment_time || "").localeCompare(
+  b.appointment_time || ""
+);
     case "Newest Date":
       return new Date(b.appointment_date) - new Date(a.appointment_date);
 
@@ -170,11 +177,13 @@ return (
       return new Date(a.appointment_date) - new Date(b.appointment_date);
 
     case "Customer Name (A-Z)":
-      return a.customer_name.localeCompare(b.customer_name);
-
+return (a.customer_name || "").localeCompare(
+  b.customer_name || ""
+);
     case "Customer Name (Z-A)":
-      return b.customer_name.localeCompare(a.customer_name);
-
+return (b.customer_name || "").localeCompare(
+  a.customer_name || ""
+);
     default:
       return 0;
   }
@@ -197,9 +206,9 @@ if (!customerFound) {
         name: form.customer,
         phone: form.phone,
         service: form.service,
-        last_visit: form.date,
+last_visit: null,
         next_due: "-",
-        visits: 1,
+        visits: 0,
         total_spend: 0,
         loyalty: "Silver",
         status: "New",
@@ -466,6 +475,14 @@ if (error) {
 <option>Custom Date</option>
 <option>All</option>
     </select>
+{dateFilter === "Custom Date" && (
+  <input
+    type="date"
+    value={customDate}
+    onChange={(e) => setCustomDate(e.target.value)}
+    className="border rounded-lg px-3 py-2"
+  />
+)}
 
     <select
       value={statusFilter}

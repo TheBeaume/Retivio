@@ -29,7 +29,7 @@ async function handleLogout() {
             </h1>
 
             <p className="text-[11px] text-purple-200 tracking-wide">
-              Turn Visitors Into Regulars
+Turn Visitors into Regular Customers
             </p>
           </div>
         </div>

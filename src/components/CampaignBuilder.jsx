@@ -26,6 +26,8 @@ const [filters, setFilters] = useState({
 const [businessName, setBusinessName] = useState("Your Salon");
 const [selectedCustomers, setSelectedCustomers] = useState([]);
 
+const [conversionRate, setConversionRate] = useState(30);
+const [averageBill, setAverageBill] = useState(700);
 const [showPreview, setShowPreview] = useState(false);
   const toggleFilter = (key) => {
     setFilters((prev) => ({
@@ -102,10 +104,11 @@ if (filters.inactive90) {
     });
   }, [customers, filters]);
 
-  const estimatedRevenue = filteredCustomers.reduce(
-    (sum, c) => sum + (c.totalSpend || 0),
-    0
-  );
+const estimatedRevenue = Math.round(
+  selectedCustomers.length *
+  ((Number(conversionRate) || 0) / 100) *
+  (Number(averageBill) || 0)
+);
 const previewCustomer =
   filteredCustomers.find((c) =>
     selectedCustomers.includes(c.id)
@@ -390,15 +393,46 @@ const message = generateMessage(customer);
         <div className="grid grid-cols-2 gap-4">
 
           <div className="bg-white rounded-lg p-4 shadow">
-            <p className="text-gray-500">
-              Customers Selected
-            </p>
+<p className="text-gray-500">
+  Customers Matched
+</p>
 
             <h2 className="text-3xl font-bold">
               {filteredCustomers.length}
             </h2>
           </div>
 
+  <div>
+    <label className="block text-sm font-medium mb-1">
+      Expected Conversion (%)
+    </label>
+
+    <input
+      type="number"
+      value={conversionRate}
+      onChange={(e) =>
+setConversionRate(e.target.value)
+      }
+      className="border rounded-lg px-3 py-2 w-full"
+    />
+  </div>
+
+  <div>
+    <label className="block text-sm font-medium mb-1">
+      Average Bill (₹)
+    </label>
+
+    <input
+      type="number"
+      value={averageBill}
+      onChange={(e) =>
+setAverageBill(e.target.value)
+      }
+      className="border rounded-lg px-3 py-2 w-full"
+    />
+  </div>
+
+</div>
           <div className="bg-white rounded-lg p-4 shadow">
             <p className="text-gray-500">
               Estimated Revenue
@@ -410,6 +444,8 @@ const message = generateMessage(customer);
           </div>
 
         </div>
+
+<div className="grid grid-cols-2 gap-4 mb-4">
 
         {filteredCustomers.length > 0 && (
 
