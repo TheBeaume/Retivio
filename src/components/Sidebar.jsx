@@ -124,6 +124,19 @@ into Regular Customers
 </li>
 <li
   onClick={() => {
+    setActivePage("services");
+    setSidebarOpen(false);
+  }}
+  className={`p-4 rounded-xl cursor-pointer transition-all duration-300 ${
+    activePage === "services"
+      ? "bg-white/15 border-l-4 border-yellow-400 shadow-lg"
+      : "hover:bg-white/10"
+  }`}
+>
+  💇 Services
+</li>
+<li
+  onClick={() => {
     setActivePage("whatsapp");
     setSidebarOpen(false);
   }}

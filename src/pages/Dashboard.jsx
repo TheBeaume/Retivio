@@ -17,6 +17,7 @@ import RetivioSites from "../components/RetivioSites";
 import Reports from "../components/Reports";
 import WhatsAppDashboard from "../components/whatsapp/WhatsAppDashboard";
 import Appointments from "../components/Appointments";
+import Services from "../components/Services";
 import FeedbackCard from "../components/FeedbackCard";
 import { supabase } from "../lib/supabase";
 
@@ -193,6 +194,10 @@ function Dashboard() {
             {activePage === "appointments" && (
               <Appointments />
             )}
+
+{activePage === "services" && (
+  <Services />
+)}
 
             {activePage === "whatsapp" && (
               <WhatsAppDashboard />

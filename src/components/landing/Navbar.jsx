@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
-export default function Navbar({ onJoinBeta }) {
+export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
@@ -21,16 +22,20 @@ export default function Navbar({ onJoinBeta }) {
             Beta
           </a>
 
-          <a href="/login" className="hover:text-purple-700">
+          <Link
+            to="/login"
+            className="hover:text-purple-700"
+          >
             Login
-          </a>
+          </Link>
 
-<button
-  onClick={onJoinBeta}
-  className="bg-purple-700 text-white px-5 py-2 rounded-xl hover:bg-purple-800 transition"
->
-  Join Free Beta
-</button>
+          <Link
+            to="/signup"
+            className="bg-purple-700 text-white px-5 py-2 rounded-xl hover:bg-purple-800 transition"
+          >
+            Start Free Beta
+          </Link>
+
         </div>
 
         <button
@@ -59,20 +64,22 @@ export default function Navbar({ onJoinBeta }) {
             Beta
           </a>
 
-          <a
-            href="/login"
+          <Link
+            to="/login"
             className="block px-6 py-4 border-b"
+            onClick={() => setMenuOpen(false)}
           >
             Login
-          </a>
+          </Link>
 
           <div className="p-4">
-<button
-  onClick={onJoinBeta}
-  className="w-full bg-purple-700 text-white py-3 rounded-xl"
->
-  Join Free Beta
-</button>
+            <Link
+              to="/signup"
+              onClick={() => setMenuOpen(false)}
+              className="block w-full text-center bg-purple-700 text-white py-3 rounded-xl"
+            >
+              Start Free Beta
+            </Link>
           </div>
 
         </div>

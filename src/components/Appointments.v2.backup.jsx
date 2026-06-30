@@ -4,7 +4,6 @@ import { supabase } from "../lib/supabase";
 export default function Appointments() {
   const [showForm, setShowForm] = useState(false);
   const [appointments, setAppointments] = useState([]);
-const [services, setServices] = useState([]);
 const [search, setSearch] = useState("");
 const [dateFilter, setDateFilter] = useState("Today");
 const [customDate, setCustomDate] = useState("");
@@ -14,8 +13,6 @@ const [form, setForm] = useState({
   customer: "",
   phone: "",
   service: "",
-price: "",
-duration: 30,
   bookingSource: "Manual",
   date: "",
   time: "",
@@ -27,10 +24,9 @@ const [customerInfo, setCustomerInfo] = useState(null);
 const [isEditing, setIsEditing] = useState(false);
 const [editingId, setEditingId] = useState(null);
 
-useEffect(() => {
-  loadAppointments();
-  loadServices();
-}, []);
+  useEffect(() => {
+    loadAppointments();
+  }, []);
 async function findCustomer(phone) {
   if (phone.length < 10) {
     setCustomerFound(false);
@@ -85,47 +81,6 @@ async function findCustomer(phone) {
     }
     setAppointments(data || []);
   }
-async function loadServices() {
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) return;
-
-  const { data, error } = await supabase
-    .from("services")
-    .select("*")
-    .eq("user_id", user.id)
-    .eq("is_active", true)
-    .order("name");
-
-  if (error) {
-    console.error(error);
-    return;
-  }
-
-  setServices(data || []);
-}
-function handleServiceChange(serviceName) {
-  const selected = services.find(
-    (s) => s.name === serviceName
-  );
-
-  if (!selected) {
-    setForm({
-      ...form,
-      service: serviceName,
-    });
-    return;
-  }
-
-  setForm({
-    ...form,
-    service: selected.name,
-    price: selected.price,
-    duration: selected.duration,
-  });
-}
 const filteredAppointments = appointments
   .filter((appointment) => {
     const today = new Date().toISOString().split("T")[0];
@@ -283,8 +238,6 @@ customer_id: customerId,
 customer_name: form.customer,
 phone: form.phone, 
 service: form.service,
-price: Number(form.price) || 0,
-duration: Number(form.duration) || 30,
 booking_source: form.bookingSource,
 appointment_date: form.date,
 appointment_time: form.time,
@@ -326,9 +279,7 @@ async function updateAppointment() {
       customer_name: form.customer,
       phone: form.phone,
       service: form.service,
-price: Number(form.price) || 0,
-duration: Number(form.duration) || 30,    
-  booking_source: form.bookingSource,
+      booking_source: form.bookingSource,
       appointment_date: form.date,
       appointment_time: form.time,
       notes: form.notes,
@@ -350,8 +301,6 @@ duration: Number(form.duration) || 30,
     customer: "",
     phone: "",
     service: "",
-price: "",
-duration: 30,
     bookingSource: "Manual",
     date: "",
     time: "",
@@ -641,47 +590,14 @@ onClick={() => {
   </div>
 
 )}
-<select
-  value={form.service}
-  onChange={(e) => handleServiceChange(e.target.value)}
-  className="border rounded-lg p-3"
->
-  <option value="">Select Service</option>
-
-  {services.map((service) => (
-    <option
-      key={service.id}
-      value={service.name}
-    >
-      {service.name} • ₹{service.price}
-    </option>
-  ))}
-</select>
-<input
-  type="number"
-  placeholder="Price"
-  value={form.price}
-  onChange={(e) =>
-    setForm({
-      ...form,
-      price: e.target.value,
-    })
-  }
-  className="border rounded-lg p-3"
-/>
-
-<input
-  type="number"
-  placeholder="Duration (Minutes)"
-  value={form.duration}
-  onChange={(e) =>
-    setForm({
-      ...form,
-      duration: e.target.value,
-    })
-  }
-  className="border rounded-lg p-3"
-/>
+            <input
+              placeholder="Service"
+              value={form.service}
+              onChange={(e) =>
+                setForm({ ...form, service: e.target.value })
+              }
+              className="border rounded-lg p-3"
+            />
 <select
   value={form.bookingSource}
   onChange={(e) =>
