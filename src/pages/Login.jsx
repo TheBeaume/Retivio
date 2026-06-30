@@ -21,7 +21,7 @@ const navigate = useNavigate();
     }
 
     alert("Login Successful");
-navigate("/");
+navigate("/dashboard");
 
   }
 
