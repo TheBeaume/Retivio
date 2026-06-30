@@ -31,7 +31,7 @@ export default function Signup() {
       return;
     }
 
-    alert("🎉 Account created successfully.");
+    alert("🎉 Account created successfully!");
     navigate("/login");
   }
 
