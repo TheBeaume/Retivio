@@ -56,6 +56,32 @@ navigate("/dashboard");
         >
           Login
         </button>
+<div className="mt-6 text-center">
+
+  <p className="text-gray-600">
+    Don't have an account?
+  </p>
+
+  <button
+    type="button"
+    onClick={() => navigate("/signup")}
+    className="mt-2 text-purple-700 font-semibold hover:underline"
+  >
+    Create Free Account
+  </button>
+
+</div>
+
+<div className="mt-4 text-center">
+
+  <button
+    type="button"
+    className="text-sm text-gray-500 hover:text-purple-700"
+  >
+    Forgot Password?
+  </button>
+
+</div>
       </form>
     </div>
   );

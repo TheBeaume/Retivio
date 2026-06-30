@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export default function Navbar() {
+export default function Navbar({ onJoinBeta }) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
@@ -25,10 +25,12 @@ export default function Navbar() {
             Login
           </a>
 
-          <button className="bg-purple-700 text-white px-5 py-2 rounded-xl hover:bg-purple-800 transition">
-            Join Free Beta
-          </button>
-
+<button
+  onClick={onJoinBeta}
+  className="bg-purple-700 text-white px-5 py-2 rounded-xl hover:bg-purple-800 transition"
+>
+  Join Free Beta
+</button>
         </div>
 
         <button
@@ -65,9 +67,12 @@ export default function Navbar() {
           </a>
 
           <div className="p-4">
-            <button className="w-full bg-purple-700 text-white py-3 rounded-xl">
-              Join Free Beta
-            </button>
+<button
+  onClick={onJoinBeta}
+  className="w-full bg-purple-700 text-white py-3 rounded-xl"
+>
+  Join Free Beta
+</button>
           </div>
 
         </div>

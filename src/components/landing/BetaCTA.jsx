@@ -1,8 +1,5 @@
-import React, { useState } from "react";
-import BetaModal from "./BetaModal";
-
-export default function BetaCTA() {
-  const [showModal, setShowModal] = useState(false);
+import React from "react";
+export default function BetaCTA({ onJoinBeta }) {
 
   return (
     <>
@@ -28,7 +25,7 @@ export default function BetaCTA() {
           <div className="mt-10 flex flex-col sm:flex-row justify-center gap-4">
 
             <button
-              onClick={() => setShowModal(true)}
+onClick={onJoinBeta}
               className="bg-white text-purple-700 font-bold px-8 py-4 rounded-xl hover:scale-105 transition"
             >
               🚀 Join Free Beta
@@ -46,11 +43,6 @@ export default function BetaCTA() {
         </div>
       </section>
 
-      {showModal && (
-        <BetaModal
-          onClose={() => setShowModal(false)}
-        />
-      )}
     </>
   );
 }
