@@ -2,6 +2,11 @@ import React, { useState, useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
 import LandingPage from "./pages/LandingPage";
+import About from "./pages/About";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import Terms from "./pages/Terms";
+import RefundPolicy from "./pages/RefundPolicy";
+import Contact from "./pages/Contact";
 import Signup from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -38,7 +43,11 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
 <Route path="/" element={<LandingPage />} />
-
+<Route path="/about" element={<About />} />
+<Route path="/privacy-policy" element={<PrivacyPolicy />} />
+<Route path="/terms" element={<Terms />} />
+<Route path="/refund-policy" element={<RefundPolicy />} />
+<Route path="/contact" element={<Contact />} />
 <Route
   path="/dashboard"
   element={
