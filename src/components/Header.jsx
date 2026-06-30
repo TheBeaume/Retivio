@@ -17,18 +17,40 @@ async function loadNotificationCount() {
 
   if (!user) return;
 
-  const { count, error } = await supabase
+  const today = new Date().toISOString().split("T")[0];
+
+  let count = 0;
+
+  // Today's Follow-ups
+  const { data: todayFollowups } = await supabase
     .from("follow_ups")
-    .select("*", { count: "exact", head: true })
+    .select("id")
     .eq("user_id", user.id)
-    .eq("status", "Pending");
+    .eq("status", "Pending")
+    .eq("followup_date", today);
 
-  if (error) {
-    console.log(error);
-    return;
-  }
+  if (todayFollowups?.length) count++;
 
-  setNotificationCount(count || 0);
+  // Overdue Follow-ups
+  const { data: overdue } = await supabase
+    .from("follow_ups")
+    .select("id")
+    .eq("user_id", user.id)
+    .eq("status", "Pending")
+    .lt("followup_date", today);
+
+  if (overdue?.length) count++;
+
+  // Today's Appointments
+  const { data: appointments } = await supabase
+    .from("appointments")
+    .select("id")
+    .eq("user_id", user.id)
+    .eq("appointment_date", today);
+
+  if (appointments?.length) count++;
+
+  setNotificationCount(count);
 }
 
 async function handleLogout() {

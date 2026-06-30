@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
-
+import CollectPaymentModal from "./payments/CollectPaymentModal";
 export default function Appointments() {
-  const [showForm, setShowForm] = useState(false);
-  const [appointments, setAppointments] = useState([]);
+const [showForm, setShowForm] = useState(false);
+const [appointments, setAppointments] = useState([]);
 const [services, setServices] = useState([]);
 const [search, setSearch] = useState("");
 const [dateFilter, setDateFilter] = useState("Today");
 const [customDate, setCustomDate] = useState("");
 const [statusFilter, setStatusFilter] = useState("All");
 const [sortBy, setSortBy] = useState("Time");
+
+const [showPaymentModal, setShowPaymentModal] = useState(false);
+const [selectedAppointment, setSelectedAppointment] = useState(null);
+
 const [form, setForm] = useState({
   customer: "",
   phone: "",
@@ -833,7 +837,16 @@ disabled={appointment.status !== "Pending"}
 >
   ✅ Complete
 </button>
-
+<button
+  onClick={() => {
+    setSelectedAppointment(appointment);
+    setShowPaymentModal(true);
+  }}
+  disabled={appointment.status !== "Completed"}
+  className="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1 rounded-lg text-sm"
+>
+  💰 Collect Payment
+</button>
 <button
   onClick={() => {
     if (window.confirm("Cancel this appointment?")) {

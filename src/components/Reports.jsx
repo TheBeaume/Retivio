@@ -31,7 +31,7 @@ if (error) {
 
 setTotalCustomers(data.length);
 const revenue = data.reduce(
-  (sum, c) => sum + (Number(c.totalSpend) || 0),
+  (sum, c) => sum + (Number(c.total_spend) || 0),
   0
 );
 
