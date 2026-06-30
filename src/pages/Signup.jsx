@@ -26,13 +26,19 @@ export default function Signup() {
       password,
     });
 
-    if (error) {
-      alert(error.message);
-      return;
-    }
+if (error) {
+  alert(error.message);
+  return;
+}
 
-    alert("🎉 Account created successfully!");
-    navigate("/login");
+if (window.gtag) {
+  window.gtag("event", "sign_up", {
+    method: "email",
+  });
+}
+
+alert("🎉 Account created successfully!");
+navigate("/login");
   }
 
   return (
