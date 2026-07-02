@@ -29,7 +29,6 @@ const [customerInfo, setCustomerInfo] = useState(null);
 const [isEditing, setIsEditing] = useState(false);
 const [editingId, setEditingId] = useState(null);
 const [showConflictModal, setShowConflictModal] = useState(false);
-const [pendingAppointment, setPendingAppointment] = useState(null);
 useEffect(() => {
   loadAppointments();
   loadServices();
