@@ -1,6 +1,8 @@
 import React from "react";
-
+import useBusinessSettings from "../hooks/useBusinessSettings";
+import { formatCurrency } from "../utils/formatCurrency";
 function RecentActivity({ customers }) {
+const settings = useBusinessSettings();
 const recentCustomers = [...customers]
   .sort(
     (a, b) =>
@@ -33,7 +35,12 @@ const recentCustomers = [...customers]
 
             <div className="text-right">
               <p className="font-semibold">
-                ₹{c.totalSpend}
+{formatCurrency(
+  c.totalSpend,
+  settings?.currency_symbol,
+  settings?.currency_position,
+  settings?.decimal_places
+)}
               </p>
 
               <p className="text-sm text-gray-500">

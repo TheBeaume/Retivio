@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
 import { addCustomerVisit } from "../services/customerVisitService";
+import useBusinessSettings from "../hooks/useBusinessSettings";
+import { formatCurrency } from "../utils/formatCurrency";
 
 function VisitEntry({ customers, setCustomers }) {
 const [phone, setPhone] = useState("");
@@ -9,6 +11,7 @@ const [amount, setAmount] = useState("");
 const customer = customers.find(
   (c) => c.phone === phone
 );
+const settings = useBusinessSettings();
 useEffect(() => {
   if (customer) {
     setService(customer.service || "");
@@ -194,8 +197,15 @@ Visit Entry
 
     <p>⭐ {customer.loyalty}</p>
 
-    <p>💰 ₹{customer.totalSpend}</p>
-
+<p>
+  💰{" "}
+  {formatCurrency(
+    customer.totalSpend,
+    settings?.currency_symbol,
+    settings?.currency_position,
+    settings?.decimal_places
+  )}
+</p>
     <p>📅 Last Visit: {customer.lastVisit}</p>
 
     <p>🔁 Visits: {customer.visits}</p>

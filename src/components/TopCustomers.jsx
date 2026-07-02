@@ -1,6 +1,10 @@
 import React from "react";
+import useBusinessSettings from "../hooks/useBusinessSettings";
+import { formatCurrency } from "../utils/formatCurrency";
 
 function TopCustomers({ customers }) {
+  const settings = useBusinessSettings();
+
   const topCustomers = [...customers]
     .sort((a, b) => b.totalSpend - a.totalSpend)
     .slice(0, 5);
@@ -37,7 +41,12 @@ key={customer.id}
 
             <div className="text-right">
               <p className="font-bold">
-                ₹{customer.totalSpend}
+{formatCurrency(
+  customer.totalSpend,
+  settings?.currency_symbol,
+  settings?.currency_position,
+  settings?.decimal_places
+)}
               </p>
 
               <p className="text-sm text-gray-500">

@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
+import useBusinessSettings from "../hooks/useBusinessSettings";
+import { formatCurrency } from "../utils/formatCurrency";
+
 export default function Appointments() {
 const [showForm, setShowForm] = useState(false);
 const [appointments, setAppointments] = useState([]);
@@ -10,7 +13,7 @@ const [customDate, setCustomDate] = useState("");
 const [statusFilter, setStatusFilter] = useState("All");
 const [sortBy, setSortBy] = useState("Time");
 
-
+const settings = useBusinessSettings();
 const [form, setForm] = useState({
   customer: "",
   phone: "",
@@ -936,7 +939,12 @@ disabled={appointment.status !== "Pending"}
 <button
 onClick={() => {
   alert(
-    `Collect Payment\n\nCustomer: ${appointment.customer_name}\nAmount: ₹${appointment.price}`
+`Collect Payment\n\nCustomer: ${appointment.customer_name}\nAmount: ${formatCurrency(
+  appointment.price,
+  settings?.currency_symbol,
+  settings?.currency_position,
+  settings?.decimal_places
+)}`
   );
 }}
   disabled={appointment.status !== "Completed"}

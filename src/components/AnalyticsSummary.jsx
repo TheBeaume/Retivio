@@ -1,6 +1,8 @@
 import React from "react";
-
+import useBusinessSettings from "../hooks/useBusinessSettings";
+import { formatCurrency } from "../utils/formatCurrency";
 function AnalyticsSummary({ customers }) {
+const settings = useBusinessSettings();
   const totalCustomers = customers.length;
 
   const totalRevenue = customers.reduce(
@@ -25,7 +27,12 @@ function AnalyticsSummary({ customers }) {
     },
     {
       title: "Revenue",
-      value: `₹${totalRevenue}`,
+value: formatCurrency(
+  totalRevenue,
+  settings?.currency_symbol,
+  settings?.currency_position,
+  settings?.decimal_places
+),
       icon: "💰",
       color: "bg-green-50",
     },

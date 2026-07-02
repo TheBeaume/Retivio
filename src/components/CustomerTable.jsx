@@ -1,7 +1,11 @@
 import { useState } from "react";
 import CustomerProfile from "./CustomerProfile";
+import useBusinessSettings from "../hooks/useBusinessSettings";
+import { formatCurrency } from "../utils/formatCurrency";
+
 function CustomerTable({ customers }) {
 const [selectedCustomer, setSelectedCustomer] = useState(null);
+const settings = useBusinessSettings();
   const sendWhatsApp = (customer) => {
     let offer = "10% OFF";
 
@@ -108,7 +112,14 @@ return (
                 <td className="border p-2">{c.lastVisit}</td>
                 <td className="border p-2">{c.nextDue}</td>
                 <td className="border p-2">{c.visits}</td>
-                <td className="border p-2">₹{c.totalSpend}</td>
+<td className="border p-2">
+  {formatCurrency(
+    c.totalSpend,
+    settings?.currency_symbol,
+    settings?.currency_position,
+    settings?.decimal_places
+  )}
+</td>
 
                 <td className="border p-2">
                   {c.loyalty === "VIP"

@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { getCustomerVisits } from "../services/customerVisitService";
+import useBusinessSettings from "../hooks/useBusinessSettings";
+import { formatCurrency } from "../utils/formatCurrency";
 
 export default function CustomerProfile({ customer, onClose }) {
   const [visits, setVisits] = useState([]);
+const settings = useBusinessSettings();
 
   useEffect(() => {
     async function loadVisits() {
@@ -74,7 +77,12 @@ useEffect(() => {
               </p>
 
               <h3 className="text-2xl font-bold">
-                ₹{customer.totalSpend}
+{formatCurrency(
+  customer.totalSpend,
+  settings?.currency_symbol,
+  settings?.currency_position,
+  settings?.decimal_places
+)}
               </h3>
             </div>
 
@@ -152,7 +160,12 @@ useEffect(() => {
                     </p>
 
                     <p className="text-sm text-gray-600">
-                      ₹{visit.amount}
+{formatCurrency(
+  visit.amount,
+  settings?.currency_symbol,
+  settings?.currency_position,
+  settings?.decimal_places
+)}
                     </p>
 
                     <p className="text-xs text-gray-500">

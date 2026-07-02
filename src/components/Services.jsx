@@ -1,11 +1,12 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { supabase } from "../lib/supabase";
-
 import ServiceForm from "./services/ServiceForm";
 import ServiceTable from "./services/ServiceTable";
 import DeleteServiceModal from "./services/DeleteServiceModal";
-
+import useBusinessSettings from "../hooks/useBusinessSettings";
+import { formatCurrency } from "../utils/formatCurrency";
 export default function Services() {
+const settings = useBusinessSettings();
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -146,7 +147,12 @@ export default function Services() {
           </p>
 
           <h2 className="text-3xl font-bold mt-2">
-            ₹{averagePrice}
+{formatCurrency(
+  averagePrice,
+  settings?.currency_symbol,
+  settings?.currency_position,
+  settings?.decimal_places
+)}
           </h2>
         </div>
 
