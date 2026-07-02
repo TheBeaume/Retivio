@@ -36,6 +36,12 @@ export default function Navbar() {
             Start Free Beta
           </Link>
 
+<Link
+  to="/features"
+  className="hover:text-purple-600"
+>
+  Features
+</Link>
         </div>
 
         <button

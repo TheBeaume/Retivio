@@ -25,6 +25,9 @@ export default function Footer() {
     <h3 className="text-white font-semibold mb-3">Company</h3>
 
     <div className="flex flex-col gap-2">
+<Link to="/features" className="hover:text-white">
+  Features
+</Link>
       <Link to="/about" className="hover:text-white">
         About Us
       </Link>

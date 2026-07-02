@@ -20,7 +20,6 @@ const navigate = useNavigate();
       return;
     }
 
-    alert("Login Successful");
 navigate("/dashboard");
 
   }

@@ -22,12 +22,14 @@ duration: 30,
   time: "",
   notes: "",
 });
+const [slotAvailability, setSlotAvailability] = useState(null);
 const [customerFound, setCustomerFound] = useState(false);
 const [customerInfo, setCustomerInfo] = useState(null);
 
 const [isEditing, setIsEditing] = useState(false);
 const [editingId, setEditingId] = useState(null);
-
+const [showConflictModal, setShowConflictModal] = useState(false);
+const [pendingAppointment, setPendingAppointment] = useState(null);
 useEffect(() => {
   loadAppointments();
   loadServices();
@@ -38,7 +40,6 @@ async function findCustomer(phone) {
     setCustomerInfo(null);
     return;
   }
-
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -234,7 +235,43 @@ return (b.customer_name || "").localeCompare(
       return 0;
   }
 });
-  async function saveAppointment() {
+useEffect(() => {
+  async function checkSlotAvailability() {
+
+    if (!form.date || !form.time) {
+      setSlotAvailability(null);
+      return;
+    }
+
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) return;
+
+    const { data, error } = await supabase
+      .from("appointments")
+      .select("customer_name, service")
+      .eq("user_id", user.id)
+      .eq("appointment_date", form.date)
+      .eq("appointment_time", form.time);
+
+    if (error) {
+      console.error(error);
+      return;
+    }
+
+    setSlotAvailability({
+      available: data.length === 0,
+      count: data.length,
+      appointments: data,
+    });
+  }
+
+  checkSlotAvailability();
+
+}, [form.date, form.time]);
+async function saveAppointment(forceSave = false) {
     const {
       data: { user },
     } = await supabase.auth.getUser();
@@ -273,6 +310,25 @@ last_visit: null,
 } else {
 
   customerId = customerInfo.id;
+}
+const { data: conflicts, error: conflictError } = await supabase
+  .from("appointments")
+  .select("customer_name, service, appointment_time, status")
+  .eq("user_id", user.id)
+  .eq("appointment_date", form.date)
+  .eq("appointment_time", form.time);
+console.log("Selected Date:", form.date);
+console.log("Selected Time:", form.time);
+console.log("Conflicts:", conflicts);
+
+if (conflictError) {
+  alert(conflictError.message);
+  return;
+}
+alert("Conflicts = " + conflicts.length);
+if (conflicts.length > 0 && !forceSave) {
+  setShowConflictModal(true);
+  return;
 
 }
     const { error } = await supabase
@@ -716,7 +772,49 @@ onClick={() => {
               }
               className="border rounded-lg p-3"
             />
+{slotAvailability && (
+  <div
+    className={`md:col-span-2 text-sm font-medium ${
+      slotAvailability.available
+        ? "text-green-600"
+        : "text-red-600"
+    }`}
+  >
+    {slotAvailability.available
+      ? "🟢 This time slot is available"
+      : `🔴 ${slotAvailability.count} appointment(s) already booked`}
+  </div>
+)}
+{slotAvailability &&
+  !slotAvailability.available &&
+  slotAvailability.appointments?.length > 0 && (
+    <div className="md:col-span-2 mt-3 rounded-lg border border-red-200 bg-red-50 p-3">
+      <h4 className="font-semibold text-red-700 mb-2">
+        Existing Appointments
+      </h4>
 
+      <div className="space-y-2">
+        {slotAvailability.appointments.map((item, index) => (
+          <div
+            key={index}
+            className="flex justify-between items-center border-b pb-2 text-sm"
+          >
+            <span className="font-medium">
+              {form.time}
+            </span>
+
+            <span>
+              {item.customer_name}
+            </span>
+
+            <span>
+              {item.service}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+)}
             <textarea
               placeholder="Notes"
               value={form.notes}
@@ -788,7 +886,9 @@ onClick={() => {
     🕒 {appointment.appointment_time}
   </span>
 </div>
-
+<p className="text-red-600 font-bold">
+  Status: {appointment.status}
+</p>
                   {appointment.notes && (
                     <p className="text-sm text-gray-500">
                       📝 {appointment.notes}
@@ -835,8 +935,11 @@ disabled={appointment.status !== "Pending"}
   ✅ Complete
 </button>
 <button
-  onClick={() => {
-  }}
+onClick={() => {
+  alert(
+    `Collect Payment\n\nCustomer: ${appointment.customer_name}\nAmount: ₹${appointment.price}`
+  );
+}}
   disabled={appointment.status !== "Completed"}
   className="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1 rounded-lg text-sm"
 >
@@ -887,7 +990,46 @@ appointments.filter(
 
       </div>
 )}
+  
+{showConflictModal && (
+  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+    <div className="bg-white rounded-2xl shadow-xl p-6 w-[90%] max-w-md">
+
+      <h2 className="text-xl font-bold text-red-600">
+        ⚠️ Appointment Already Booked
+      </h2>
+
+      <p className="mt-3 text-gray-600">
+        This time slot already has one or more appointments.
+        <br />
+        Do you still want to continue?
+      </p>
+
+      <div className="flex justify-end gap-3 mt-6">
+
+        <button
+          onClick={() => setShowConflictModal(false)}
+          className="border px-4 py-2 rounded-lg"
+        >
+          Cancel
+        </button>
+
+        <button
+          onClick={async () => {
+            setShowConflictModal(false);
+            await saveAppointment(true);
+          }}
+          className="bg-purple-600 text-white px-4 py-2 rounded-lg"
+        >
+          Book Anyway
+        </button>
+
+      </div>
+
     </div>
+  </div>
+)}
+  </div>
   );
 }
 
