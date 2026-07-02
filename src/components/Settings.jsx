@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
-import { Country } from "country-state-city";
+import { Country, State, City } from "country-state-city";
 import { countryConfig } from "../data/countryConfig";
 export default function Settings() {
   const [loading, setLoading] = useState(false);
 const countries = Country.getAllCountries();
 const [form, setForm] = useState({
   business_name: "",
+state: "",
+city: "",
   whatsapp: "",
   email: "",
   address: "",
@@ -21,9 +23,24 @@ const [form, setForm] = useState({
   phone_code: "+91",
 currency_symbol: "₹",
 tax_name: "GST",
+tax_percentage: 0,
+currency_position: "before",
+decimal_places: 2,
   default_duration: 30,
   allow_double_booking: false,
 });
+const states = form.country
+  ? State.getStatesOfCountry(
+      countries.find((c) => c.name === form.country)?.isoCode
+    )
+  : [];
+
+const cities = form.state
+  ? City.getCitiesOfState(
+      countries.find((c) => c.name === form.country)?.isoCode,
+      states.find((s) => s.name === form.state)?.isoCode
+    )
+  : [];
   useEffect(() => {
     loadSettings();
   }, []);
@@ -51,13 +68,27 @@ tax_name: "GST",
         website: data.website || "",
 
 country: data.country || "India",
+state: data.state || "",
+city: data.city || "",
+
+phone_code: data.phone_code || "+91",
+
 currency: data.currency || "INR",
+currency_symbol: data.currency_symbol || "₹",
+
 timezone: data.timezone || "Asia/Kolkata",
+
+tax_name: data.tax_name || "GST",
+tax_percentage: data.tax_percentage || 0,
+
+currency_position: data.currency_position || "before",
+decimal_places: data.decimal_places || 2,
+
 date_format: data.date_format || "DD/MM/YYYY",
 time_format: data.time_format || "12 Hours",
-phone_code: data.phone_code || "+91",
+
 default_duration: data.default_duration || 30,
-allow_double_booking: data.allow_double_booking || false,   
+allow_double_booking: data.allow_double_booking || false,
    });
     }
   }
@@ -188,23 +219,39 @@ if (error) {
       className="border p-3 rounded w-full"
       value={form.country}
       onChange={(e) => {
-        const selected = countries.find(
-          (c) => c.name === e.target.value
-        );
+const selected = countries.find(
+  (c) => c.name === e.target.value
+);
 
-const config = countryConfig[selected?.isoCode] || {};
-
+const config = countryConfig[selected?.isoCode];
+console.log(
+  "ISO:",
+  selected?.isoCode,
+  "Country:",
+  selected?.name,
+  "Config:",
+  countryConfig[selected?.isoCode]
+);
 setForm({
   ...form,
+
   country: selected?.name || "",
-  phone_code: selected?.phonecode
-    ? `+${selected.phonecode}`
-    : "",
-  currency: config.currency || "",
-  currency_symbol: config.symbol || "",
-  timezone: config.timezone || "",
-  tax_name: config.taxName || "",
+
+  phone_code: config?.phoneCode || "",
+
+  currency: config?.currency || "",
+
+  currency_symbol: config?.symbol || "",
+
+  timezone: config?.timezone || "",
+
+  tax_name: config?.taxName || "",
+
+  date_format: config?.dateFormat || "DD/MM/YYYY",
+
+  time_format: config?.timeFormat || "12 Hours",
 });
+
       }}
     >
       <option value="">Select Country</option>
@@ -220,7 +267,34 @@ setForm({
     </select>
 
   </div>
+<div>
+  <label className="text-sm font-medium">
+    State / Province
+  </label>
 
+  <select
+    className="border p-3 rounded w-full"
+    value={form.state}
+    onChange={(e) =>
+      setForm({
+        ...form,
+        state: e.target.value,
+        city: "",
+      })
+    }
+  >
+    <option value="">Select State</option>
+
+    {states.map((state) => (
+      <option
+        key={state.isoCode}
+        value={state.name}
+      >
+        {state.name}
+      </option>
+    ))}
+  </select>
+</div>
   <div>
 
     <label className="text-sm font-medium">
@@ -234,7 +308,33 @@ setForm({
     />
 
   </div>
+<div>
+  <label className="text-sm font-medium">
+    City
+  </label>
 
+  <select
+    className="border p-3 rounded w-full"
+    value={form.city}
+    onChange={(e) =>
+      setForm({
+        ...form,
+        city: e.target.value,
+      })
+    }
+  >
+    <option value="">Select City</option>
+
+    {cities.map((city) => (
+      <option
+        key={city.name}
+        value={city.name}
+      >
+        {city.name}
+      </option>
+    ))}
+  </select>
+</div>
 </div>
 <input
   className="border p-3 rounded"
@@ -263,6 +363,72 @@ setForm({
   value={form.tax_name}
   readOnly
 />
+<h3 className="text-lg font-semibold mt-8 mb-3">
+  💰 Financial Settings
+</h3>
+
+<div className="grid md:grid-cols-2 gap-4">
+
+  <input
+    className="border p-3 rounded"
+    type="number"
+    placeholder="Tax Percentage"
+    value={form.tax_percentage}
+    onChange={(e) =>
+      setForm({
+        ...form,
+        tax_percentage: e.target.value,
+      })
+    }
+  />
+
+  <select
+    className="border p-3 rounded"
+    value={form.currency_position}
+    onChange={(e) =>
+      setForm({
+        ...form,
+        currency_position: e.target.value,
+      })
+    }
+  >
+
+<option value="before">
+  {form.currency_symbol}100
+</option>
+
+<option value="after">
+  100{form.currency_symbol}
+</option>
+  </select>
+
+  <select
+    className="border p-3 rounded"
+    value={form.decimal_places}
+    onChange={(e) =>
+      setForm({
+        ...form,
+        decimal_places: Number(e.target.value),
+      })
+    }
+  >
+    <option value={0}>0 Decimal</option>
+    <option value={2}>2 Decimals</option>
+    <option value={3}>3 Decimals</option>
+  </select>
+
+</div>
+<div className="border rounded-lg p-4 bg-gray-50">
+  <p className="text-sm text-gray-500 mb-1">
+    Price Preview
+  </p>
+
+  <p className="text-2xl font-bold">
+    {form.currency_position === "before"
+      ? `${form.currency_symbol}250${form.decimal_places ? ".00" : ""}`
+      : `250${form.decimal_places ? ".00" : ""}${form.currency_symbol}`}
+  </p>
+</div>
         <button
           onClick={saveSettings}
           disabled={loading}

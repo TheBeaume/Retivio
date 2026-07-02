@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { supabase } from "../lib/supabase";
-
+import useBusinessSettings from "../hooks/useBusinessSettings";
+import { formatCurrency } from "../utils/formatCurrency";
 export default function Reports() {
 const [totalCustomers, setTotalCustomers] = useState(0);
 const [totalRevenue, setTotalRevenue] = useState(0);
@@ -8,7 +9,7 @@ const [appointments, setAppointments] = useState(0);
 const [todayAppointments, setTodayAppointments] = useState(0);
 const [completedAppointments, setCompletedAppointments] = useState(0);
 const [cancelledAppointments, setCancelledAppointments] = useState(0);
-
+const settings = useBusinessSettings();
 useEffect(() => {
   loadCustomers();
 }, []);
@@ -81,7 +82,12 @@ if (appointmentData) {
         <div className="bg-white rounded-xl shadow p-6">
           <p className="text-gray-500">Revenue</p>
 <h2 className="text-3xl font-bold mt-2">
-  ₹{totalRevenue}
+{formatCurrency(
+  totalRevenue,
+  settings?.currency_symbol,
+  settings?.currency_position,
+  settings?.decimal_places
+)}
 </h2>
         </div>
 
