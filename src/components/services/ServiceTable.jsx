@@ -1,4 +1,6 @@
 import React from "react";
+import useBusinessSettings from "../../hooks/useBusinessSettings";
+import { formatCurrency } from "../../utils/formatCurrency";
 
 export default function ServiceTable({
   loading,
@@ -6,6 +8,8 @@ export default function ServiceTable({
   onEdit,
   onDelete,
 }) {
+const settings = useBusinessSettings();
+
   if (loading) {
     return (
       <div className="bg-white rounded-xl shadow p-8 text-center">
@@ -74,7 +78,12 @@ export default function ServiceTable({
               </td>
 
               <td className="p-4">
-                ₹{Number(service.price).toFixed(2)}
+{formatCurrency(
+  Number(service.price),
+  settings?.currency_symbol,
+  settings?.currency_position,
+  settings?.decimal_places
+)}
               </td>
 
               <td className="p-4">

@@ -1,8 +1,12 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { supabase } from "../lib/supabase";
 import CustomerSelectionList from "./CustomerSelectionList";
+import useBusinessSettings from "../hooks/useBusinessSettings";
+import { formatCurrency } from "../utils/formatCurrency";
+
 export default function CampaignBuilder({ customers = [] }) {
-  const [campaignType, setCampaignType] = useState("Reactivation");
+const settings = useBusinessSettings(); 
+ const [campaignType, setCampaignType] = useState("Reactivation");
   const [offer, setOffer] = useState("No Offer");
   const [customOffer, setCustomOffer] = useState("");
   const [tone, setTone] = useState("Friendly");
@@ -251,8 +255,8 @@ const message = generateMessage(customer);
             className="w-full border rounded-lg p-2 mt-2"
           >
             <option>No Offer</option>
-            <option>₹100 OFF</option>
-            <option>₹200 OFF</option>
+<option>{settings?.currency_symbol || "₹"}100 OFF</option>
+<option>{settings?.currency_symbol || "₹"}200 OFF</option>
             <option>10% OFF</option>
             <option>15% OFF</option>
             <option>20% OFF</option>
@@ -419,7 +423,7 @@ setConversionRate(e.target.value)
 
   <div>
     <label className="block text-sm font-medium mb-1">
-      Average Bill (₹)
+Average Bill ({settings?.currency_symbol || "₹"})
     </label>
 
     <input
@@ -439,7 +443,12 @@ setAverageBill(e.target.value)
             </p>
 
             <h2 className="text-3xl font-bold text-green-600">
-              ₹{estimatedRevenue}
+{formatCurrency(
+  estimatedRevenue,
+  settings?.currency_symbol,
+  settings?.currency_position,
+  settings?.decimal_places
+)}
             </h2>
           </div>
 
@@ -504,7 +513,15 @@ setAverageBill(e.target.value)
     <p><strong>Offer:</strong> {offer === "Custom" ? customOffer : offer}</p>
     <p><strong>Tone:</strong> {tone}</p>
     <p><strong>Customers Selected:</strong> {selectedCustomers.length}</p>
-    <p><strong>Estimated Revenue:</strong> ₹{estimatedRevenue}</p>
+<p>
+  <strong>Estimated Revenue:</strong>{" "}
+  {formatCurrency(
+    estimatedRevenue,
+    settings?.currency_symbol,
+    settings?.currency_position,
+    settings?.decimal_places
+  )}
+</p>
 
     <div className="mt-4 bg-gray-50 rounded-lg p-4 whitespace-pre-line">
 {previewCustomer && generateMessage(previewCustomer)}

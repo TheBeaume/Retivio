@@ -327,7 +327,6 @@ if (conflictError) {
   alert(conflictError.message);
   return;
 }
-alert("Conflicts = " + conflicts.length);
 if (conflicts.length > 0 && !forceSave) {
   setShowConflictModal(true);
   return;
@@ -712,7 +711,12 @@ onClick={() => {
       key={service.id}
       value={service.name}
     >
-      {service.name} • ₹{service.price}
+{service.name} • {formatCurrency(
+  service.price,
+  settings?.currency_symbol,
+  settings?.currency_position,
+  settings?.decimal_places
+)}
     </option>
   ))}
 </select>
@@ -828,7 +832,19 @@ onClick={() => {
             />
 
 <button
-  onClick={isEditing ? updateAppointment : saveAppointment}
+onClick={() => {
+  if (isEditing) {
+    updateAppointment();
+  } else {
+    if (
+      window.confirm(
+        "Are you sure you want to book this appointment?"
+      )
+    ) {
+      saveAppointment();
+    }
+  }
+}}
   className="bg-purple-600 hover:bg-purple-700 text-white rounded-lg p-3 md:col-span-2"
 >
   {isEditing ? "💾 Update Appointment" : "💾 Save Appointment"}

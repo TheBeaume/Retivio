@@ -1,6 +1,9 @@
 import React from "react";
+import useBusinessSettings from "../../hooks/useBusinessSettings";
+import { formatCurrency } from "../../utils/formatCurrency";
 
 export default function CustomerInfo() {
+const settings = useBusinessSettings();
   return (
     <div className="bg-white rounded-2xl shadow p-5 h-full">
 
@@ -41,7 +44,15 @@ export default function CustomerInfo() {
 
         <div className="flex justify-between">
           <span>💰 Total Spend</span>
-          <span>₹12,500</span>
+<span>
+  {formatCurrency(
+    12500,
+    settings?.currency_symbol,
+    settings?.currency_position,
+    settings?.decimal_places
+  )}
+</span>
+
         </div>
 
         <div className="flex justify-between">

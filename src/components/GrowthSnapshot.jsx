@@ -1,6 +1,10 @@
 import React from "react";
+import useBusinessSettings from "../hooks/useBusinessSettings";
+import { formatCurrency } from "../utils/formatCurrency";
 
 function GrowthSnapshot({ customers }) {
+  const settings = useBusinessSettings();
+
   const totalCustomers = customers.length;
 
   const totalVisits = customers.reduce(
@@ -63,7 +67,12 @@ function GrowthSnapshot({ customers }) {
           </p>
 
           <h3 className="text-2xl font-bold">
-            ₹{avgSpend}
+{formatCurrency(
+  avgSpend,
+  settings?.currency_symbol,
+  settings?.currency_position,
+  settings?.decimal_places
+)}
           </h3>
         </div>
 
