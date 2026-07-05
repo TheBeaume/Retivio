@@ -30,7 +30,8 @@ const { error } = await supabase.auth.signUp({
 });
 
 if (error) {
-  alert(error.message);
+  console.log("Signup Error:", error);
+  alert(JSON.stringify(error, null, 2));
   return;
 }
 
