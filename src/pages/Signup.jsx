@@ -42,12 +42,10 @@ if (window.gtag) {
 }
 
 alert(
-  "🎉 Account created successfully!\n\nPlease check your email and verify your account before logging in."
+  "🎉 Welcome to Retivio!\n\nYour account has been created successfully."
 );
 
 navigate("/login");
-  }
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-purple-50 p-4">
       <form
