@@ -21,10 +21,13 @@ export default function Signup() {
       return;
     }
 
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-    });
+const { error } = await supabase.auth.signUp({
+  email,
+  password,
+  options: {
+    emailRedirectTo: "https://retivio.in/login",
+  },
+});
 
 if (error) {
   alert(error.message);
@@ -37,7 +40,10 @@ if (window.gtag) {
   });
 }
 
-alert("🎉 Account created successfully!");
+alert(
+  "🎉 Account created successfully!\n\nPlease check your email and verify your account before logging in."
+);
+
 navigate("/login");
   }
 

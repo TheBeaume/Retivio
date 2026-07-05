@@ -18,10 +18,12 @@ export default function Navbar() {
             Features
           </a>
 
-          <a href="#beta" className="hover:text-purple-700">
-            Beta
-          </a>
-
+<Link
+  to="/blog"
+  className="hover:text-purple-700"
+>
+  Blog
+</Link>
           <Link
             to="/login"
             className="hover:text-purple-700"
@@ -63,13 +65,13 @@ export default function Navbar() {
             Features
           </a>
 
-          <a
-            href="#beta"
-            className="block px-6 py-4 border-b"
-          >
-            Beta
-          </a>
-
+<Link
+  to="/blog"
+  className="block px-6 py-4 border-b"
+  onClick={() => setMenuOpen(false)}
+>
+  Blog
+</Link>
           <Link
             to="/login"
             className="block px-6 py-4 border-b"

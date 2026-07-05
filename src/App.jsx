@@ -12,6 +12,8 @@ import Signup from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { supabase } from "./lib/supabase";
+import Blog from "./pages/Blog";
+
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -50,6 +52,7 @@ function App() {
 <Route path="/terms" element={<Terms />} />
 <Route path="/refund-policy" element={<RefundPolicy />} />
 <Route path="/contact" element={<Contact />} />
+<Route path="/blog" element={<Blog />} />
 <Route
   path="/dashboard"
   element={
