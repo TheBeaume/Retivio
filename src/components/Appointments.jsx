@@ -132,7 +132,7 @@ function handleServiceChange(serviceName) {
 }
 const filteredAppointments = appointments
   .filter((appointment) => {
-    const today = new Date().toISOString().split("T")[0];
+const today = new Date().toLocaleDateString("en-CA");
 
     const matchesSearch =
       appointment.customer_name
@@ -164,7 +164,7 @@ switch (dateFilter) {
   case "Tomorrow":
     matchesDate =
       appointment.appointment_date ===
-      tomorrow.toISOString().split("T")[0];
+tomorrow.toLocaleDateString("en-CA")
     break;
 
   case "This Week": {

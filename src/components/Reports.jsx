@@ -43,7 +43,7 @@ const { count: appointmentCount } = await supabase
 .eq("user_id", user.id);
 
 setAppointments(appointmentCount || 0);
-const today = new Date().toISOString().split("T")[0];
+const today = new Date().toLocaleDateString("en-CA");
 
 const { data: appointmentData } = await supabase
   .from("appointments")

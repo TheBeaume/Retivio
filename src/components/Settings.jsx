@@ -85,6 +85,7 @@ currency_position: data.currency_position || "before",
 decimal_places: data.decimal_places || 2,
 
 date_format: data.date_format || "DD/MM/YYYY",
+
 time_format: data.time_format || "12 Hours",
 
 default_duration: data.default_duration || 30,

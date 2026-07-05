@@ -41,15 +41,22 @@ export default function CollectPaymentModal({
       return;
     }
 
-    await supabase
-      .from("customers")
-      .update({
-        total_spend:
-          (appointment.customer_total_spend || 0) +
-          Number(amount),
-      })
-      .eq("id", appointment.customer_id);
+const { data: customer } = await supabase
+  .from("customers")
+  .select("total_spend")
+  .eq("id", appointment.customer_id)
+  .single();
 
+const newTotal =
+  Number(customer?.total_spend || 0) +
+  Number(amount);
+
+await supabase
+  .from("customers")
+  .update({
+    total_spend: newTotal,
+  })
+  .eq("id", appointment.customer_id);
     setLoading(false);
 
     onSuccess();
