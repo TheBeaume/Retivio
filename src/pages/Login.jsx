@@ -23,7 +23,28 @@ const navigate = useNavigate();
 navigate("/dashboard");
 
   }
+async function resendVerification() {
+  if (!email) {
+    alert("Please enter your email address first.");
+    return;
+  }
 
+  const { error } = await supabase.auth.resend({
+    type: "signup",
+    email,
+    options: {
+      emailRedirectTo: "https://retivio.in/login",
+    },
+  });
+
+  if (error) {
+    alert(error.message);
+  } else {
+    alert(
+      "✅ Verification email sent successfully.\n\nPlease check your inbox and spam folder."
+    );
+  }
+}
   return (
     <div className="min-h-screen flex items-center justify-center bg-purple-50">
       <form
@@ -73,6 +94,8 @@ navigate("/dashboard");
 
 <div className="mt-4 text-center">
 
+<div className="space-y-2">
+
   <button
     type="button"
     className="text-sm text-gray-500 hover:text-purple-700"
@@ -80,6 +103,17 @@ navigate("/dashboard");
     Forgot Password?
   </button>
 
+  <br />
+
+  <button
+    type="button"
+    onClick={resendVerification}
+    className="text-sm text-purple-700 hover:underline"
+  >
+    Resend Verification Email
+  </button>
+
+</div>
 </div>
       </form>
     </div>
