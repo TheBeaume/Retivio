@@ -13,7 +13,7 @@ import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { supabase } from "./lib/supabase";
 import Blog from "./pages/Blog";
-
+import BlogPost from "./pages/BlogPost";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -53,6 +53,7 @@ function App() {
 <Route path="/refund-policy" element={<RefundPolicy />} />
 <Route path="/contact" element={<Contact />} />
 <Route path="/blog" element={<Blog />} />
+<Route path="/blog/:slug" element={<BlogPost />} />
 <Route
   path="/dashboard"
   element={

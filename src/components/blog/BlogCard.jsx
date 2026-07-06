@@ -1,6 +1,11 @@
+import { Link } from "react-router-dom";
+
 export default function BlogCard({ post }) {
   return (
-    <div className="bg-white rounded-2xl overflow-hidden shadow hover:shadow-xl transition">
+<Link
+  to={`/blog/${post.slug}`}
+  className="block bg-white rounded-2xl overflow-hidden shadow hover:shadow-xl transition"
+>
 
       <img
         src={post.image}
@@ -28,6 +33,6 @@ export default function BlogCard({ post }) {
 
       </div>
 
-    </div>
+</Link>
   );
 }
