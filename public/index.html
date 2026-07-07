@@ -2,60 +2,64 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-<link rel="icon" type="image/x-icon" href="%PUBLIC_URL%/favicon.ico" />
-<link rel="icon" type="image/png" sizes="96x96" href="%PUBLIC_URL%/favicon-96x96.png" />
-<link rel="apple-touch-icon" href="%PUBLIC_URL%/apple-touch-icon.png" />
+
+    <link rel="icon" type="image/x-icon" href="%PUBLIC_URL%/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="96x96" href="%PUBLIC_URL%/favicon-96x96.png" />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/apple-touch-icon.png" />
+
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="theme-color" content="#6D28D9" />
-<meta
-  name="description"
-  content="Retivio is an AI-powered Salon CRM that helps salons manage customers, appointments, follow-ups, WhatsApp bookings, and business growth."
-/>
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-    <!--
-      manifest.json provides metadata used when your web app is installed on a
-      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    -->
+    <meta name="theme-color" content="#6D28D9" />
+
+    <meta
+      name="description"
+      content="Retivio is an AI-powered Salon CRM that helps salons manage customers, appointments, WhatsApp follow-ups and grow their business."
+    />
+
+    <meta
+      name="keywords"
+      content="Salon CRM, Salon Software, Beauty Salon CRM, Spa CRM, Appointment Booking, WhatsApp CRM, Salon Management Software"
+    />
+
+    <meta name="author" content="Retivio" />
+
+    <meta property="og:site_name" content="Retivio" />
+    <meta property="og:title" content="Retivio | AI-Powered Salon CRM" />
+    <meta
+      property="og:description"
+      content="Manage customers, appointments, WhatsApp follow-ups and grow your salon with Retivio."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://retivio.in" />
+
+    <script type="application/ld+json">
+    {
+      "@context":"https://schema.org",
+      "@type":"WebSite",
+      "name":"Retivio",
+      "alternateName":"Retivio AI Salon CRM",
+      "url":"https://retivio.in"
+    }
+    </script>
+
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
 
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
-<title>Retivio | AI-Powered Salon CRM</title>
-<meta
-  name="keywords"
-  content="Salon CRM, Salon Software, Beauty Salon, Spa CRM, Appointment Booking, Customer Management, WhatsApp Booking, AI Salon CRM, Retivio"
-/>
+    <title>Retivio | AI-Powered Salon CRM</title>
 
-<meta name="author" content="Retivio" />
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-XFFJ9S9GPN"></script>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XFFJ9S9GPN"></script>
 
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XFFJ9S9GPN');
+    </script>
 
-  gtag('config', 'G-XFFJ9S9GPN');
-</script>
   </head>
+
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
+
     <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
-
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
-
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
   </body>
 </html>

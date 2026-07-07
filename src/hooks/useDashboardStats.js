@@ -20,8 +20,7 @@ export default function useDashboardStats() {
 
     if (!user) return;
 
-    const today = new Date().toLocaleDateString("en-CA");
-
+const today = new Date().toISOString().split("T")[0];
     const { data: appointments } = await supabase
       .from("appointments")
       .select("*")

@@ -107,6 +107,7 @@ if (!user) {
   return;
 }
 
+console.log("Saving settings:", form);
 const { error } = await supabase
   .from("business_settings")
   .upsert(
