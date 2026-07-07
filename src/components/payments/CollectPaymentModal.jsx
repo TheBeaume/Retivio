@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabase";
 
 export default function CollectPaymentModal({
@@ -8,13 +8,20 @@ export default function CollectPaymentModal({
   onSuccess,
 }) {
 
-  const [amount, setAmount] = useState(0);
+const [amount, setAmount] = useState(0);
   const [paymentMethod, setPaymentMethod] = useState("Cash");
   const [notes, setNotes] = useState("");
   const [loading, setLoading] = useState(false);
+useEffect(() => {
+  if (appointment) {
+    setAmount(appointment.price || 0);
+  }
+}, [appointment]);
 
   if (!open || !appointment) return null;
-  async function collectPayment() {
+async function collectPayment() {
+  console.log("Appointment:", appointment);
+
     setLoading(true);
 
     const {
@@ -35,12 +42,12 @@ export default function CollectPaymentModal({
         notes,
       });
 
-    if (error) {
-      alert(error.message);
-      setLoading(false);
-      return;
-    }
-
+if (error) {
+  console.error(error);
+  alert(error.message);
+  setLoading(false);
+  return;
+}
 const { data: customer } = await supabase
   .from("customers")
   .select("total_spend")
@@ -59,6 +66,14 @@ await supabase
   .eq("id", appointment.customer_id);
     setLoading(false);
 
+await supabase
+  .from("appointments")
+  .update({
+    payment_status: "Paid",
+  })
+  .eq("id", appointment.id);
+
+alert("✅ Payment collected successfully!");
     onSuccess();
 
     onClose();
