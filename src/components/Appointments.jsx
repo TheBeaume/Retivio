@@ -769,15 +769,29 @@ onClick={() => {
               }
               className="border rounded-lg p-3"
             />
+<select
+  value={form.time}
+  onChange={(e) =>
+    setForm({ ...form, time: e.target.value })
+  }
+  className="border rounded-lg p-3"
+>
+  <option value="">Select Time</option>
 
-            <input
-              type="time"
-              value={form.time}
-              onChange={(e) =>
-                setForm({ ...form, time: e.target.value })
-              }
-              className="border rounded-lg p-3"
-            />
+  {Array.from({ length: 23 }, (_, i) => {
+    const totalMinutes = 9 * 60 + i * 30;
+    const hour = String(Math.floor(totalMinutes / 60)).padStart(2, "0");
+    const minute = String(totalMinutes % 60).padStart(2, "0");
+    const time = `${hour}:${minute}`;
+
+    return (
+      <option key={time} value={time}>
+        {time}
+      </option>
+    );
+  })}
+</select>
+
 {slotAvailability && (
   <div
     className={`md:col-span-2 text-sm font-medium ${

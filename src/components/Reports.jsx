@@ -31,12 +31,11 @@ if (error) {
 }
 
 setTotalCustomers(data.length);
-const revenue = data.reduce(
+const customerRevenue = data.reduce(
   (sum, c) => sum + (Number(c.total_spend) || 0),
   0
 );
 
-setTotalRevenue(revenue);
 const { count: appointmentCount } = await supabase
   .from("appointments")
 .select("*", { count: "exact", head: true })
@@ -47,9 +46,19 @@ const today = new Date().toLocaleDateString("en-CA");
 
 const { data: appointmentData } = await supabase
   .from("appointments")
-.select("status, appointment_date")
-.eq("user_id", user.id);
+  .select("status, appointment_date, price")
+  .eq("user_id", user.id);
 
+const appointmentRevenue = appointmentData
+  .filter((a) => a.status === "Completed")
+  .reduce(
+    (sum, a) => sum + Number(a.price || 0),
+    0
+  );
+
+setTotalRevenue(
+  customerRevenue + appointmentRevenue
+);
 if (appointmentData) {
   setTodayAppointments(
     appointmentData.filter(

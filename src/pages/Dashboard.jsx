@@ -24,6 +24,7 @@ import { supabase } from "../lib/supabase";
 import useDashboardStats from "../hooks/useDashboardStats";
 import useBusinessSettings from "../hooks/useBusinessSettings";
 import { formatCurrency } from "../utils/formatCurrency";
+import useTodayAppointments from "../hooks/useTodayAppointments";
 
 function Dashboard() {
   const [customers, setCustomers] = useState([]);
@@ -31,6 +32,8 @@ function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activePage, setActivePage] = useState("dashboard");
   const [profile, setProfile] = useState(null);
+const todayAppointments = useTodayAppointments();
+const [expandedAppointment, setExpandedAppointment] = useState(null);
 const stats = useDashboardStats();
 const settings = useBusinessSettings();
 
@@ -220,9 +223,9 @@ Today's Snapshot
                         New Customers
                       </p>
 
-                      <h3 className="text-3xl font-bold mt-2">
-                        --
-                      </h3>
+<h3 className="text-3xl font-bold mt-2">
+  {stats.newCustomers}
+</h3>
                     </div>
 
                   </div>
@@ -241,6 +244,122 @@ Today's Snapshot
                 <QuickActions
                   setActivePage={setActivePage}
                 />
+<div className="bg-white rounded-2xl shadow p-6 mt-6">
+  <div className="flex justify-between items-center mb-4">
+    <h2 className="text-xl font-bold">
+      📅 Today's Schedule
+    </h2>
+
+<span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">
+  LIVE
+</span>
+
+  </div>
+
+<div className="space-y-3">
+
+  {todayAppointments.length === 0 ? (
+
+    <div className="border rounded-xl p-6 text-center text-gray-500">
+      No appointments scheduled for today.
+    </div>
+
+  ) : (
+
+todayAppointments.map((appointment) => (
+
+  <div
+    key={appointment.id}
+    className="border rounded-xl overflow-hidden"
+  >
+
+    <button
+      onClick={() =>
+        setExpandedAppointment(
+          expandedAppointment === appointment.id
+            ? null
+            : appointment.id
+        )
+      }
+      className="w-full flex justify-between items-center p-4 hover:bg-gray-50"
+    >
+
+      <div className="flex items-center gap-3">
+
+        <span className="text-lg">
+          {expandedAppointment === appointment.id ? "▼" : "▶"}
+        </span>
+
+        <span className="font-semibold">
+          {appointment.customer_name}
+        </span>
+
+      </div>
+
+      <span
+        className={`text-xs px-3 py-1 rounded-full font-medium ${
+          appointment.status === "Completed"
+            ? "bg-green-100 text-green-700"
+            : appointment.status === "Cancelled"
+            ? "bg-red-100 text-red-700"
+            : "bg-yellow-100 text-yellow-700"
+        }`}
+      >
+        {appointment.status}
+      </span>
+
+    </button>
+
+    {expandedAppointment === appointment.id && (
+
+      <div className="border-t bg-gray-50 p-4 space-y-3">
+
+        <p>
+          <strong>💇 Service:</strong>{" "}
+          {appointment.service}
+        </p>
+
+        <p>
+          <strong>🕒 Time:</strong>{" "}
+          {appointment.appointment_time}
+        </p>
+
+        <p>
+          <strong>📞 Phone:</strong>{" "}
+          {appointment.phone}
+        </p>
+
+        <div className="flex gap-3 pt-2">
+
+          <a
+            href={`tel:${appointment.phone}`}
+            className="bg-green-600 text-white px-4 py-2 rounded-lg text-sm"
+          >
+            📞 Call
+          </a>
+
+          <a
+            href={`https://wa.me/${appointment.phone}`}
+            target="_blank"
+            rel="noreferrer"
+            className="bg-emerald-500 text-white px-4 py-2 rounded-lg text-sm"
+          >
+            💬 WhatsApp
+          </a>
+
+        </div>
+
+      </div>
+
+    )}
+
+  </div>
+
+))
+  )}
+
+</div>
+</div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
 

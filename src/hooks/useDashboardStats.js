@@ -20,11 +20,22 @@ export default function useDashboardStats() {
 
     if (!user) return;
 
-const today = new Date().toISOString().split("T")[0];
+    const today = new Date().toISOString().split("T")[0];
+
     const { data: appointments } = await supabase
       .from("appointments")
       .select("*")
       .eq("user_id", user.id);
+
+    const { data: customers } = await supabase
+      .from("customers")
+      .select("created_at")
+      .eq("user_id", user.id);
+
+    const newCustomers =
+      customers?.filter(
+        (c) => c.created_at?.slice(0, 10) === today
+      ).length || 0;
 
     const todayAppointments =
       appointments?.filter(
@@ -45,7 +56,7 @@ const today = new Date().toISOString().split("T")[0];
       todayAppointments: todayAppointments.length,
       todayRevenue,
       pendingAppointments,
-      newCustomers: 0,
+      newCustomers,
     });
   }
 
