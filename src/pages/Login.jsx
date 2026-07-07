@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { supabase } from "../lib/supabase";
 import { useNavigate } from "react-router-dom";
+import SEO from "../components/SEO";
 
 export default function Login() {
 const navigate = useNavigate();
@@ -45,8 +46,16 @@ async function resendVerification() {
     );
   }
 }
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-purple-50">
+
+return (
+  <>
+    <SEO
+      title="Login | Retivio Salon CRM"
+      description="Log in to Retivio and manage salon appointments, customers, WhatsApp follow-ups, billing and business growth."
+      canonical="/login"
+    />
+
+<div className="min-h-screen flex items-center justify-center bg-purple-50">
       <form
         onSubmit={handleLogin}
         className="bg-white p-8 rounded-xl shadow-lg w-96"
@@ -117,5 +126,6 @@ async function resendVerification() {
 </div>
       </form>
     </div>
+</>
   );
 }

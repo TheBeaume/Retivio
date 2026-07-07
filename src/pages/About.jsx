@@ -1,9 +1,16 @@
 import React from "react";
-
+import SEO from "../components/SEO";
 export default function About() {
-  return (
-    <div className="min-h-screen bg-purple-50 py-12 px-6">
-      <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg p-8">
+return (
+  <>
+    <SEO
+      title="About Retivio | AI-Powered Salon CRM"
+      description="Learn about Retivio, the AI-powered Salon CRM built to help salons and spas manage customers, appointments, WhatsApp follow-ups and business growth."
+      canonical="/about"
+    />
+
+    <div className="min-h-screen bg-purple-50 py-12 px-6">     
+ <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg p-8">
 
         <h1 className="text-4xl font-bold text-purple-700 mb-6">
           About Retivio
@@ -47,5 +54,6 @@ export default function About() {
 
       </div>
     </div>
+</>
   );
 }

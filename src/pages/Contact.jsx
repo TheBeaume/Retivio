@@ -1,7 +1,14 @@
 import React from "react";
-
+import SEO from "../components/SEO";
 export default function Contact() {
-  return (
+return (
+  <>
+    <SEO
+      title="Contact Retivio | AI-Powered Salon CRM"
+      description="Contact Retivio for product demos, support, partnerships, or any questions about our AI-powered Salon CRM."
+      canonical="/contact"
+    />
+
     <div className="min-h-screen bg-purple-50 py-12 px-6">
       <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg p-8">
 
@@ -57,5 +64,6 @@ export default function Contact() {
 
       </div>
     </div>
+</>
   );
 }

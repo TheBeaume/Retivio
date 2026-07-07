@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
 import useBusinessSettings from "../hooks/useBusinessSettings";
 import { formatCurrency } from "../utils/formatCurrency";
+import CollectPaymentModal from "./payments/CollectPaymentModal";
+
 
 export default function Appointments() {
 const [showForm, setShowForm] = useState(false);
@@ -31,6 +33,8 @@ const [customerInfo, setCustomerInfo] = useState(null);
 
 const [isEditing, setIsEditing] = useState(false);
 const [editingId, setEditingId] = useState(null);
+const [showPaymentModal, setShowPaymentModal] = useState(false);
+const [selectedAppointment, setSelectedAppointment] = useState(null);
 const [showConflictModal, setShowConflictModal] = useState(false);
 useEffect(() => {
   loadAppointments();
@@ -488,7 +492,7 @@ if (error) {
   await loadAppointments();
 }
   return (
-
+<>
     <div className="space-y-8">
 <div className="bg-gradient-to-r from-purple-700 to-indigo-700 rounded-3xl text-white p-8">
 
@@ -967,21 +971,16 @@ disabled={appointment.status !== "Pending"}
   ✅ Complete
 </button>
 <button
-onClick={() => {
-  alert(
-`Collect Payment\n\nCustomer: ${appointment.customer_name}\nAmount: ${formatCurrency(
-  appointment.price,
-  settings?.currency_symbol,
-  settings?.currency_position,
-  settings?.decimal_places
-)}`
-  );
-}}
+  onClick={() => {
+    setSelectedAppointment(appointment);
+    setShowPaymentModal(true);
+  }}
   disabled={appointment.status !== "Completed"}
   className="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1 rounded-lg text-sm"
 >
   💰 Collect Payment
 </button>
+
 <button
   onClick={() => {
     if (window.confirm("Cancel this appointment?")) {
@@ -1026,6 +1025,7 @@ appointments.filter(
         )}
 
       </div>
+
 )}
   
 {showConflictModal && (
@@ -1067,6 +1067,17 @@ appointments.filter(
   </div>
 )}
   </div>
-  );
+ 
+<CollectPaymentModal
+  open={showPaymentModal}
+  appointment={selectedAppointment}
+  onClose={() => {
+    setShowPaymentModal(false);
+    setSelectedAppointment(null);
+  }}
+  onSuccess={loadAppointments}
+/>
+</>
+ );
 }
 

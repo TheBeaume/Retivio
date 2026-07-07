@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import SEO from "../components/SEO";
 
 const features = [
   {
@@ -51,6 +52,12 @@ const comingSoon = [
 
 export default function Features() {
   return (
+<>
+<SEO
+  title="Salon CRM Features | Retivio"
+  description="Explore Retivio's AI-powered Salon CRM features including appointment booking, customer management, WhatsApp follow-ups, loyalty, analytics, billing and salon business growth."
+  canonical="/features"
+/>
     <div className="min-h-screen bg-purple-50">
       <div className="max-w-7xl mx-auto px-6 py-16">
 
@@ -119,5 +126,6 @@ export default function Features() {
 
       </div>
     </div>
-  );
+</>  
+);
 }

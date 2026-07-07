@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../lib/supabase";
+import SEO from "../components/SEO";
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -48,8 +49,15 @@ alert(
 navigate("/login");
 }
 
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-purple-50 p-4">
+return (
+  <>
+    <SEO
+      title="Start Free | Retivio Salon CRM"
+      description="Create your free Retivio account and start managing appointments, customers, WhatsApp follow-ups and salon growth."
+      canonical="/signup"
+    />
+
+<div className="min-h-screen flex items-center justify-center bg-purple-50 p-4">
       <form
         onSubmit={handleSignup}
         className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md"
@@ -142,5 +150,6 @@ navigate("/login");
         </div>
       </form>
     </div>
-  );
+    </>
+);
 }
