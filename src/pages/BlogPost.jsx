@@ -1,5 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import blogData from "../data/blogData";
+import SEO from "../components/SEO";
 
 export default function BlogPost() {
   const { slug } = useParams();
@@ -18,7 +19,40 @@ export default function BlogPost() {
     .filter((blog) => blog.id !== post.id)
     .slice(0, 3);
 
-  return (
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: post.title,
+  description: post.excerpt,
+  image: post.image,
+  author: {
+    "@type": "Person",
+    name: post.author,
+  },
+  publisher: {
+    "@type": "Organization",
+    name: "Retivio",
+    logo: {
+      "@type": "ImageObject",
+      url: "https://retivio.in/logo512.png",
+    },
+  },
+  datePublished: post.publishedAt,
+  mainEntityOfPage: `https://retivio.in/blog/${post.slug}`,
+};
+return (
+  <>
+<SEO
+  title={`${post.title} | Retivio Blog`}
+  description={post.excerpt}
+  canonical={`/blog/${post.slug}`}
+  jsonLd={articleSchema}
+  breadcrumbs={[
+    { name: "Home", url: "/" },
+    { name: "Blog", url: "/blog" },
+    { name: post.title, url: `/blog/${post.slug}` },
+  ]}
+/>
     <div className="max-w-4xl mx-auto px-6 py-12">
       <img
         src={post.image}
@@ -110,5 +144,6 @@ export default function BlogPost() {
         </div>
       </div>
     </div>
+</>
   );
 }           

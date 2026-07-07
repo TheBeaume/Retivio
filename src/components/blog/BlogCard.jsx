@@ -11,6 +11,8 @@ export default function BlogCard({ post }) {
         src={post.image}
         alt={post.title}
         className="w-full h-52 object-cover"
+loading="lazy"
+decoding="async"
       />
 
       <div className="p-6">

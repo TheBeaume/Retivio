@@ -8,18 +8,24 @@ import SEO from "../components/SEO";
 
 export default function LandingPage() {
   return (
-    <>
-<SEO
-  title="Retivio | AI-Powered Salon CRM for Salons & Spas"
-  description="Retivio is an AI-powered Salon CRM designed for salons and spas. Manage appointments, customers, WhatsApp follow-ups, loyalty, billing and grow your beauty business."
-  canonical="/"
-/>
-      <Navbar />
-      <Hero />
-      <Features />
-      <DashboardPreview />
-      <BetaCTA />
-      <Footer />
-    </>
+<>
+  <SEO
+    title="Retivio | AI-Powered Salon CRM"
+    description="AI-powered Salon CRM for customer management, appointments, WhatsApp follow-ups, billing and salon growth."
+    canonical="/"
+  />
+
+  <Navbar />
+
+  <main>
+    <Hero />
+    <Features />
+    <DashboardPreview />
+    <BetaCTA />
+  </main>
+
+  <Footer />
+</>
+
   );
 }
