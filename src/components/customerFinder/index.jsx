@@ -33,13 +33,13 @@ function CustomerFinder() {
     setLoading(true);
 
     try {
-      const data = await searchBusinesses({
-        keyword,
-        location: pincode || city,
-        category,
-        radius,
-      });
-
+const data = await searchBusinesses({
+  keyword,
+  location: pincode || city,
+  country,
+  category,
+  radius,
+});
       setResults(data.businesses || []);
       setCurrentPage(1);
 
@@ -54,10 +54,47 @@ function CustomerFinder() {
   const websiteCount = results.filter((b) => b.website).length;
   const totalPages = Math.ceil(results.length / pageSize);
 
-  const handleCurrentLocation = () => {
-    alert("Current Location integration coming next.");
-  };
+const handleCurrentLocation = () => {
+  if (!navigator.geolocation) {
+    alert("Geolocation is not supported.");
+    return;
+  }
 
+  navigator.geolocation.getCurrentPosition(
+    async (position) => {
+      try {
+        const { latitude, longitude } = position.coords;
+
+        const response = await fetch(
+          `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`
+        );
+
+        const data = await response.json();
+
+        setCountry(
+          data.address?.country_code?.toUpperCase() || "IN"
+        );
+
+        setCity(
+          data.address?.city ||
+          data.address?.town ||
+          data.address?.village ||
+          ""
+        );
+
+        setPincode(
+          data.address?.postcode || ""
+        );
+
+      } catch (err) {
+        alert("Unable to detect location.");
+      }
+    },
+    () => {
+      alert("Location permission denied.");
+    }
+  );
+};
   const handleSaveLead = (business) => {
     console.log("Save Lead:", business);
   };

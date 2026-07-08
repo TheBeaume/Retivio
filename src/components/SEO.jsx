@@ -47,6 +47,14 @@ export default function SEO({
       },
     },
   };
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  url: SITE_URL,
+  name: "Retivio",
+  alternateName: "Retivio Salon CRM",
+  description: DEFAULT_DESCRIPTION,
+};
 
   return (
     <Helmet>
