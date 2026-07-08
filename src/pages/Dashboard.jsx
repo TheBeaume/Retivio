@@ -25,6 +25,7 @@ import useDashboardStats from "../hooks/useDashboardStats";
 import useBusinessSettings from "../hooks/useBusinessSettings";
 import { formatCurrency } from "../utils/formatCurrency";
 import useTodayAppointments from "../hooks/useTodayAppointments";
+import CustomerFinder from "../components/customerFinder";
 
 function Dashboard() {
   const [customers, setCustomers] = useState([]);
@@ -244,6 +245,27 @@ Today's Snapshot
                 <QuickActions
                   setActivePage={setActivePage}
                 />
+<div className="mt-6 rounded-3xl bg-gradient-to-r from-purple-700 via-violet-600 to-indigo-600 p-6 text-white shadow-xl">
+  <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+    <div>
+      <h2 className="text-2xl font-bold">
+        🚀 Grow Your Salon
+      </h2>
+
+      <p className="mt-2 text-purple-100 max-w-2xl">
+        Discover nearby business opportunities, build partnerships,
+        save leads and grow your salon with Retivio Customer Finder.
+      </p>
+    </div>
+
+    <button
+      onClick={() => setActivePage("customerFinder")}
+      className="bg-white text-purple-700 font-semibold px-6 py-3 rounded-xl hover:bg-purple-50 transition"
+    >
+      Open Customer Finder →
+    </button>
+  </div>
+</div>
 <div className="bg-white rounded-2xl shadow p-6 mt-6">
   <div className="flex justify-between items-center mb-4">
     <h2 className="text-xl font-bold">
@@ -391,6 +413,9 @@ todayAppointments.map((appointment) => (
                 />
               </>
             )}
+{activePage === "customerFinder" && (
+  <CustomerFinder />
+)}
 
             {activePage === "visit" && (
               <>
