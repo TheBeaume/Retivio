@@ -111,6 +111,10 @@ const websiteSchema = {
         {JSON.stringify(defaultSchema)}
       </script>
 
+<script type="application/ld+json">
+  {JSON.stringify(websiteSchema)}
+</script>
+
       {jsonLd && (
         <script type="application/ld+json">
           {JSON.stringify(jsonLd)}
