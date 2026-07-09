@@ -40,7 +40,7 @@ function Aurelia() {
           <div className="mt-12 flex flex-wrap justify-center gap-5">
 
             <a
-              href="https://YOUR-AURELIA-DEMO.vercel.app"
+              href="https://aurelia-cyan.vercel.app/"
               target="_blank"
               rel="noopener noreferrer"
               className="rounded-full bg-white px-8 py-4 font-bold text-purple-700 transition hover:scale-105"
@@ -420,7 +420,7 @@ function Aurelia() {
           <div className="mt-12 flex flex-wrap justify-center gap-5">
 
             <a
-              href="https://YOUR-AURELIA-DEMO.vercel.app"
+              href="https://aurelia-cyan.vercel.app/"
               target="_blank"
               rel="noopener noreferrer"
               className="rounded-full bg-purple-600 px-8 py-4 font-bold text-white transition hover:bg-purple-700"

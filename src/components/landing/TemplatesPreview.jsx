@@ -44,7 +44,7 @@ export default function TemplatesPreview() {
             </Link>
 
             <a
-              href="https://YOUR-AURELIA-DEMO.vercel.app"
+href="https://aurelia-cyan.vercel.app/"
               target="_blank"
               rel="noopener noreferrer"
               className="rounded-full border border-purple-700 px-6 py-3 font-semibold text-purple-700"
