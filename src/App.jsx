@@ -16,6 +16,8 @@ import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import Templates from "./pages/Templates";
 import Aurelia from "./pages/Aurelia";
+import ScrollToTop from "./components/ScrollToTop";
+
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -43,33 +45,38 @@ function App() {
     );
   }
 
-  return (
+return (
+  <>
+    <ScrollToTop />
+
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
-<Route path="/" element={<LandingPage />} />
-<Route path="/features" element={<Features />} />
-<Route path="/about" element={<About />} />
-<Route path="/privacy-policy" element={<PrivacyPolicy />} />
-<Route path="/terms" element={<Terms />} />
-<Route path="/refund-policy" element={<RefundPolicy />} />
-<Route path="/contact" element={<Contact />} />
-<Route path="/blog" element={<Blog />} />
-<Route path="/blog/:slug" element={<BlogPost />} />
-<Route path="/templates" element={<Templates />} />
-<Route path="/templates/aurelia" element={<Aurelia />} />
+      <Route path="/" element={<LandingPage />} />
+      <Route path="/features" element={<Features />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+      <Route path="/terms" element={<Terms />} />
+      <Route path="/refund-policy" element={<RefundPolicy />} />
+      <Route path="/contact" element={<Contact />} />
+      <Route path="/blog" element={<Blog />} />
+      <Route path="/blog/:slug" element={<BlogPost />} />
+      <Route path="/templates" element={<Templates />} />
+      <Route path="/templates/aurelia" element={<Aurelia />} />
 
-<Route
-  path="/dashboard"
-  element={
-    <ProtectedRoute>
-      <Dashboard />
-    </ProtectedRoute>
-  }
-/>
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        }
+      />
+
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
-  );
+  </>
+);
 }
 
 export default App;
