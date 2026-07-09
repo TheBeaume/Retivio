@@ -96,20 +96,21 @@ ${categoryQueries[category] || categoryQueries["Salon"]}
 );
 out body;
 `;
-  const response = await fetch(
-    "https://overpass-api.de/api/interpreter",
-    {
-      method: "POST",
-      body: query,
-    }
-  );
+console.log("Query:", query);
 
+const response = await fetch(
+  "https://overpass-api.de/api/interpreter",
+  {
+    method: "POST",
+    body: query,
+  }
+);
   if (!response.ok) {
     throw new Error("Unable to fetch businesses.");
   }
 
   const data = await response.json();
-
+console.log(data);
   const businesses = data.elements
     .filter((item) => item.tags?.name)
 .map((item) => {

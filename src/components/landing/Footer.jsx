@@ -1,95 +1,107 @@
-import React from "react";
 import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-950 text-gray-300 py-10">
+    <footer className="bg-slate-950 text-white">
+      <div className="max-w-7xl mx-auto px-6 py-16">
 
-      <div className="max-w-7xl mx-auto px-6 flex flex-col lg:flex-row justify-between items-center gap-6">
+        <div className="grid gap-10 md:grid-cols-4">
 
-        <div>
+          <div>
+            <h2 className="text-3xl font-bold text-purple-400">
+              Retivio
+            </h2>
 
-          <h2 className="text-3xl font-bold text-white">
-            Retivio
-          </h2>
+            <p className="mt-4 text-slate-400 leading-7">
+              AI-powered Salon CRM helping beauty businesses manage
+              customers, appointments, WhatsApp and business growth.
+            </p>
+          </div>
 
-          <p className="mt-2 text-gray-400">
-            Turn Visitors into Regular Customers.
+          <div>
+            <h3 className="font-semibold text-lg mb-4">
+              Product
+            </h3>
+
+            <div className="space-y-3 text-slate-400">
+              <Link to="/features" className="block hover:text-white">
+                Features
+              </Link>
+
+              <Link to="/templates" className="block hover:text-white">
+                Templates
+              </Link>
+
+              <Link to="/blog" className="block hover:text-white">
+                Blog
+              </Link>
+
+              <Link to="/contact" className="block hover:text-white">
+                Contact
+              </Link>
+            </div>
+          </div>
+
+          <div>
+            <h3 className="font-semibold text-lg mb-4">
+              Resources
+            </h3>
+
+            <div className="space-y-3 text-slate-400">
+              <Link to="/about" className="block hover:text-white">
+                About
+              </Link>
+
+              <Link to="/privacy-policy" className="block hover:text-white">
+                Privacy Policy
+              </Link>
+
+              <Link to="/terms" className="block hover:text-white">
+                Terms & Conditions
+              </Link>
+            </div>
+          </div>
+
+          <div>
+            <h3 className="font-semibold text-lg mb-4">
+              Featured Template
+            </h3>
+
+            <div className="rounded-2xl bg-white/5 p-5 border border-white/10">
+
+              <p className="font-bold text-xl">
+                AURELIA
+              </p>
+
+              <p className="mt-2 text-slate-400 text-sm">
+                Luxury Salon Website Template
+              </p>
+
+              <Link
+                to="/templates/aurelia"
+                className="inline-block mt-5 rounded-xl bg-purple-600 px-5 py-3 font-semibold hover:bg-purple-700"
+              >
+                View Template
+              </Link>
+
+            </div>
+          </div>
+
+        </div>
+
+        <div className="mt-14 border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between gap-4 text-slate-500">
+
+          <p>
+            © 2026 Retivio. All Rights Reserved.
+          </p>
+
+          <p>
+            Built with ❤️ by Pravi Technologies
           </p>
 
         </div>
 
-<div className="grid grid-cols-2 md:grid-cols-3 gap-8 text-sm">
-
-  <div>
-    <h3 className="text-white font-semibold mb-3">Company</h3>
-
-    <div className="flex flex-col gap-2">
-<Link to="/features" className="hover:text-white">
-  Features
-</Link>
-      <Link to="/about" className="hover:text-white">
-        About Us
-      </Link>
-
-      <Link to="/contact" className="hover:text-white">
-        Contact Us
-      </Link>
-
-      <Link to="/login" className="hover:text-white">
-        Login
-      </Link>
-    </div>
-  </div>
-
-  <div>
-    <h3 className="text-white font-semibold mb-3">Legal</h3>
-
-    <div className="flex flex-col gap-2">
-      <Link to="/privacy-policy" className="hover:text-white">
-        Privacy Policy
-      </Link>
-
-      <Link to="/terms" className="hover:text-white">
-        Terms & Conditions
-      </Link>
-
-      <Link to="/refund-policy" className="hover:text-white">
-        Refund Policy
-      </Link>
-    </div>
-  </div>
-
-  <div>
-    <h3 className="text-white font-semibold mb-3">Support</h3>
-
-    <div className="flex flex-col gap-2">
-      <a
-        href="mailto:retivio.support@gmail.com"
-        className="hover:text-white"
-      >
-        retivio.support@gmail.com
-      </a>
-
-      <a
-        href="https://retivio.in"
-        className="hover:text-white"
-      >
-        retivio.in
-      </a>
-    </div>
-  </div>
-
-        </div>
-
       </div>
-
-<div className="text-center text-gray-500 mt-10 text-sm">
-  <p>© 2026 Retivio. All rights reserved.</p>
-  <p className="mt-2">
-    Made with ❤️ in India for Salon Professionals.
-  </p>
-</div>
     </footer>
   );
 }

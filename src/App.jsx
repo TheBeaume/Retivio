@@ -14,6 +14,8 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import { supabase } from "./lib/supabase";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
+import Templates from "./pages/Templates";
+import Aurelia from "./pages/Aurelia";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -54,6 +56,9 @@ function App() {
 <Route path="/contact" element={<Contact />} />
 <Route path="/blog" element={<Blog />} />
 <Route path="/blog/:slug" element={<BlogPost />} />
+<Route path="/templates" element={<Templates />} />
+<Route path="/templates/aurelia" element={<Aurelia />} />
+
 <Route
   path="/dashboard"
   element={
