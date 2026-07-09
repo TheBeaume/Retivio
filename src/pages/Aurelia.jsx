@@ -60,6 +60,189 @@ function Aurelia() {
         </div>
       </section>
 
+{/* Pricing */}
+
+<section className="bg-white py-24">
+  <div className="mx-auto max-w-7xl px-6">
+
+    <div className="text-center">
+      <span className="rounded-full bg-green-100 px-5 py-2 text-sm font-semibold text-green-700">
+        🚀 Launch Offer
+      </span>
+
+      <h2 className="mt-6 text-5xl font-bold">
+        Choose Your Plan
+      </h2>
+
+      <p className="mt-6 text-lg text-gray-600">
+        Start with the template or let us handle everything for you.
+      </p>
+    </div>
+
+    <div className="mt-16 grid gap-8 lg:grid-cols-3">
+
+      {/* Template */}
+
+      <div className="rounded-3xl border bg-white p-8 shadow-sm">
+
+        <h3 className="text-2xl font-bold">
+          Template Only
+        </h3>
+
+        <p className="mt-6 text-5xl font-extrabold text-purple-700">
+          ₹2,999
+        </p>
+
+        <ul className="mt-8 space-y-3 text-gray-700">
+          <li>✅ React + Vite Source Code</li>
+          <li>✅ Tailwind CSS</li>
+          <li>✅ Responsive Design</li>
+          <li>✅ Documentation</li>
+          <li>✅ Commercial License</li>
+        </ul>
+
+        <a
+          href="https://wa.me/91YOURNUMBER?text=Hi%2C%20I%20want%20to%20buy%20AURELIA%20Template."
+          className="mt-10 block rounded-full bg-purple-700 py-4 text-center font-bold text-white"
+        >
+          Buy Template
+        </a>
+
+      </div>
+
+      {/* Recommended */}
+
+      <div className="rounded-3xl border-2 border-purple-700 bg-purple-50 p-8 shadow-xl">
+
+        <span className="rounded-full bg-purple-700 px-4 py-2 text-sm font-semibold text-white">
+          Recommended
+        </span>
+
+        <h3 className="mt-6 text-2xl font-bold">
+          Template + Setup
+        </h3>
+
+        <p className="mt-6 text-5xl font-extrabold text-purple-700">
+          ₹4,999
+        </p>
+
+        <ul className="mt-8 space-y-3 text-gray-700">
+          <li>✅ Everything in Template</li>
+          <li>✅ Installation</li>
+          <li>✅ Logo & Branding</li>
+          <li>✅ Basic Customization</li>
+          <li>✅ Launch Ready</li>
+        </ul>
+
+        <Link
+          to="/contact"
+          className="mt-10 block rounded-full bg-purple-700 py-4 text-center font-bold text-white"
+        >
+          Contact Sales
+        </Link>
+
+      </div>
+
+      {/* Complete */}
+
+      <div className="rounded-3xl border bg-white p-8 shadow-sm">
+
+        <h3 className="text-2xl font-bold">
+          Business Launch
+        </h3>
+
+        <p className="mt-6 text-5xl font-extrabold text-purple-700">
+          ₹9,999
+        </p>
+
+        <ul className="mt-8 space-y-3 text-gray-700">
+          <li>✅ Website Setup</li>
+          <li>✅ Retivio CRM Setup</li>
+          <li>✅ Domain Connection</li>
+          <li>✅ Basic Training</li>
+          <li>✅ Priority Support</li>
+        </ul>
+
+        <Link
+          to="/contact"
+          className="mt-10 block rounded-full border-2 border-purple-700 py-4 text-center font-bold text-purple-700"
+        >
+          Book Consultation
+        </Link>
+
+      </div>
+
+    </div>
+
+  </div>
+</section>
+<section className="bg-white py-24">
+  <div className="mx-auto max-w-5xl px-6 text-center">
+
+    <span className="rounded-full bg-green-100 px-5 py-2 text-sm font-semibold text-green-700">
+      🚀 Limited Launch Offer
+    </span>
+
+    <h2 className="mt-6 text-5xl font-bold">
+      Own AURELIA Today
+    </h2>
+
+    <p className="mt-6 text-lg text-gray-600">
+      Premium salon website template built for businesses that want a
+      luxury online presence.
+    </p>
+
+    <div className="mt-12 rounded-3xl border border-purple-200 bg-purple-50 p-10 shadow-lg">
+
+      <p className="text-gray-500 line-through text-2xl">
+        ₹4,999
+      </p>
+
+      <h3 className="mt-2 text-6xl font-extrabold text-purple-700">
+        ₹2,999
+      </h3>
+
+      <p className="mt-4 text-lg text-gray-700">
+        One-time payment • Lifetime access
+      </p>
+
+      <ul className="mt-10 space-y-3 text-left max-w-md mx-auto text-gray-700">
+        <li>✅ Complete React + Vite Source Code</li>
+        <li>✅ Tailwind CSS</li>
+        <li>✅ AI Generated Premium Images</li>
+        <li>✅ SEO Optimized</li>
+        <li>✅ Fully Responsive</li>
+        <li>✅ Documentation Included</li>
+        <li>✅ Commercial Use License</li>
+      </ul>
+
+      <div className="mt-10 flex flex-wrap justify-center gap-4">
+
+        <a
+          href="https://wa.me/918899267521?text=Hi%2C%20I'm%20interested%20in%20buying%20the%20AURELIA%20website%20template."
+          target="_blank"
+          rel="noopener noreferrer"
+          className="rounded-full bg-green-600 px-8 py-4 font-bold text-white hover:bg-green-700 transition"
+        >
+          Buy on WhatsApp
+        </a>
+
+        <a
+          href="https://aurelia-cyan.vercel.app/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="rounded-full border border-purple-700 px-8 py-4 font-bold text-purple-700"
+        >
+          Live Demo
+        </a>
+
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
       {/* Features */}
 
       <section className="mx-auto max-w-7xl px-6 py-24">
@@ -93,6 +276,71 @@ function Aurelia() {
           ))}
 
         </div>
+
+{/* Why Buy AURELIA */}
+
+<section className="bg-white py-24">
+  <div className="mx-auto max-w-7xl px-6">
+
+    <div className="text-center">
+      <h2 className="text-5xl font-bold">
+        Why Buy AURELIA?
+      </h2>
+
+      <p className="mt-6 max-w-3xl mx-auto text-lg text-gray-600">
+        Save weeks of design and development time with a premium,
+        production-ready salon website.
+      </p>
+    </div>
+
+    <div className="mt-16 grid gap-8 md:grid-cols-2">
+
+      <div className="rounded-3xl border bg-white p-8 shadow-sm">
+        <h3 className="text-2xl font-bold">
+          ⚡ Launch Faster
+        </h3>
+
+        <p className="mt-4 text-gray-600 leading-7">
+          Get your salon website online in hours instead of spending
+          weeks designing from scratch.
+        </p>
+      </div>
+
+      <div className="rounded-3xl border bg-white p-8 shadow-sm">
+        <h3 className="text-2xl font-bold">
+          🎨 Premium Design
+        </h3>
+
+        <p className="mt-4 text-gray-600 leading-7">
+          Luxury-inspired layout that builds trust and attracts
+          high-value clients.
+        </p>
+      </div>
+
+      <div className="rounded-3xl border bg-white p-8 shadow-sm">
+        <h3 className="text-2xl font-bold">
+          📱 Fully Responsive
+        </h3>
+
+        <p className="mt-4 text-gray-600 leading-7">
+          Looks beautiful on mobile, tablet and desktop devices.
+        </p>
+      </div>
+
+      <div className="rounded-3xl border bg-white p-8 shadow-sm">
+        <h3 className="text-2xl font-bold">
+          🚀 Ready for Business
+        </h3>
+
+        <p className="mt-4 text-gray-600 leading-7">
+          SEO-friendly, easy to customize and ready for deployment.
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+</section>
 
       </section>
       {/* What's Included */}
@@ -361,6 +609,74 @@ function Aurelia() {
               <p className="mt-3 text-gray-600">
                 Documentation is included, and additional support options
                 can be offered separately.
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      {/* Support & License */}
+
+      <section className="bg-gray-100 py-24">
+        <div className="mx-auto max-w-7xl px-6">
+
+          <div className="text-center">
+
+            <span className="rounded-full bg-purple-100 px-5 py-2 text-sm font-semibold text-purple-700">
+              Purchase Benefits
+            </span>
+
+            <h2 className="mt-6 text-5xl font-bold">
+              Buy With Confidence
+            </h2>
+
+            <p className="mx-auto mt-6 max-w-3xl text-lg text-gray-600">
+              Every purchase includes everything you need to launch your
+              salon website quickly and confidently.
+            </p>
+
+          </div>
+
+          <div className="mt-16 grid gap-8 md:grid-cols-3">
+
+            <div className="rounded-3xl border bg-white p-8 shadow-sm">
+              <div className="text-5xl">📄</div>
+
+              <h3 className="mt-6 text-2xl font-bold">
+                Commercial License
+              </h3>
+
+              <p className="mt-4 text-gray-600 leading-7">
+                Use AURELIA for your own salon or client projects in
+                accordance with the included license.
+              </p>
+            </div>
+
+            <div className="rounded-3xl border bg-white p-8 shadow-sm">
+              <div className="text-5xl">📘</div>
+
+              <h3 className="mt-6 text-2xl font-bold">
+                Complete Documentation
+              </h3>
+
+              <p className="mt-4 text-gray-600 leading-7">
+                Step-by-step installation and customization guide to help
+                you get started quickly.
+              </p>
+            </div>
+
+            <div className="rounded-3xl border bg-white p-8 shadow-sm">
+              <div className="text-5xl">🚀</div>
+
+              <h3 className="mt-6 text-2xl font-bold">
+                Lifetime Access
+              </h3>
+
+              <p className="mt-4 text-gray-600 leading-7">
+                One-time purchase with lifetime access to the template
+                version you purchase.
               </p>
             </div>
 
