@@ -17,7 +17,8 @@ import BlogPost from "./pages/BlogPost";
 import Templates from "./pages/Templates";
 import Aurelia from "./pages/Aurelia";
 import ScrollToTop from "./components/ScrollToTop";
-
+import ProjectBrief from "./pages/ProjectBrief";
+import ProjectSubmitted from "./pages/ProjectSubmitted";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -63,7 +64,11 @@ return (
       <Route path="/blog/:slug" element={<BlogPost />} />
       <Route path="/templates" element={<Templates />} />
       <Route path="/templates/aurelia" element={<Aurelia />} />
-
+<Route path="/project-brief" element={<ProjectBrief />} />
+<Route
+  path="/project-submitted"
+  element={<ProjectSubmitted />}
+/>
       <Route
         path="/dashboard"
         element={

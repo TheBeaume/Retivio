@@ -37,23 +37,25 @@ function Aurelia() {
             responsive, SEO-friendly and easy to customize.
           </p>
 
-          <div className="mt-12 flex flex-wrap justify-center gap-5">
+<div className="mt-12 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
 
-            <a
-              href="https://aurelia-cyan.vercel.app/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rounded-full bg-white px-8 py-4 font-bold text-purple-700 transition hover:scale-105"
-            >
-              Live Demo
-            </a>
+  <a
+    href="https://aurelia-cyan.vercel.app/"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="rounded-full bg-white px-8 py-4 font-bold text-purple-700 transition hover:scale-105"
+  >
+    Live Demo
+  </a>
 
-            <Link
-              to="/contact"
-              className="rounded-full border border-white px-8 py-4 font-bold transition hover:bg-white hover:text-purple-700"
-            >
-              Contact Sales
-            </Link>
+<div className="mt-10">
+<Link
+  to="/project-brief"
+className="rounded-full border-2 border-white px-8 py-4 font-bold text-white transition hover:bg-white hover:text-purple-700"
+>
+  Get Started
+</Link>
+</div>
 
           </div>
 
@@ -102,7 +104,7 @@ function Aurelia() {
         </ul>
 
         <a
-          href="https://wa.me/91YOURNUMBER?text=Hi%2C%20I%20want%20to%20buy%20AURELIA%20Template."
+href="https://wa.me/918899267521?text=Hi%20Retivio%20Team,%20I'm%20interested%20in%20purchasing%20the%20AURELIA%20Luxury%20Salon%20Website%20Template.%20Please%20share%20the%20next%20steps."
           className="mt-10 block rounded-full bg-purple-700 py-4 text-center font-bold text-white"
         >
           Buy Template
@@ -163,13 +165,14 @@ function Aurelia() {
           <li>✅ Priority Support</li>
         </ul>
 
-        <Link
-          to="/contact"
-          className="mt-10 block rounded-full border-2 border-purple-700 py-4 text-center font-bold text-purple-700"
-        >
-          Book Consultation
-        </Link>
-
+<div className="mt-10">
+  <Link
+    to="/project-brief"
+    className="block w-full rounded-full border-2 border-purple-700 py-4 text-center font-bold text-purple-700 transition duration-300 hover:bg-purple-700 hover:text-white"
+  >
+    Get Started
+  </Link>
+</div>
       </div>
 
     </div>
@@ -744,13 +747,12 @@ function Aurelia() {
               Live Demo
             </a>
 
-            <Link
-              to="/contact"
-              className="rounded-full border border-white px-8 py-4 font-bold transition hover:bg-white hover:text-slate-900"
-            >
-              Contact Sales
-            </Link>
-
+<Link
+  to="/project-brief"
+  className="rounded-full border border-white px-8 py-4 font-bold transition hover:bg-white hover:text-slate-900"
+>
+  Get Started
+</Link>
           </div>
 
         </div>
