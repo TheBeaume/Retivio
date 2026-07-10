@@ -24,6 +24,23 @@ const navigate = useNavigate();
 navigate("/dashboard");
 
   }
+async function forgotPassword() {
+  if (!email.trim()) {
+    alert("Please enter your email address first.");
+    return;
+  }
+
+  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: "https://retivio.in/reset-password",
+  });
+
+  if (error) {
+    alert(error.message);
+  } else {
+    alert("Password reset email has been sent. Please check your inbox.");
+  }
+}
+
 async function resendVerification() {
   if (!email) {
     alert("Please enter your email address first.");
@@ -105,13 +122,13 @@ return (
 
 <div className="space-y-2">
 
-  <button
-    type="button"
-    className="text-sm text-gray-500 hover:text-purple-700"
-  >
-    Forgot Password?
-  </button>
-
+<button
+  type="button"
+  onClick={forgotPassword}
+  className="text-sm text-gray-500 hover:text-purple-700"
+>
+  Forgot Password?
+</button>
   <br />
 
   <button

@@ -16,6 +16,7 @@ import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import Templates from "./pages/Templates";
 import Aurelia from "./pages/Aurelia";
+import ResetPassword from "./pages/ResetPassword";
 import ScrollToTop from "./components/ScrollToTop";
 import ProjectBrief from "./pages/ProjectBrief";
 import ProjectSubmitted from "./pages/ProjectSubmitted";
@@ -64,6 +65,8 @@ return (
       <Route path="/blog/:slug" element={<BlogPost />} />
       <Route path="/templates" element={<Templates />} />
       <Route path="/templates/aurelia" element={<Aurelia />} />
+<Route path="/reset-password" element={<ResetPassword />} />
+
 <Route path="/project-brief" element={<ProjectBrief />} />
 <Route
   path="/project-submitted"
