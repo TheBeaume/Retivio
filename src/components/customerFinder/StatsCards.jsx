@@ -33,7 +33,7 @@ function StatsCards({
 
         <div
           key={card.title}
-          className="bg-white rounded-2xl border shadow p-5"
+          className="bg-gray-900 rounded-2xl border shadow p-5"
         >
 
           <p className="text-sm text-gray-500">

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Country } from "country-state-city";
+import { City } from "country-state-city";
 
 import SearchPanel from "./SearchPanel";
 import StatsCards from "./StatsCards";
@@ -7,42 +7,71 @@ import ResultsList from "./ResultsList";
 import Pagination from "./Pagination";
 
 import { searchBusinesses } from "../../services/customerFinderService";
+import { supabase } from "../../lib/supabase";
+
 function CustomerFinder() {
   const [keyword, setKeyword] = useState("");
   const [country, setCountry] = useState("IN");
   const [countries, setCountries] = useState([]);
-
+  const [cities, setCities] = useState([]);
   const [city, setCity] = useState("");
-  const [pincode, setPincode] = useState("");
-
   const [category, setCategory] = useState("Salon");
-  const [radius, setRadius] = useState(2000);
+  const [resultFilter, setResultFilter] = useState("all");
 
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState([]);
-
   const [currentPage, setCurrentPage] = useState(1);
 
   const pageSize = 10;
 
   useEffect(() => {
-    setCountries(Country.getAllCountries());
+    let active = true;
+
+    const loadCountries = async () => {
+      try {
+        const { Country } = await import("country-state-city");
+
+        if (active) {
+          setCountries(Country.getAllCountries());
+        }
+      } catch (error) {
+        console.error("Country list load failed:", error);
+      }
+    };
+
+    loadCountries();
+
+    return () => {
+      active = false;
+    };
   }, []);
 
+  useEffect(() => {
+    const countryCities = City.getCitiesOfCountry(country) || [];
+    setCities(countryCities);
+    setCity("");
+    setResults([]);
+    setCurrentPage(1);
+  }, [country]);
+
   const handleSearch = async () => {
+    if (!city) {
+      alert("Please select a city.");
+      return;
+    }
+
     setLoading(true);
 
     try {
-const data = await searchBusinesses({
-  keyword,
-  location: pincode || city,
-  country,
-  category,
-  radius,
-});
+      const data = await searchBusinesses({
+        keyword,
+        location: city,
+        country,
+        category,
+      });
+
       setResults(data.businesses || []);
       setCurrentPage(1);
-
     } catch (err) {
       alert(err.message);
     } finally {
@@ -52,108 +81,148 @@ const data = await searchBusinesses({
 
   const phoneCount = results.filter((b) => b.phone).length;
   const websiteCount = results.filter((b) => b.website).length;
-  const totalPages = Math.ceil(results.length / pageSize);
 
-const handleCurrentLocation = () => {
-  if (!navigator.geolocation) {
-    alert("Geolocation is not supported.");
-    return;
-  }
+  const filteredResults = results.filter((business) => {
+    if (resultFilter === "phone") return Boolean(business.phone);
+    if (resultFilter === "no-phone") return !business.phone;
+    if (resultFilter === "website") return Boolean(business.website);
+    if (resultFilter === "no-website") return !business.website;
+    if (resultFilter === "email") return Boolean(business.email);
+    if (resultFilter === "no-email") return !business.email;
+    return true;
+  });
 
-  navigator.geolocation.getCurrentPosition(
-    async (position) => {
-      try {
-        const { latitude, longitude } = position.coords;
+  const totalPages = Math.ceil(filteredResults.length / pageSize);
 
-        const response = await fetch(
-          `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`
-        );
+  const handleSaveLead = async (business) => {
+    try {
+      const { data: userData, error: userError } =
+        await supabase.auth.getUser();
 
-        const data = await response.json();
-
-        setCountry(
-          data.address?.country_code?.toUpperCase() || "IN"
-        );
-
-        setCity(
-          data.address?.city ||
-          data.address?.town ||
-          data.address?.village ||
-          ""
-        );
-
-        setPincode(
-          data.address?.postcode || ""
-        );
-
-      } catch (err) {
-        alert("Unable to detect location.");
+      if (userError || !userData?.user) {
+        alert("Please login before saving leads.");
+        return;
       }
-    },
-    () => {
-      alert("Location permission denied.");
+
+      const { error } = await supabase
+        .from("pravi_leads")
+        .insert({
+          owner_id: userData.user.id,
+          source_id: String(business.id),
+          name: business.name,
+          category: business.category || null,
+          phone: business.phone || null,
+          email: business.email || null,
+          website: business.website || null,
+          address: business.address || null,
+          latitude: business.latitude || null,
+          longitude: business.longitude || null,
+          status: "New",
+          product: "Unassigned",
+        });
+
+      if (error) {
+        if (error.code === "23505") {
+          alert(
+            "Duplicate lead. This business or phone number is already saved."
+          );
+          return;
+        }
+
+        console.error("Save lead error:", error);
+        alert(error.message || "Unable to save lead.");
+        return;
+      }
+
+      window.dispatchEvent(
+        new Event("pravi-leads-updated")
+      );
+
+      alert("Lead saved to Sales Pipeline.");
+    } catch (error) {
+      console.error("Save lead failed:", error);
+      alert("Unable to save lead.");
     }
-  );
-};
-  const handleSaveLead = (business) => {
-    console.log("Save Lead:", business);
   };
 
   return (
     <div className="space-y-6">
-
-      <div className="bg-gradient-to-r from-purple-700 via-violet-600 to-indigo-600 rounded-3xl p-6 text-white shadow-xl">
-
-        <h1 className="text-3xl font-bold">
-          🚀 Customer Finder
+      <div>
+        <h1 className="text-3xl md:text-4xl font-bold">
+          Lead Finder
         </h1>
 
-        <p className="mt-3 text-purple-100 max-w-2xl">
-          Discover nearby businesses and grow your salon with smart lead generation.
+        <p className="text-gray-400 mt-2">
+          Discover businesses, identify opportunities and build your sales pipeline.
         </p>
-
       </div>
 
-<SearchPanel
-  keyword={keyword}
-  setKeyword={setKeyword}
-  country={country}
-  setCountry={setCountry}
-  countries={countries}
-  city={city}
-  setCity={setCity}
-  pincode={pincode}
-  setPincode={setPincode}
-  category={category}
-  setCategory={setCategory}
-  radius={radius}
-  setRadius={setRadius}
-  loading={loading}
-  onSearch={handleSearch}
-  onCurrentLocation={handleCurrentLocation}
-/>
+      <SearchPanel
+        keyword={keyword}
+        setKeyword={setKeyword}
+        country={country}
+        setCountry={setCountry}
+        countries={countries}
+        city={city}
+        setCity={setCity}
+        cities={cities}
+        category={category}
+        setCategory={setCategory}
+        loading={loading}
+        onSearch={handleSearch}
+      />
 
-<StatsCards
-  total={results.length}
-  phoneCount={phoneCount}
-  websiteCount={websiteCount}
-  currentPage={currentPage}
-  totalPages={totalPages}
-/>
-<ResultsList
-  results={results}
-  currentPage={currentPage}
-  pageSize={pageSize}
-  onSave={handleSaveLead}
-/>
+      {results.length > 0 && (
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <div>
+            <p className="text-sm font-semibold text-white">
+              Results
+            </p>
+            <p className="text-sm text-gray-400">
+              Showing {filteredResults.length} of {results.length} businesses
+            </p>
+          </div>
 
-<Pagination
-  currentPage={currentPage}
-  totalPages={totalPages}
-  onPrevious={() => setCurrentPage((p) => p - 1)}
-  onNext={() => setCurrentPage((p) => p + 1)}
-/>
+          <select
+            value={resultFilter}
+            onChange={(e) => {
+              setResultFilter(e.target.value);
+              setCurrentPage(1);
+            }}
+            className="bg-gray-900 border border-white/10 text-white rounded-xl px-4 py-3 outline-none focus:border-purple-500"
+          >
+            <option value="all">All Businesses</option>
+            <option value="phone">Phone Number Available</option>
+            <option value="no-phone">No Phone Number</option>
+            <option value="website">Website Available</option>
+            <option value="no-website">No Website</option>
+            <option value="email">Email Available</option>
+            <option value="no-email">No Email</option>
+          </select>
+        </div>
+      )}
 
+      <StatsCards
+        total={filteredResults.length}
+        phoneCount={phoneCount}
+        websiteCount={websiteCount}
+        currentPage={currentPage}
+        totalPages={totalPages}
+      />
+
+      <ResultsList
+        results={filteredResults}
+        currentPage={currentPage}
+        pageSize={pageSize}
+        onSave={handleSaveLead}
+      />
+
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPrevious={() => setCurrentPage((p) => p - 1)}
+        onNext={() => setCurrentPage((p) => p + 1)}
+      />
     </div>
   );
 }

@@ -9,7 +9,7 @@ function ResultsList({
 }) {
   if (!results.length) {
     return (
-      <div className="bg-white rounded-2xl shadow border p-12 text-center">
+      <div className="bg-gray-900 rounded-2xl shadow border p-12 text-center">
 
         <div className="text-6xl">📍</div>
 

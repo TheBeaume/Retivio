@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { createWebsiteProject } from "../services/websiteProjectService";
 
 export default function ProjectBrief() {
 
@@ -48,9 +49,16 @@ const navigate = useNavigate();
   async function handleSubmit(e) {
     e.preventDefault();
 
-    console.log(formData);
-navigate("/project-submitted");
+const { error } = await createWebsiteProject(formData);
 
+if (error) {
+console.log(error);
+
+alert(JSON.stringify(error, null, 2));
+  return;
+}
+
+navigate("/project-submitted");
   }
 
   return (

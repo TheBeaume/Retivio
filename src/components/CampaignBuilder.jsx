@@ -29,7 +29,8 @@ const [filters, setFilters] = useState({
 });
 const [businessName, setBusinessName] = useState("Your Salon");
 const [selectedCustomers, setSelectedCustomers] = useState([]);
-
+const [campaignQueue, setCampaignQueue] = useState([]);
+const [currentCampaignIndex, setCurrentCampaignIndex] = useState(0);
 const [conversionRate, setConversionRate] = useState(30);
 const [averageBill, setAverageBill] = useState(700);
 const [showPreview, setShowPreview] = useState(false);
@@ -206,21 +207,53 @@ ${closing}`;
   }
 }
 const openWhatsApp = () => {
-  if (filteredCustomers.length === 0) {
+  const customersToSend = filteredCustomers.filter((customer) =>
+    selectedCustomers.includes(customer.id)
+  );
+
+  if (customersToSend.length === 0) {
     alert("Please select at least one customer.");
     return;
   }
 
-  const customer = previewCustomer;
-  const phone = (customer.phone || "").replace(/\D/g, "");
+  setCampaignQueue(customersToSend);
+  setCurrentCampaignIndex(0);
 
-const message = generateMessage(customer);
+  openCustomerWhatsApp(customersToSend[0]);
+};
 
+function openCustomerWhatsApp(customer) {
+  if (!customer?.phone) {
+    alert("Customer phone number not found.");
+    return;
+  }
+
+  let phone = customer.phone.replace(/\D/g, "");
+
+  if (phone.length === 10) {
+    phone = `91${phone}`;
+  }
+
+  const message = generateMessage(customer);
 
   window.open(
-    `https://wa.me/91${phone}?text=${encodeURIComponent(message)}`,
+    `https://wa.me/${phone}?text=${encodeURIComponent(message)}`,
     "_blank"
   );
+}
+
+const openNextCustomer = () => {
+  const nextIndex = currentCampaignIndex + 1;
+
+  if (nextIndex >= campaignQueue.length) {
+    alert("Campaign queue completed.");
+    setCampaignQueue([]);
+    setCurrentCampaignIndex(0);
+    return;
+  }
+
+  setCurrentCampaignIndex(nextIndex);
+  openCustomerWhatsApp(campaignQueue[nextIndex]);
 };
   return (
     <div className="bg-white rounded-xl shadow p-6 mt-6">
@@ -543,7 +576,14 @@ setAverageBill(e.target.value)
 >
   Open WhatsApp
 </button>
-
+{campaignQueue.length > 0 && (
+  <button
+    onClick={openNextCustomer}
+    className="bg-gray-900 hover:bg-black text-white px-6 py-3 rounded-lg"
+  >
+    Next Customer ({currentCampaignIndex + 1}/{campaignQueue.length})
+  </button>
+)}
       </div>
 <div className="mt-8 text-sm text-gray-500 border-t pt-4">
         <p>
