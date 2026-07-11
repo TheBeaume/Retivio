@@ -3,11 +3,11 @@ import { Link } from "react-router-dom";
 import { Menu, X, ArrowRight } from "lucide-react";
 
 const navItems = [
-  { label: "Product", href: "/#product" },
-  { label: "Solutions", href: "/#features" },
-  { label: "How it works", href: "/#how-it-works" },
-  { label: "Products", href: "/#products" },
-  { label: "FAQ", href: "/#faq" },
+  { label: "Product", href: "#product" },
+  { label: "Solutions", href: "#features" },
+  { label: "How it works", href: "#how-it-works" },
+  { label: "Products", href: "#products" },
+  { label: "FAQ", href: "#faq" },
 ];
 
 export default function Navbar() {

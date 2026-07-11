@@ -1,91 +1,99 @@
-import React from "react";
+import {
+  Users,
+  CalendarDays,
+  BellRing,
+  ReceiptText,
+  BarChart3,
+  Search,
+  Megaphone,
+  MessageCircle,
+  ArrowUpRight,
+} from "lucide-react";
 
 const features = [
   {
-    icon: "👥",
+    icon: Users,
     title: "Customer Management",
-    desc: "Manage customer profiles, visit history and spending in one place.",
+    desc: "Keep customer profiles, visit activity and spending context organised in one place.",
   },
   {
-    icon: "📅",
-    title: "Smart Appointments",
-    desc: "Schedule appointments with an easy-to-use calendar.",
+    icon: CalendarDays,
+    title: "Appointments",
+    desc: "Organise upcoming bookings and stay clear on the salon's daily schedule.",
   },
   {
-    icon: "💬",
+    icon: BellRing,
+    title: "Follow-ups",
+    desc: "See customers who need attention and create a more consistent retention workflow.",
+  },
+  {
+    icon: ReceiptText,
+    title: "Billing & Invoices",
+    desc: "Create bills, manage service transactions and keep customer activity connected.",
+  },
+  {
+    icon: BarChart3,
+    title: "Reports & Insights",
+    desc: "Understand revenue, customer activity and business performance with clearer reporting.",
+  },
+  {
+    icon: Search,
+    title: "Customer Finder",
+    desc: "Use built-in growth tools to discover potential business opportunities and prospects.",
+  },
+  {
+    icon: Megaphone,
+    title: "Campaigns",
+    desc: "Plan targeted customer outreach and bring marketing activity closer to your CRM.",
+  },
+  {
+    icon: MessageCircle,
     title: "WhatsApp Booking",
-    desc: "Allow customers to request appointments through WhatsApp.",
-  },
-  {
-    icon: "🔔",
-    title: "Automatic Follow-ups",
-    desc: "Reconnect inactive customers with reminders and campaigns.",
-  },
-  {
-    icon: "📊",
-    title: "Reports & Analytics",
-    desc: "Track revenue, customer growth and business performance.",
-  },
-  {
-    icon: "🎁",
-    title: "Loyalty Program",
-    desc: "Reward your best customers and increase repeat visits.",
+    desc: "Support WhatsApp-led booking workflows from a platform designed around salon operations.",
   },
 ];
 
 export default function Features() {
   return (
-    <section
-      id="features"
-      className="py-20 bg-gray-50"
-    >
-      <div className="max-w-7xl mx-auto px-6">
+    <section id="features" className="bg-slate-950 py-20 text-white sm:py-24">
+      <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+        <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
+          <div>
+            <p className="text-sm font-bold uppercase tracking-[0.2em] text-purple-400">
+              One connected platform
+            </p>
+            <h2 className="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-5xl">
+              Everything your salon needs to stay organised and move forward.
+            </h2>
+          </div>
 
-        <div className="text-center mb-14">
-
-          <span className="text-purple-600 font-semibold uppercase tracking-widest">
-            Features
-          </span>
-
-          <h2 className="text-4xl font-extrabold mt-3">
-            Everything Your Salon Needs
-          </h2>
-
-          <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
-            Retivio brings customer management, appointments,
-            WhatsApp booking, follow-ups and business insights
-            into one powerful platform.
+          <p className="max-w-2xl text-lg leading-8 text-slate-400 lg:justify-self-end">
+            From the first customer visit to billing, follow-ups and
+            growth, Retivio keeps the work that matters closer together.
           </p>
-
         </div>
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-
-          {features.map((feature, index) => (
-
+        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {features.map(({ icon: Icon, title, desc }) => (
             <div
-              key={index}
-              className="bg-white rounded-3xl p-8 shadow hover:shadow-xl hover:-translate-y-2 transition duration-300"
+              key={title}
+              className="group rounded-2xl border border-white/10 bg-white/[0.04] p-6 transition duration-300 hover:-translate-y-1 hover:border-purple-500/50 hover:bg-white/[0.07]"
             >
-
-              <div className="text-5xl">
-                {feature.icon}
+              <div className="flex items-start justify-between">
+                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-purple-500/15 text-purple-300">
+                  <Icon size={21} />
+                </div>
+                <ArrowUpRight
+                  size={18}
+                  className="text-slate-600 transition group-hover:text-purple-300"
+                />
               </div>
 
-              <h3 className="mt-6 text-2xl font-bold">
-                {feature.title}
-              </h3>
-
-              <p className="mt-4 text-gray-600 leading-7">
-                {feature.desc}
-              </p>
-
+              <h3 className="mt-6 text-lg font-bold">{title}</h3>
+              <p className="mt-3 text-sm leading-6 text-slate-400">{desc}</p>
             </div>
-
           ))}
-
         </div>
-
       </div>
     </section>
   );

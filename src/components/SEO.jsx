@@ -2,15 +2,15 @@ import { Helmet } from "react-helmet-async";
 
 const SITE_URL = "https://retivio.in";
 
-const DEFAULT_TITLE = "Retivio | AI-Powered Salon CRM";
+const DEFAULT_TITLE = "Retivio | Salon CRM & Business Growth Software";
 
 const DEFAULT_DESCRIPTION =
-  "Retivio is an AI-powered Salon CRM designed for salons and spas to manage customers, appointments, billing, WhatsApp follow-ups, marketing, loyalty programs and business growth.";
+  "Retivio is a salon CRM and business growth platform designed for beauty businesses to manage customers, appointments, follow-ups, billing, reports and salon growth from one place.";
 
 const DEFAULT_IMAGE = `${SITE_URL}/og-image.jpg`;
 
 const DEFAULT_KEYWORDS =
-  "Salon CRM, Salon Management Software, Salon Software India, Beauty Salon CRM, Spa CRM, AI Salon CRM, Salon Appointment Software, Salon Billing Software, Salon POS, Salon Customer Management, Salon WhatsApp CRM, Salon Marketing Software, Salon Loyalty Software, Retivio";
+  "Salon CRM, Salon Management Software, Salon Software India, Beauty Salon CRM, Spa CRM, Salon Appointment Software, Salon Billing Software, Salon Customer Management, Salon Follow Up Software, Salon Business Growth Software, Retivio";
 
 export default function SEO({
   title = DEFAULT_TITLE,

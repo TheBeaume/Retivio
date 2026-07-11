@@ -4,9 +4,9 @@ const footerGroups = [
   {
     title: "Product",
     links: [
-      { label: "Features", href: "/#features", anchor: true },
-      { label: "How it works", href: "/#how-it-works", anchor: true },
-      { label: "Products", href: "/#products", anchor: true },
+      { label: "Features", href: "#features", anchor: true },
+      { label: "How it works", href: "#how-it-works", anchor: true },
+      { label: "Products", href: "#products", anchor: true },
       { label: "Start free", href: "/signup" },
     ],
   },
