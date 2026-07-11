@@ -5,6 +5,18 @@ import { formatCurrency } from "../utils/formatCurrency";
 
 function CustomerTable({ customers }) {
 const [selectedCustomer, setSelectedCustomer] = useState(null);
+const [currentPage, setCurrentPage] = useState(1);
+const PAGE_SIZE = 8;
+
+const totalPages = Math.max(
+  1,
+  Math.ceil(customers.length / PAGE_SIZE)
+);
+
+const visibleCustomers = customers.slice(
+  (currentPage - 1) * PAGE_SIZE,
+  currentPage * PAGE_SIZE
+);
 const settings = useBusinessSettings();
   const sendWhatsApp = (customer) => {
     let offer = "10% OFF";
@@ -97,7 +109,7 @@ return (
           </thead>
 
           <tbody>
-            {customers.map((c, i) => (
+            {visibleCustomers.map((c, i) => (
               <tr key={i} className="hover:bg-gray-50">
 <td className="border p-2">
   <button
@@ -158,6 +170,44 @@ return (
           </tbody>
         </table>
       </div>
+
+      {customers.length > PAGE_SIZE && (
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mt-5 pt-5 border-t border-gray-100">
+          <p className="text-sm text-gray-500">
+            Showing {(currentPage - 1) * PAGE_SIZE + 1}–
+            {Math.min(currentPage * PAGE_SIZE, customers.length)} of{" "}
+            {customers.length} customers
+          </p>
+
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() =>
+                setCurrentPage((page) => Math.max(1, page - 1))
+              }
+              disabled={currentPage === 1}
+              className="border border-gray-200 px-4 py-2 rounded-lg text-sm font-medium disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              Previous
+            </button>
+
+            <span className="text-sm text-gray-500">
+              Page {currentPage} of {totalPages}
+            </span>
+
+            <button
+              onClick={() =>
+                setCurrentPage((page) =>
+                  Math.min(totalPages, page + 1)
+                )
+              }
+              disabled={currentPage === totalPages}
+              className="border border-gray-200 px-4 py-2 rounded-lg text-sm font-medium disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      )}
     </div>
 
     {selectedCustomer && (

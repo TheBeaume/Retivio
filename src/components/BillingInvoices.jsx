@@ -4,6 +4,7 @@ import useBusinessSettings from "../hooks/useBusinessSettings";
 import { formatCurrency } from "../utils/formatCurrency";
 import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
+import ManualBilling from "./ManualBilling";
 
 const PAGE_SIZE = 6;
 
@@ -285,7 +286,6 @@ export default function BillingInvoices() {
           user_id: user.id,
           customer_id: customer.id,
           appointment_id: appointment.id,
-          transaction_id: transaction?.id || null,
           invoice_number: invoiceNumber,
 
           customer_name: customer.name,
@@ -710,6 +710,14 @@ export default function BillingInvoices() {
           Search customers, review service history and manage invoices.
         </p>
       </div>
+
+      <ManualBilling
+        onInvoiceCreated={() => {
+          if (customer?.phone) {
+            searchCustomer(customer.phone);
+          }
+        }}
+      />
 
       <div className="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm">
         <label className="text-sm font-medium text-gray-700">

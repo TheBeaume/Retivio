@@ -1,4 +1,5 @@
 import React from "react";
+import { Scissors } from "lucide-react";
 import useBusinessSettings from "../hooks/useBusinessSettings";
 import { formatCurrency } from "../utils/formatCurrency";
 
@@ -15,7 +16,6 @@ function RecentActivity({ customers }) {
 
   return (
     <div className="bg-white rounded-2xl shadow-sm border p-6">
-
       <div className="flex items-center justify-between mb-5">
         <h2 className="text-xl font-bold">
           Recent Activity
@@ -28,45 +28,40 @@ function RecentActivity({ customers }) {
 
       {recentCustomers.length === 0 ? (
         <div className="text-center py-10 text-gray-500">
-          <p className="text-4xl mb-2"></p>
+          <Scissors
+            size={34}
+            className="mx-auto mb-3 text-gray-300"
+          />
           <p>No recent activity yet.</p>
         </div>
       ) : (
         <div className="space-y-4">
-
           {recentCustomers.map((c) => (
-
             <div
               key={c.id}
               className="flex items-center justify-between border-b last:border-0 pb-4"
             >
-
-              <div className="flex items-center gap-3">
-
-                <div className="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center text-xl">
-                  
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="w-12 h-12 shrink-0 rounded-full bg-purple-100 text-purple-700 flex items-center justify-center">
+                  <Scissors size={20} />
                 </div>
 
-                <div>
-
-                  <h3 className="font-semibold">
+                <div className="min-w-0">
+                  <h3 className="font-semibold truncate">
                     {c.name}
                   </h3>
 
-                  <p className="text-sm text-gray-500">
-                    {c.service}
+                  <p className="text-sm text-gray-500 truncate">
+                    {c.service || "Service unavailable"}
                   </p>
 
                   <p className="text-xs text-gray-400 mt-1">
                     Last Visit: {c.lastVisit || "N/A"}
                   </p>
-
                 </div>
-
               </div>
 
-              <div className="text-right">
-
+              <div className="text-right shrink-0 ml-3">
                 <p className="font-bold text-green-600">
                   {formatCurrency(
                     c.totalSpend || 0,
@@ -79,16 +74,11 @@ function RecentActivity({ customers }) {
                 <span className="inline-block mt-2 text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded-full">
                   Completed
                 </span>
-
               </div>
-
             </div>
-
           ))}
-
         </div>
       )}
-
     </div>
   );
 }

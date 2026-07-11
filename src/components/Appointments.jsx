@@ -716,7 +716,7 @@ onClick={() => {
 
     <p> {customerInfo.name}</p>
     <p> {customerInfo.phone}</p>
-    <p>⭐ {customerInfo.loyalty}</p>
+    <p>Loyalty: {customerInfo.loyalty}</p>
     <p> Last Service: {customerInfo.service}</p>
     <p> Visits: {customerInfo.visits}</p>
 

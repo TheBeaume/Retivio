@@ -47,7 +47,7 @@ export default function CustomerLookup() {
 
           <p> {customer.name}</p>
           <p> {customer.phone}</p>
-          <p>⭐ {customer.loyalty}</p>
+          <p>Loyalty: {customer.loyalty}</p>
           <p> {customer.service}</p>
         </div>
       ) : (

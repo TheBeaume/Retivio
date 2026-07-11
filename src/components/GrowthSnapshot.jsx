@@ -1,4 +1,10 @@
 import React from "react";
+import {
+  Repeat2,
+  TrendingUp,
+  UserRound,
+  WalletCards,
+} from "lucide-react";
 import useBusinessSettings from "../hooks/useBusinessSettings";
 import { formatCurrency } from "../utils/formatCurrency";
 
@@ -35,19 +41,21 @@ function GrowthSnapshot({ customers }) {
 
   const stats = [
     {
-      icon: "",
+      icon: UserRound,
       title: "Customers",
       value: totalCustomers,
       color: "bg-blue-50 border-blue-100",
+      iconStyle: "bg-blue-100 text-blue-700",
     },
     {
-      icon: "",
+      icon: Repeat2,
       title: "Visits",
       value: totalVisits,
       color: "bg-green-50 border-green-100",
+      iconStyle: "bg-green-100 text-green-700",
     },
     {
-      icon: "",
+      icon: WalletCards,
       title: "Avg Spend",
       value: formatCurrency(
         avgSpend,
@@ -56,18 +64,19 @@ function GrowthSnapshot({ customers }) {
         settings?.decimal_places
       ),
       color: "bg-yellow-50 border-yellow-100",
+      iconStyle: "bg-yellow-100 text-yellow-700",
     },
     {
-      icon: "",
+      icon: TrendingUp,
       title: "Repeat Rate",
       value: `${repeatRate}%`,
       color: "bg-purple-50 border-purple-100",
+      iconStyle: "bg-purple-100 text-purple-700",
     },
   ];
 
   return (
     <div className="bg-white rounded-2xl shadow-sm border p-6">
-
       <div className="flex items-center justify-between mb-5">
         <h2 className="text-xl font-bold">
           Growth Snapshot
@@ -79,32 +88,31 @@ function GrowthSnapshot({ customers }) {
       </div>
 
       <div className="grid grid-cols-2 gap-4">
+        {stats.map((stat) => {
+          const Icon = stat.icon;
 
-        {stats.map((stat, index) => (
+          return (
+            <div
+              key={stat.title}
+              className={`${stat.color} border rounded-2xl p-5 hover:shadow-md transition`}
+            >
+              <div
+                className={`w-10 h-10 rounded-xl flex items-center justify-center ${stat.iconStyle}`}
+              >
+                <Icon size={20} strokeWidth={2.2} />
+              </div>
 
-          <div
-            key={index}
-            className={`${stat.color} border rounded-2xl p-5 hover:shadow-md transition`}
-          >
+              <p className="text-sm text-gray-500 mt-3">
+                {stat.title}
+              </p>
 
-            <div className="text-3xl">
-              {stat.icon}
+              <h3 className="text-2xl font-bold mt-1">
+                {stat.value}
+              </h3>
             </div>
-
-            <p className="text-sm text-gray-500 mt-3">
-              {stat.title}
-            </p>
-
-            <h3 className="text-2xl font-bold mt-1">
-              {stat.value}
-            </h3>
-
-          </div>
-
-        ))}
-
+          );
+        })}
       </div>
-
     </div>
   );
 }

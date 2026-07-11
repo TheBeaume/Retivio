@@ -10,7 +10,7 @@ return (
   <>
     <div className="mt-6 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-2xl p-6 shadow-lg">
       <h2 className="text-2xl font-bold">
-        ⭐ Enjoying Retivio Beta?
+        Enjoying Retivio Beta?
       </h2>
 
       <p className="mt-2 text-purple-100">

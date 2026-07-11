@@ -26,7 +26,7 @@ const settings = useBusinessSettings();
       <div className="mt-6 space-y-3">
 
         <div className="flex justify-between">
-          <span>⭐ Loyalty</span>
+          <span>Loyalty</span>
           <span className="font-semibold text-yellow-600">
             Gold
           </span>

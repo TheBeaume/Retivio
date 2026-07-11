@@ -54,18 +54,18 @@ async function handleSubmit() {
         </p>
 
 <div className="mt-5">
-  <label className="font-medium">⭐ Rating</label>
+  <label className="font-medium">Rating</label>
 
   <select
     value={rating}
     onChange={(e) => setRating(Number(e.target.value))}
     className="w-full border rounded-xl p-3 mt-2"
   >
-    <option value={5}>⭐⭐⭐⭐⭐ Excellent</option>
-    <option value={4}>⭐⭐⭐⭐ Good</option>
-    <option value={3}>⭐⭐⭐ Average</option>
-    <option value={2}>⭐⭐ Needs Improvement</option>
-    <option value={1}>⭐ Poor</option>
+    <option value={5}>5 - Excellent</option>
+    <option value={4}>4 - Good</option>
+    <option value={3}>3 - Average</option>
+    <option value={2}>2 - Needs Improvement</option>
+    <option value={1}>1 - Poor</option>
   </select>
 </div>
 

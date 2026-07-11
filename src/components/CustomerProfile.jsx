@@ -101,7 +101,7 @@ useEffect(() => {
 
               <p> Next Due: {customer.nextDue}</p>
 
-              <p>⭐ Loyalty: {customer.loyalty}</p>
+              <p>Loyalty: {customer.loyalty}</p>
 
               <p> Status: {customer.status}</p>
 
