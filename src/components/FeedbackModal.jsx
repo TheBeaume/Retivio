@@ -27,7 +27,7 @@ async function handleSubmit() {
     return;
   }
 
-  alert("🎉 Thank you for your feedback!");
+  alert(" Thank you for your feedback!");
   onClose();
 } 
 
@@ -38,14 +38,14 @@ async function handleSubmit() {
 
         <div className="flex justify-between items-center">
           <h2 className="text-2xl font-bold">
-            💬 Send Feedback
+             Send Feedback
           </h2>
 
           <button
             onClick={onClose}
             className="text-xl"
           >
-            ✕
+            
           </button>
         </div>
 
@@ -71,7 +71,7 @@ async function handleSubmit() {
 
 <textarea
   rows="4"
-  placeholder="🐞 Describe any bug you found..."
+  placeholder=" Describe any bug you found..."
   value={bugReport}
   onChange={(e) => setBugReport(e.target.value)}
   className="w-full mt-4 border rounded-xl p-3"
@@ -79,7 +79,7 @@ async function handleSubmit() {
 
 <textarea
   rows="4"
-  placeholder="💡 Suggest a feature..."
+  placeholder=" Suggest a feature..."
   value={featureRequest}
   onChange={(e) => setFeatureRequest(e.target.value)}
   className="w-full mt-4 border rounded-xl p-3"
@@ -89,7 +89,7 @@ async function handleSubmit() {
   disabled={loading}
   className="w-full mt-5 bg-purple-600 hover:bg-purple-700 disabled:bg-gray-400 text-white py-3 rounded-xl font-semibold"
 >
-  {loading ? "Submitting..." : "🚀 Submit Feedback"}
+  {loading ? "Submitting..." : " Submit Feedback"}
 </button>
       </div>
 

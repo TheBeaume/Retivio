@@ -68,7 +68,7 @@ async function handleLogout() {
             onClick={() => setSidebarOpen(true)}
             className="bg-purple-900 p-2 rounded-lg mr-3"
           >
-            ☰
+            
           </button>
 <div>
   <h1 className="text-2xl font-extrabold tracking-wide">
@@ -90,7 +90,7 @@ async function handleLogout() {
     className="bg-white/10 backdrop-blur-md border border-white/20 w-10 h-10 rounded-xl hover:bg-white/20 transition"
   >
 <div className="relative">
-  🔔
+  
 
   {notificationCount > 0 && (
     <span className="absolute -top-2 -right-2 bg-red-600 text-white text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center">
@@ -108,7 +108,7 @@ async function handleLogout() {
   )}
 </div>
           <div className="hidden md:flex items-center bg-white/10 backdrop-blur-md border border-white/20 rounded-xl px-4 py-2">
-            👤
+            
             <span className="ml-2">
               Owner
 <button

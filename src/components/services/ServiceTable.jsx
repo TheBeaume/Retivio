@@ -21,7 +21,7 @@ const settings = useBusinessSettings();
   if (services.length === 0) {
     return (
       <div className="bg-white rounded-xl shadow p-8 text-center text-gray-500">
-        <div className="text-5xl mb-3">💇</div>
+        <div className="text-5xl mb-3"></div>
         <h2 className="text-xl font-bold">
           No Services Found
         </h2>
@@ -112,14 +112,14 @@ const settings = useBusinessSettings();
                     onClick={() => onEdit(service)}
                     className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg"
                   >
-                    ✏️
+                    
                   </button>
 
                   <button
                     onClick={() => onDelete(service)}
                     className="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg"
                   >
-                    🗑️
+                    
                   </button>
 
                 </div>

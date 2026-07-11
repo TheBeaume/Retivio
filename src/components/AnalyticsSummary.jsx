@@ -26,7 +26,7 @@ function AnalyticsSummary({ customers }) {
       title: "Customers",
       value: totalCustomers,
 subtitle: "Registered customers",
-      icon: "👥",
+      icon: "",
       color: "bg-blue-50 border-blue-100",
     },
     {
@@ -38,14 +38,14 @@ subtitle: "Registered customers",
         settings?.decimal_places
       ),
 subtitle: "Total revenue earned",
-      icon: "💰",
+      icon: "",
       color: "bg-green-50 border-green-100",
     },
     {
       title: "Repeat Customers",
       value: repeatCustomers,
 subtitle: "Visited more than once",
-      icon: "🔁",
+      icon: "",
       color: "bg-yellow-50 border-yellow-100",
     },
     {

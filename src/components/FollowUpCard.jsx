@@ -11,14 +11,14 @@ export default function FollowUpCard({
 
       <div>
         <h3 className="font-bold text-lg">
-          👤 {item.customer_name}
+           {item.customer_name}
         </h3>
 
-        <p>📞 {item.phone}</p>
+        <p> {item.phone}</p>
 
-        <p>💇 {item.service}</p>
+        <p> {item.service}</p>
 
-        <p>📅 {item.followup_date}</p>
+        <p> {item.followup_date}</p>
 
         <div className="flex gap-2 mt-4">
 
@@ -26,14 +26,14 @@ export default function FollowUpCard({
             onClick={() => onWhatsApp(item)}
             className="bg-green-600 text-white px-3 py-1 rounded-lg text-sm"
           >
-            💬 WhatsApp
+             WhatsApp
           </button>
 
           <button
             onClick={() => onCall(item)}
             className="bg-blue-600 text-white px-3 py-1 rounded-lg text-sm"
           >
-            📞 Call
+             Call
           </button>
 
           {item.status !== "Done" && (
@@ -41,7 +41,7 @@ export default function FollowUpCard({
               onClick={() => onDone(item.id)}
               className="bg-purple-600 text-white px-3 py-1 rounded-lg text-sm"
             >
-              ✅ Done
+               Done
             </button>
           )}
 

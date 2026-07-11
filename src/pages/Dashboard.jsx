@@ -26,6 +26,7 @@ import useBusinessSettings from "../hooks/useBusinessSettings";
 import { formatCurrency } from "../utils/formatCurrency";
 import useTodayAppointments from "../hooks/useTodayAppointments";
 import CustomerFinder from "../components/customerFinder";
+import BillingInvoices from "../components/BillingInvoices";
 
 function Dashboard() {
   const [customers, setCustomers] = useState([]);
@@ -119,7 +120,7 @@ const settings = useBusinessSettings();
 
   return (
     <>
-      <div className="min-h-screen flex bg-gray-100">
+      <div className="min-h-screen flex bg-gray-50">
 
         {sidebarOpen && (
           <>
@@ -140,13 +141,13 @@ const settings = useBusinessSettings();
 
           <Header setSidebarOpen={setSidebarOpen} />
 
-          <div className="p-3 md:p-6">
+          <main className="p-4 md:p-6 lg:p-8 max-w-[1600px] mx-auto">
             {activePage === "dashboard" && (
               <>
 
                 {/* Hero Section */}
 
-                <div className="bg-gradient-to-r from-purple-700 via-violet-600 to-indigo-600 rounded-3xl text-white p-5 md:p-7 shadow-xl">
+                <div className="bg-gradient-to-r from-purple-700 via-violet-700 to-indigo-700 rounded-2xl text-white p-6 md:p-8 shadow-sm">
 
                   <p className="text-purple-100 text-sm">
                     {today}
@@ -156,7 +157,7 @@ const settings = useBusinessSettings();
                     {greeting()}
                     {profile?.owner_name
                       ? `, ${profile.owner_name}`
-                      : ""} 👋
+                      : ""}
                   </h1>
 
                   <p className="text-purple-100 mt-2">
@@ -249,7 +250,7 @@ Today's Snapshot
   <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
     <div>
       <h2 className="text-2xl font-bold">
-        🚀 Grow Your Salon
+        Grow Your Business
       </h2>
 
       <p className="mt-2 text-purple-100 max-w-2xl">
@@ -269,7 +270,7 @@ Today's Snapshot
 <div className="bg-white rounded-2xl shadow p-6 mt-6">
   <div className="flex justify-between items-center mb-4">
     <h2 className="text-xl font-bold">
-      📅 Today's Schedule
+      Today's Schedule
     </h2>
 
 <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">
@@ -303,13 +304,13 @@ todayAppointments.map((appointment) => (
             : appointment.id
         )
       }
-      className="w-full flex justify-between items-center p-4 hover:bg-gray-50"
+      className="w-full flex justify-between items-center p-4 md:p-5 hover:bg-gray-50 transition text-left"
     >
 
       <div className="flex items-center gap-3">
 
-        <span className="text-lg">
-          {expandedAppointment === appointment.id ? "▼" : "▶"}
+        <span className="w-7 h-7 rounded-lg border border-gray-200 flex items-center justify-center text-gray-500 text-lg font-medium shrink-0">
+          {expandedAppointment === appointment.id ? "−" : "+"}
         </span>
 
         <span className="font-semibold">
@@ -334,20 +335,20 @@ todayAppointments.map((appointment) => (
 
     {expandedAppointment === appointment.id && (
 
-      <div className="border-t bg-gray-50 p-4 space-y-3">
+      <div className="border-t border-gray-100 bg-gray-50/70 p-5 space-y-3 text-sm text-gray-600">
 
         <p>
-          <strong>💇 Service:</strong>{" "}
+          <strong className="text-gray-700">Service:</strong>{" "}
           {appointment.service}
         </p>
 
         <p>
-          <strong>🕒 Time:</strong>{" "}
+          <strong className="text-gray-700">Time:</strong>{" "}
           {appointment.appointment_time}
         </p>
 
         <p>
-          <strong>📞 Phone:</strong>{" "}
+          <strong className="text-gray-700">Phone:</strong>{" "}
           {appointment.phone}
         </p>
 
@@ -355,18 +356,18 @@ todayAppointments.map((appointment) => (
 
           <a
             href={`tel:${appointment.phone}`}
-            className="bg-green-600 text-white px-4 py-2 rounded-lg text-sm"
+            className="border border-gray-200 bg-white hover:bg-gray-50 text-gray-700 px-4 py-2.5 rounded-lg text-sm font-medium transition"
           >
-            📞 Call
+            Call Customer
           </a>
 
           <a
             href={`https://wa.me/${appointment.phone}`}
             target="_blank"
             rel="noreferrer"
-            className="bg-emerald-500 text-white px-4 py-2 rounded-lg text-sm"
+            className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2.5 rounded-lg text-sm font-medium transition"
           >
-            💬 WhatsApp
+            Open WhatsApp
           </a>
 
         </div>
@@ -450,7 +451,19 @@ todayAppointments.map((appointment) => (
             )}
 
             {activePage === "appointments" && (
-              <Appointments />
+              <Appointments
+                onOpenBilling={(appointment) => {
+                  localStorage.setItem(
+                    "retivio_invoice_appointment",
+                    JSON.stringify(appointment)
+                  );
+                  setActivePage("billing");
+                }}
+              />
+            )}
+
+            {activePage === "billing" && (
+              <BillingInvoices />
             )}
 
             {activePage === "services" && (
@@ -464,7 +477,7 @@ todayAppointments.map((appointment) => (
             {activePage === "settings" && (
               <Settings />
             )}
-          </div>
+          </main>
 
         </div>
 

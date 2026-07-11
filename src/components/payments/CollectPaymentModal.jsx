@@ -73,7 +73,7 @@ await supabase
   })
   .eq("id", appointment.id);
 
-alert("✅ Payment collected successfully!");
+alert("Payment collected successfully.");
     onSuccess();
 
     onClose();
@@ -85,7 +85,7 @@ alert("✅ Payment collected successfully!");
       <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-6">
 
         <h2 className="text-2xl font-bold mb-6">
-          💰 Collect Payment
+          Collect Payment
         </h2>
 
         <div className="space-y-4">

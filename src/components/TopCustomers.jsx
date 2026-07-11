@@ -10,9 +10,9 @@ function TopCustomers({ customers }) {
     .slice(0, 5);
 
   const badge = (index) => {
-    if (index === 0) return "👑";
-    if (index === 1) return "🥇";
-    if (index === 2) return "🥈";
+    if (index === 0) return "";
+    if (index === 1) return "";
+    if (index === 2) return "";
     return "⭐";
   };
 
@@ -31,7 +31,7 @@ function TopCustomers({ customers }) {
 
       {topCustomers.length === 0 ? (
         <div className="text-center py-10 text-gray-500">
-          <p className="text-4xl mb-2">🏆</p>
+          <p className="text-4xl mb-2"></p>
           <p>No customer data available.</p>
         </div>
       ) : (

@@ -4,13 +4,13 @@ const messages = [
   {
     id: 1,
     sender: "customer",
-    text: "Hi 👋",
+    text: "Hi ",
     time: "10:30 AM",
   },
   {
     id: 2,
     sender: "salon",
-    text: "Welcome to The Beaume 🌸",
+    text: "Welcome to The Beaume ",
     time: "10:31 AM",
   },
   {
@@ -74,7 +74,7 @@ export default function ChatWindow() {
         />
 
         <button className="bg-green-600 text-white px-5 rounded-full">
-          ➤
+          
         </button>
 
       </div>

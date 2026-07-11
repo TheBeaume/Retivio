@@ -28,7 +28,7 @@ function RecentActivity({ customers }) {
 
       {recentCustomers.length === 0 ? (
         <div className="text-center py-10 text-gray-500">
-          <p className="text-4xl mb-2">📭</p>
+          <p className="text-4xl mb-2"></p>
           <p>No recent activity yet.</p>
         </div>
       ) : (
@@ -44,7 +44,7 @@ function RecentActivity({ customers }) {
               <div className="flex items-center gap-3">
 
                 <div className="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center text-xl">
-                  👤
+                  
                 </div>
 
                 <div>

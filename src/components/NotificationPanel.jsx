@@ -29,7 +29,7 @@ export default function NotificationPanel({ onClose }) {
 
     if (todayFollowups?.length) {
       list.push({
-        icon: "📅",
+        icon: "",
         text: `${todayFollowups.length} Follow-ups due today`,
       });
     }
@@ -58,14 +58,14 @@ export default function NotificationPanel({ onClose }) {
 
     if (appointments?.length) {
       list.push({
-        icon: "💇",
+        icon: "",
         text: `${appointments.length} Appointments today`,
       });
     }
 
     if (list.length === 0) {
       list.push({
-        icon: "🎉",
+        icon: "",
         text: "No new notifications",
       });
     }
@@ -78,13 +78,13 @@ export default function NotificationPanel({ onClose }) {
 
 <div className="flex items-center justify-between p-4 border-b">
   <h2 className="font-bold text-lg text-gray-800">
-    🔔 Notifications
+     Notifications
   </h2>
         <button
           onClick={onClose}
 className="text-xl text-gray-500 hover:text-black"
         >
-          ✕
+          
         </button>
       </div>
 

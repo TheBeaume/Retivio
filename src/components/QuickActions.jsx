@@ -4,25 +4,25 @@ function QuickActions({ setActivePage }) {
   const actions = [
     {
       title: "Add Customer",
-      icon: "➕",
+      icon: "",
       page: "visit",
       color: "bg-green-50 border-green-100",
     },
     {
       title: "Add Visit",
-      icon: "📝",
+      icon: "",
       page: "visit",
       color: "bg-blue-50 border-blue-100",
     },
     {
       title: "Campaigns",
-      icon: "📢",
+      icon: "",
       page: "campaigns",
       color: "bg-purple-50 border-purple-100",
     },
     {
       title: "Reports",
-      icon: "📊",
+      icon: "",
       page: "reports",
       color: "bg-orange-50 border-orange-100",
     },

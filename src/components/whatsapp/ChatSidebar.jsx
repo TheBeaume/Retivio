@@ -11,7 +11,7 @@ const chats = [
   {
     id: 2,
     name: "Neha Verma",
-    message: "Thank you ❤️",
+    message: "Thank you ",
     time: "Yesterday",
     unread: 0,
   },
@@ -31,7 +31,7 @@ export default function ChatSidebar() {
       <div className="p-4 border-b">
 
         <h2 className="text-xl font-bold">
-          💬 Conversations
+           Conversations
         </h2>
 
         <input

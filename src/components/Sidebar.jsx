@@ -12,6 +12,7 @@ import {
   Scissors,
   MessageCircle,
   BarChart3,
+  ReceiptText,
   Settings,
   LogOut,
   X,
@@ -62,6 +63,11 @@ const menuItems = [
     id: "reports",
     label: "Reports",
     icon: BarChart3,
+  },
+  {
+    id: "billing",
+    label: "Billing & Invoices",
+    icon: ReceiptText,
   },
   {
     id: "settings",

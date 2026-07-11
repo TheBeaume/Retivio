@@ -85,7 +85,7 @@ default_duration: appointmentDuration,
   return (
     <div className="bg-white rounded-xl shadow p-6">
       <h2 className="text-2xl font-bold mb-6">
-        ⚙ Business Settings
+         Business Settings
       </h2>
 
       <div className="space-y-4">
@@ -105,7 +105,7 @@ default_duration: appointmentDuration,
           onChange={(e) => setSignature(e.target.value)}
         />
 <h3 className="text-lg font-semibold mt-6">
-  🌍 Regional Settings
+   Regional Settings
 </h3>
 
 <div className="grid md:grid-cols-2 gap-4">
@@ -172,7 +172,7 @@ default_duration: appointmentDuration,
 </div>
 
 <h3 className="text-lg font-semibold mt-6">
-  📅 Appointment Settings
+   Appointment Settings
 </h3>
 
 <div className="grid md:grid-cols-2 gap-4">

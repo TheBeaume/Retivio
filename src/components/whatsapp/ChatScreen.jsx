@@ -16,7 +16,7 @@ const [bookingConfirmed, setBookingConfirmed] = useState(false);
 
         <div>
 <h2 className="font-bold text-lg">
-  👩 {selectedChat?.name || "Customer"}
+   {selectedChat?.name || "Customer"}
 </h2>
           <p className="text-sm text-green-100">
 {selectedChat ? "AI Assistant Online" : "Demo Conversation"}
@@ -24,7 +24,7 @@ const [bookingConfirmed, setBookingConfirmed] = useState(false);
         </div>
 
         <button className="text-2xl">
-          ℹ️
+          ℹ
         </button>
 
       </div>
@@ -34,13 +34,13 @@ const [bookingConfirmed, setBookingConfirmed] = useState(false);
 
         <div className="flex justify-start">
           <div className="bg-white rounded-2xl px-4 py-3 max-w-[80%] shadow">
-            Hi 👋
+            Hi 
           </div>
         </div>
 
         <div className="flex justify-end">
           <div className="bg-green-200 rounded-2xl px-4 py-3 max-w-[80%] shadow">
-Welcome to Retivio AI Booking Assistant 🤖
+Welcome to Retivio AI Booking Assistant 
           </div>
         </div>
 
@@ -50,10 +50,10 @@ I'd like to book an appointment.
 {bookingConfirmed && (
   <div className="flex justify-end">
     <div className="bg-green-200 rounded-2xl px-4 py-3 max-w-[80%] shadow">
-      <p>✅ Your appointment has been confirmed.</p>
-      <p>📅 {selectedDate || "Today"}</p>
-      <p>💇 {selectedService === "Other" ? customService : selectedService}</p>
-      <p>🕒 {selectedTime === "Custom" ? customTime : selectedTime}</p>
+      <p> Your appointment has been confirmed.</p>
+      <p> {selectedDate || "Today"}</p>
+      <p> {selectedService === "Other" ? customService : selectedService}</p>
+      <p> {selectedTime === "Custom" ? customTime : selectedTime}</p>
     </div>
   </div>
 )}
@@ -67,7 +67,7 @@ I'd like to book an appointment.
 <div className="bg-white border-t p-3 space-y-3">
 
   <p className="text-sm font-semibold">
-🤖 AI Booking Assistant
+ AI Booking Assistant
   </p>
 
   <div className="flex gap-2 overflow-x-auto">
@@ -80,7 +80,7 @@ I'd like to book an appointment.
       : "bg-purple-100"
   }`}
 >
-  📅 Today
+   Today
 </button>
 
 
@@ -92,7 +92,7 @@ I'd like to book an appointment.
       : "bg-purple-100"
   }`}
 >
-  📅 Tomorrow
+   Tomorrow
 </button>
 <button
   onClick={() => setSelectedDate("Custom")}
@@ -102,7 +102,7 @@ I'd like to book an appointment.
       : "bg-purple-100"
   }`}
 >
-  📆 Choose Date
+   Choose Date
 </button>
   </div>
 
@@ -116,7 +116,7 @@ I'd like to book an appointment.
       : "bg-green-100"
   }`}
 >
-  💆 Hair Spa
+   Hair Spa
 </button>
 <button
   onClick={() => setSelectedService("Facial")}
@@ -126,7 +126,7 @@ I'd like to book an appointment.
       : "bg-green-100"
   }`}
 >
-  ✨ Facial
+   Facial
 </button>
 <button
   onClick={() => setSelectedService("Hair Cut")}
@@ -136,7 +136,7 @@ I'd like to book an appointment.
       : "bg-green-100"
   }`}
 >
-  ✂️ Hair Cut
+   Hair Cut
 </button>
 <button
   onClick={() => setSelectedService("Other")}
@@ -146,7 +146,7 @@ I'd like to book an appointment.
       : "bg-green-100"
   }`}
 >
-  ➕ Other Service
+   Other Service
 </button>
 
 {selectedService === "Other" && (
@@ -170,7 +170,7 @@ I'd like to book an appointment.
       : "bg-blue-100"
   }`}
 >
-  🕙 10:00 AM
+   10:00 AM
 </button>
 
 <button
@@ -181,7 +181,7 @@ I'd like to book an appointment.
       : "bg-blue-100"
   }`}
 >
-  🕛 12:00 PM
+   12:00 PM
 </button>
 
 <button
@@ -192,7 +192,7 @@ I'd like to book an appointment.
       : "bg-blue-100"
   }`}
 >
-  🕑 2:00 PM
+   2:00 PM
 </button>
 
 <button
@@ -201,7 +201,7 @@ I'd like to book an appointment.
   }}
   className="..."
 >
-  🕒 Custom Time
+   Custom Time
 </button>
 
 <input
@@ -239,8 +239,8 @@ I'd like to book an appointment.
 
 >
   {bookingConfirmed
-    ? "✅ Demo Booking Confirmed"
-    : "🚀 Confirm Demo Booking"}
+    ? " Demo Booking Confirmed"
+    : " Confirm Demo Booking"}
 </button>
 </div>
 <p className="text-xs text-center text-gray-500">
@@ -249,7 +249,7 @@ I'd like to book an appointment.
       {/* Message Box */}
       <div className="bg-white border-t p-3 flex items-center gap-2">
 
-        <button className="text-xl">😊</button>
+        <button className="text-xl"></button>
 
         <input
           className="flex-1 border rounded-full px-4 py-2"
@@ -257,7 +257,7 @@ I'd like to book an appointment.
         />
 
         <button className="bg-green-600 text-white rounded-full px-4 py-2">
-          ➤
+          
         </button>
 
       </div>

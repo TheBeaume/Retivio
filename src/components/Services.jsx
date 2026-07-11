@@ -110,7 +110,7 @@ const settings = useBusinessSettings();
       <div className="bg-gradient-to-r from-purple-700 to-indigo-700 rounded-3xl p-8 text-white">
 
         <h1 className="text-4xl font-bold">
-          💇 Services
+           Services
         </h1>
 
         <p className="mt-3 text-purple-100">
@@ -174,7 +174,7 @@ const settings = useBusinessSettings();
 
           <input
             className="border rounded-xl px-4 py-3 w-full md:w-80"
-            placeholder="🔍 Search services..."
+            placeholder=" Search services..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -186,7 +186,7 @@ const settings = useBusinessSettings();
             }}
             className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-xl"
           >
-            ➕ Add Service
+             Add Service
           </button>
 
         </div>

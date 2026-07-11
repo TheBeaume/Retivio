@@ -149,14 +149,14 @@ function generateMessage(customer) {
       ? customOffer
       : `Enjoy ${offer} on your next visit.`;
 
-  let greeting = `Hi ${customer.name} 👋`;
+  let greeting = `Hi ${customer.name} `;
   let closing = `Regards,\n\n${businessName}`;
 
   if (tone === "Professional") {
     greeting = `Dear ${customer.name},`;
     closing = `Kind Regards,\n\n${businessName}`;
   } else if (tone === "Luxury") {
-    greeting = `✨ Dear ${customer.name},`;
+    greeting = ` Dear ${customer.name},`;
     closing = `Warm Regards,\n\n${businessName}`;
   }
 
@@ -164,7 +164,7 @@ function generateMessage(customer) {
     case "Birthday":
       return `${greeting}
 
-🎉 Happy Birthday!
+ Happy Birthday!
 
 Wishing you happiness, health and beauty always.
 
@@ -175,7 +175,7 @@ ${closing}`;
     case "Festival":
       return `${greeting}
 
-🌸 Warm wishes from ${businessName}!
+ Warm wishes from ${businessName}!
 
 ${offerText}
 
@@ -186,7 +186,7 @@ ${closing}`;
     case "VIP":
       return `${greeting}
 
-💎 Thank you for being one of our valued VIP customers.
+ Thank you for being one of our valued VIP customers.
 
 ${offerText}
 
@@ -259,7 +259,7 @@ const openNextCustomer = () => {
     <div className="bg-white rounded-xl shadow p-6 mt-6">
 
       <h2 className="text-2xl font-bold mb-6">
-        📢 Campaign Builder
+         Campaign Builder
       </h2>
 <div className="grid md:grid-cols-2 gap-6">
 
@@ -422,7 +422,7 @@ const openNextCustomer = () => {
 <div className="mt-8 bg-gray-50 rounded-xl p-5">
 
         <h3 className="text-xl font-bold mb-4">
-          📊 Campaign Preview
+           Campaign Preview
         </h3>
 <div className="mb-4 text-sm font-medium text-purple-700">
   Selected Customers: {selectedCustomers.length}
@@ -531,14 +531,14 @@ setAverageBill(e.target.value)
   <div className="bg-white border rounded-xl shadow-lg p-6 mt-6">
     <div className="flex justify-between items-center mb-4">
       <h3 className="text-xl font-bold">
-        📋 Campaign Preview
+         Campaign Preview
       </h3>
 
       <button
         onClick={() => setShowPreview(false)}
         className="text-red-600 font-bold"
       >
-        ✕
+        
       </button>
     </div>
 
@@ -587,7 +587,7 @@ setAverageBill(e.target.value)
       </div>
 <div className="mt-8 text-sm text-gray-500 border-t pt-4">
         <p>
-          💡 Tip: Review the campaign before sending it to customers.
+           Tip: Review the campaign before sending it to customers.
         </p>
       </div>
 

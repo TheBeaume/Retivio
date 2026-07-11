@@ -44,28 +44,28 @@ if (data) {
     {
       id: 1,
       name: "Luxury",
-      emoji: "💎",
+      emoji: "",
       color: "from-black to-gray-800",
       description: "Premium salon experience",
     },
     {
       id: 2,
       name: "Elegant",
-      emoji: "🌸",
+      emoji: "",
       color: "from-pink-400 to-rose-500",
       description: "Soft & feminine design",
     },
     {
       id: 3,
       name: "Natural",
-      emoji: "🌿",
+      emoji: "",
       color: "from-green-400 to-emerald-600",
       description: "Organic & wellness theme",
     },
     {
       id: 4,
       name: "Modern",
-      emoji: "✨",
+      emoji: "",
       color: "from-purple-500 to-indigo-600",
       description: "Clean & minimal look",
     },
@@ -87,7 +87,7 @@ return (
       <div className="bg-gradient-to-r from-purple-700 to-indigo-700 rounded-3xl text-white p-10">
 
         <h1 className="text-4xl font-bold">
-          🌐 Retivio Sites
+           Retivio Sites
         </h1>
 
         <p className="mt-3 text-purple-100 text-lg">
@@ -95,7 +95,7 @@ return (
         </p>
 
         <button className="mt-8 bg-white text-purple-700 font-bold px-8 py-3 rounded-xl hover:scale-105 transition">
-          ✨ Create Website
+           Create Website
         </button>
 
       </div>

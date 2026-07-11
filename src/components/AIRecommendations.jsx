@@ -7,7 +7,7 @@ function AIRecommendations({ customers }) {
     // VIP Suggestion
     if (c.visits >= 8 && c.loyalty !== "VIP") {
       recommendations.push({
-        icon: "👑",
+        icon: "",
         title: `${c.name} qualifies for VIP Membership`,
         action: "Upgrade to VIP",
       });
@@ -16,7 +16,7 @@ function AIRecommendations({ customers }) {
     // Gold Offer
     else if (c.visits >= 5) {
       recommendations.push({
-        icon: "🟡",
+        icon: "",
         title: `${c.name} is a loyal customer`,
         action: "Offer 10% Discount",
       });
@@ -25,7 +25,7 @@ function AIRecommendations({ customers }) {
     // Reactivation
     if (c.status === "Inactive") {
       recommendations.push({
-        icon: "🔴",
+        icon: "",
         title: `${c.name} hasn't visited recently`,
         action: "Send Comeback Offer",
       });
@@ -34,7 +34,7 @@ function AIRecommendations({ customers }) {
     // Birthday
     if (c.birthdayToday) {
       recommendations.push({
-        icon: "🎂",
+        icon: "",
         title: `${c.name}'s birthday today`,
         action: "Send Birthday Offer",
       });
@@ -44,7 +44,7 @@ function AIRecommendations({ customers }) {
   return (
     <div className="bg-white rounded-xl shadow p-5 mt-6">
       <h2 className="text-xl font-bold mb-4">
-        🧠 AI Recommendations
+         AI Recommendations
       </h2>
 
       {recommendations.length === 0 ? (

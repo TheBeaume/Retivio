@@ -18,15 +18,15 @@ import React from "react";
 <div className="mt-8 space-y-2 text-gray-300">
 
   {businessInfo.phone && (
-    <p>📞 {businessInfo.phone}</p>
+    <p> {businessInfo.phone}</p>
   )}
 
   {businessInfo.email && (
-    <p>📧 {businessInfo.email}</p>
+    <p> {businessInfo.email}</p>
   )}
 
   {businessInfo.address && (
-    <p>📍 {businessInfo.address}</p>
+    <p> {businessInfo.address}</p>
   )}
 
 </div>
@@ -63,21 +63,21 @@ import React from "react";
         <div className="grid md:grid-cols-3 gap-6 mt-10">
 
           <div className="border rounded-xl p-6 text-center shadow">
-            💇
+            
             <h3 className="font-bold text-xl mt-3">
               Hair Spa
             </h3>
           </div>
 
           <div className="border rounded-xl p-6 text-center shadow">
-            ✨
+            
             <h3 className="font-bold text-xl mt-3">
               Facial
             </h3>
           </div>
 
           <div className="border rounded-xl p-6 text-center shadow">
-            💄
+            
             <h3 className="font-bold text-xl mt-3">
               Bridal Makeup
             </h3>
@@ -110,11 +110,11 @@ import React from "react";
         </h2>
 
         <p className="mt-4">
-          📞 +91 9876543210
+           +91 9876543210
         </p>
 
         <p>
-          📍 Chandigarh
+           Chandigarh
         </p>
 
       </section>

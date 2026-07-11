@@ -5,7 +5,7 @@ import { formatCurrency } from "../utils/formatCurrency";
 import CollectPaymentModal from "./payments/CollectPaymentModal";
 
 
-export default function Appointments() {
+export default function Appointments({ onOpenBilling }) {
 const [showForm, setShowForm] = useState(false);
 const [appointments, setAppointments] = useState([]);
 const [services, setServices] = useState([]);
@@ -14,6 +14,8 @@ const [dateFilter, setDateFilter] = useState("Today");
 const [customDate, setCustomDate] = useState("");
 const [statusFilter, setStatusFilter] = useState("All");
 const [sortBy, setSortBy] = useState("Time");
+const [currentPage, setCurrentPage] = useState(1);
+const appointmentsPerPage = 6;
 
 const settings = useBusinessSettings();
 const [form, setForm] = useState({
@@ -277,6 +279,26 @@ useEffect(() => {
   checkSlotAvailability();
 
 }, [form.date, form.time]);
+const totalAppointmentPages = Math.max(
+  1,
+  Math.ceil(filteredAppointments.length / appointmentsPerPage)
+);
+
+const paginatedAppointments = filteredAppointments.slice(
+  (currentPage - 1) * appointmentsPerPage,
+  currentPage * appointmentsPerPage
+);
+
+useEffect(() => {
+  setCurrentPage(1);
+}, [search, dateFilter, customDate, statusFilter, sortBy]);
+
+useEffect(() => {
+  if (currentPage > totalAppointmentPages) {
+    setCurrentPage(totalAppointmentPages);
+  }
+}, [currentPage, totalAppointmentPages]);
+
 async function saveAppointment(forceSave = false) {
     const {
       data: { user },
@@ -497,7 +519,7 @@ if (error) {
 <div className="bg-gradient-to-r from-purple-700 to-indigo-700 rounded-3xl text-white p-8">
 
         <h1 className="text-4xl font-bold">
-          📅 Appointments
+           Appointments
         </h1>
 
         <p className="mt-3 text-purple-100">
@@ -557,9 +579,7 @@ if (error) {
           new Date().toISOString().split("T")[0]
     ).length
   }
-</h2>          <h2 className="text-3xl font-bold mt-2">
-
-          </h2>
+</h2>
         </div>
 
       </div>
@@ -568,7 +588,7 @@ if (error) {
 
   <input
     type="text"
-    placeholder="🔍 Search customer..."
+    placeholder=" Search customer..."
     value={search}
     onChange={(e) => setSearch(e.target.value)}
     className="border rounded-lg px-4 py-2 w-full md:w-72"
@@ -641,7 +661,7 @@ onClick={() => {
 }}
           className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-xl"
         >
-          ➕ New Appointment
+           New Appointment
         </button>
 
       </div>
@@ -653,7 +673,7 @@ onClick={() => {
   className="bg-white rounded-xl shadow p-6"
 >
 <h2 className="text-2xl font-bold mb-6">
-  {isEditing ? "✏️ Edit Appointment" : "➕ New Appointment"}
+  {isEditing ? " Edit Appointment" : " New Appointment"}
 </h2>
           <div className="grid md:grid-cols-2 gap-4">
 <input
@@ -691,14 +711,14 @@ onClick={() => {
   <div className="md:col-span-2 bg-green-50 border border-green-200 rounded-xl p-4">
 
     <h3 className="font-bold text-green-700">
-      ✅ Existing Customer
+       Existing Customer
     </h3>
 
-    <p>👤 {customerInfo.name}</p>
-    <p>📞 {customerInfo.phone}</p>
+    <p> {customerInfo.name}</p>
+    <p> {customerInfo.phone}</p>
     <p>⭐ {customerInfo.loyalty}</p>
-    <p>💇 Last Service: {customerInfo.service}</p>
-    <p>📅 Visits: {customerInfo.visits}</p>
+    <p> Last Service: {customerInfo.service}</p>
+    <p> Visits: {customerInfo.visits}</p>
 
   </div>
 
@@ -756,13 +776,13 @@ onClick={() => {
   }
   className="border rounded-lg p-3"
 >
-  <option value="Manual">📝 Manual</option>
-  <option value="WhatsApp">💬 WhatsApp</option>
-  <option value="Phone Call">📞 Phone Call</option>
-  <option value="Walk-in">🚶 Walk-in</option>
-  <option value="Website">🌐 Website</option>
-  <option value="Instagram">📷 Instagram</option>
-  <option value="Facebook">📘 Facebook</option>
+  <option value="Manual"> Manual</option>
+  <option value="WhatsApp"> WhatsApp</option>
+  <option value="Phone Call"> Phone Call</option>
+  <option value="Walk-in"> Walk-in</option>
+  <option value="Website"> Website</option>
+  <option value="Instagram"> Instagram</option>
+  <option value="Facebook"> Facebook</option>
 </select>
 
             <input
@@ -805,8 +825,8 @@ onClick={() => {
     }`}
   >
     {slotAvailability.available
-      ? "🟢 This time slot is available"
-      : `🔴 ${slotAvailability.count} appointment(s) already booked`}
+      ? " This time slot is available"
+      : ` ${slotAvailability.count} appointment(s) already booked`}
   </div>
 )}
 {slotAvailability &&
@@ -865,7 +885,7 @@ onClick={() => {
 }}
   className="bg-purple-600 hover:bg-purple-700 text-white rounded-lg p-3 md:col-span-2"
 >
-  {isEditing ? "💾 Update Appointment" : "💾 Save Appointment"}
+  {isEditing ? "Update Appointment" : "Save Appointment"}
 </button>
           </div>
 
@@ -887,141 +907,241 @@ onClick={() => {
 
         ) : (
 
-          <div className="space-y-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
 
-{filteredAppointments.map((appointment) => (
+{paginatedAppointments.map((appointment) => (
               <div
                 key={appointment.id}
-                className="flex justify-between items-center border rounded-xl p-4"
+                className="border border-gray-200 rounded-2xl p-4 bg-white hover:shadow-md transition-shadow"
               >
+                <div className="flex flex-col gap-4">
+                  <div className="min-w-0 flex-1">
+                    <div className="flex flex-wrap items-center gap-3">
+                      <h3 className="font-semibold text-lg text-gray-900">
+                        {appointment.customer_name}
+                      </h3>
 
-                <div>
+                      <span
+                        className={`px-3 py-1 rounded-full text-xs font-medium ${
+                          appointment.status === "Completed"
+                            ? "bg-green-100 text-green-700"
+                            : appointment.status === "Cancelled"
+                            ? "bg-red-100 text-red-700"
+                            : "bg-purple-100 text-purple-700"
+                        }`}
+                      >
+                        {appointment.status}
+                      </span>
+                    </div>
 
-<h3 className="font-semibold text-lg">
-👤 {appointment.customer_name}
-</h3>
-
-<p className="text-sm text-gray-500">
-📞 {appointment.phone || "No phone"}
-</p>
-
-<p className="mt-2 font-medium">
-  💇 {appointment.service}
-</p>
-
-<p className="text-sm text-gray-500">
-  💬 {appointment.booking_source || "Manual"}
-</p>
-
-<div className="flex items-center gap-4 text-sm text-gray-500">
-  <span>
-    📅 {appointment.appointment_date}
-  </span>
-
-  <span>
-    🕒 {appointment.appointment_time}
-  </span>
-</div>
-<p className="text-red-600 font-bold">
-  Status: {appointment.status}
-</p>
-                  {appointment.notes && (
-                    <p className="text-sm text-gray-500">
-                      📝 {appointment.notes}
+                    <p className="text-sm text-gray-500 mt-2">
+                      {appointment.phone || "No phone number"}
                     </p>
-                  )}
-<div className="flex gap-2 mt-3">
 
-<button
-  onClick={() => {
-    setForm({
-      customer: appointment.customer_name || "",
-      phone: appointment.phone || "",
-      service: appointment.service || "",
-      bookingSource: appointment.booking_source || "Manual",
-      date: appointment.appointment_date || "",
-      time: appointment.appointment_time || "",
-      notes: appointment.notes || "",
-    });
+                    <p className="font-medium text-gray-800 mt-4">
+                      {appointment.service}
+                    </p>
 
-    setEditingId(appointment.id);
-    setIsEditing(true);
-    setShowForm(true);
-setTimeout(() => {
-  document
-    .getElementById("appointmentForm")
-    ?.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
-}, 100); 
- }}
-disabled={appointment.status !== "Pending"}  
-className="bg-blue-500 text-white px-3 py-1 rounded-lg text-sm"
->
-  ✏️ Edit
-</button>
-<button
-  onClick={() =>
-updateAppointmentStatus(appointment, "Completed")
-  }
-disabled={appointment.status !== "Pending"}
-  className="bg-green-600 text-white px-3 py-1 rounded-lg text-sm"
->
-  ✅ Complete
-</button>
-<button
-  onClick={() => {
-    setSelectedAppointment(appointment);
-    setShowPaymentModal(true);
-  }}
-  disabled={appointment.status !== "Completed"}
-  className="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1 rounded-lg text-sm"
->
-  💰 Collect Payment
-</button>
+                    <p className="text-sm text-gray-500 mt-1">
+                      Booking source:{" "}
+                      {appointment.booking_source || "Manual"}
+                    </p>
 
-<button
-  onClick={() => {
-    if (window.confirm("Cancel this appointment?")) {
-updateAppointmentStatus(appointment, "Cancelled")
-    }
-  }}
-disabled={appointment.status !== "Pending"} 
- className="bg-yellow-500 text-white px-3 py-1 rounded-lg text-sm"
->
-  ❌ Cancel
-</button>
-<button
-  onClick={() => deleteAppointment(appointment.id)}
-  className="bg-red-600 text-white px-3 py-1 rounded-lg text-sm"
->
-  🗑 Delete
-</button>
-</div>
+                    <div className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-gray-500 mt-3">
+                      <span>
+                        Date: {appointment.appointment_date}
+                      </span>
+
+                      <span>
+                        Time: {appointment.appointment_time}
+                      </span>
+                    </div>
+
+                    {appointment.notes && (
+                      <div className="bg-gray-50 rounded-xl px-4 py-3 mt-4">
+                        <p className="text-xs font-medium text-gray-500">
+                          Notes
+                        </p>
+
+                        <p className="text-sm text-gray-700 mt-1">
+                          {appointment.notes}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="w-full">
+                    <button
+                      onClick={() =>
+                        updateAppointmentStatus(
+                          appointment,
+                          "Completed"
+                        )
+                      }
+                      disabled={
+                        appointment.status !== "Pending"
+                      }
+                      className="w-full bg-purple-600 hover:bg-purple-700 disabled:bg-gray-100 disabled:text-gray-500 disabled:cursor-not-allowed text-white px-4 py-3 rounded-xl text-sm font-semibold transition"
+                    >
+                      {appointment.status === "Completed"
+                        ? "Completed"
+                        : appointment.status === "Cancelled"
+                        ? "Appointment Cancelled"
+                        : "Mark Completed"}
+                    </button>
+
+                    <div className="border-t border-gray-100 mt-4 pt-4 space-y-2">
+                      <button
+                        onClick={() => {
+                          setSelectedAppointment(appointment);
+                          setShowPaymentModal(true);
+                        }}
+                        disabled={
+                          appointment.status !== "Completed" ||
+                          appointment.payment_status === "Paid"
+                        }
+                        className="w-full border border-gray-200 hover:bg-gray-50 disabled:bg-gray-100 disabled:text-gray-500 disabled:cursor-not-allowed text-gray-700 px-4 py-2.5 rounded-lg text-sm font-medium transition"
+                      >
+                        {appointment.payment_status === "Paid"
+                          ? "Payment Collected"
+                          : "Collect Payment"}
+                      </button>
+
+                      {appointment.status === "Completed" &&
+                        appointment.payment_status === "Paid" && (
+                          <button
+                            onClick={() =>
+                              onOpenBilling?.(appointment)
+                            }
+                            className="w-full border border-purple-200 bg-purple-50 hover:bg-purple-100 text-purple-700 px-4 py-2.5 rounded-lg text-sm font-semibold transition"
+                          >
+                            Generate Invoice
+                          </button>
+                        )}
+
+                      <button
+                        onClick={() => {
+                          setForm({
+                            customer:
+                              appointment.customer_name || "",
+                            phone: appointment.phone || "",
+                            service: appointment.service || "",
+                            bookingSource:
+                              appointment.booking_source ||
+                              "Manual",
+                            date:
+                              appointment.appointment_date ||
+                              "",
+                            time:
+                              appointment.appointment_time ||
+                              "",
+                            notes: appointment.notes || "",
+                          });
+
+                          setEditingId(appointment.id);
+                          setIsEditing(true);
+                          setShowForm(true);
+
+                          setTimeout(() => {
+                            document
+                              .getElementById(
+                                "appointmentForm"
+                              )
+                              ?.scrollIntoView({
+                                behavior: "smooth",
+                                block: "start",
+                              });
+                          }, 100);
+                        }}
+                        disabled={
+                          appointment.status !== "Pending"
+                        }
+                        className="w-full border border-gray-200 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed text-gray-700 px-4 py-2.5 rounded-lg text-sm transition"
+                      >
+                        Edit Appointment
+                      </button>
+
+                      <button
+                        onClick={() => {
+                          if (
+                            window.confirm(
+                              "Cancel this appointment?"
+                            )
+                          ) {
+                            updateAppointmentStatus(
+                              appointment,
+                              "Cancelled"
+                            );
+                          }
+                        }}
+                        disabled={
+                          appointment.status !== "Pending"
+                        }
+                        className="w-full border border-gray-200 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed text-gray-600 px-4 py-2.5 rounded-lg text-sm transition"
+                      >
+                        Cancel Appointment
+                      </button>
+
+                      <button
+                        onClick={() =>
+                          deleteAppointment(appointment.id)
+                        }
+                        className="w-full text-red-600 hover:bg-red-50 px-4 py-2.5 rounded-lg text-sm transition"
+                      >
+                        Delete Appointment
+                      </button>
+                    </div>
+                  </div>
                 </div>
-<span
-  className={`px-3 py-1 rounded-full text-sm font-medium ${
-appointments.filter(
-  a =>
-    a.status === "Completed" &&
-    a.appointment_date ===
-      new Date().toISOString().split("T")[0]
-).length
-      ? "bg-green-100 text-green-700"
-      : appointment.status === "Cancelled"
-      ? "bg-red-100 text-red-700"
-      : "bg-purple-100 text-purple-700"
-  }`}
->
-  {appointment.status}
-</span>
               </div>
-
             ))}
 
           </div>
 
+        )}
+
+        {filteredAppointments.length > appointmentsPerPage && (
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-6 pt-5 border-t border-gray-100">
+            <p className="text-sm text-gray-500">
+              Showing{" "}
+              {(currentPage - 1) * appointmentsPerPage + 1}
+              {" - "}
+              {Math.min(
+                currentPage * appointmentsPerPage,
+                filteredAppointments.length
+              )}
+              {" of "}
+              {filteredAppointments.length} appointments
+            </p>
+
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() =>
+                  setCurrentPage((page) => Math.max(1, page - 1))
+                }
+                disabled={currentPage === 1}
+                className="border border-gray-200 px-4 py-2 rounded-lg text-sm font-medium disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-50"
+              >
+                Previous
+              </button>
+
+              <span className="px-3 text-sm text-gray-600">
+                Page {currentPage} of {totalAppointmentPages}
+              </span>
+
+              <button
+                onClick={() =>
+                  setCurrentPage((page) =>
+                    Math.min(totalAppointmentPages, page + 1)
+                  )
+                }
+                disabled={currentPage === totalAppointmentPages}
+                className="border border-gray-200 px-4 py-2 rounded-lg text-sm font-medium disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-50"
+              >
+                Next
+              </button>
+            </div>
+          </div>
         )}
 
       </div>
@@ -1033,7 +1153,7 @@ appointments.filter(
     <div className="bg-white rounded-2xl shadow-xl p-6 w-[90%] max-w-md">
 
       <h2 className="text-xl font-bold text-red-600">
-        ⚠️ Appointment Already Booked
+        Appointment Already Booked
       </h2>
 
       <p className="mt-3 text-gray-600">

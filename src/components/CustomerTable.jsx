@@ -19,7 +19,7 @@ const settings = useBusinessSettings();
 
     switch (customer.service) {
       case "Hair Spa":
-        message = `Hi ${customer.name} 🌸
+        message = `Hi ${customer.name} 
 
 It's been a while since your Hair Spa.
 
@@ -31,7 +31,7 @@ Reply YES to book your appointment.
         break;
 
       case "Facial":
-        message = `Hi ${customer.name} ✨
+        message = `Hi ${customer.name} 
 
 Time to refresh your glow!
 
@@ -43,7 +43,7 @@ Reply YES to reserve your slot.
         break;
 
       case "Hair Cut":
-        message = `Hi ${customer.name} 💇
+        message = `Hi ${customer.name} 
 
 Your haircut may be due.
 
@@ -53,7 +53,7 @@ Book today and enjoy ${offer}.
         break;
 
       default:
-        message = `Hi ${customer.name} 👋
+        message = `Hi ${customer.name} 
 
 We'd love to welcome you back.
 
@@ -123,10 +123,10 @@ return (
 
                 <td className="border p-2">
                   {c.loyalty === "VIP"
-                    ? "👑 VIP"
+                    ? " VIP"
                     : c.loyalty === "Gold"
-                    ? "🟡 Gold"
-                    : "⚪ Silver"}
+                    ? " Gold"
+                    : " Silver"}
                 </td>
 
                 <td className="border p-2">{c.status}</td>
@@ -150,7 +150,7 @@ return (
                     onClick={() => sendWhatsApp(c)}
                     className="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg"
                   >
-                    💬 Send
+                     Send
                   </button>
                 </td>
               </tr>

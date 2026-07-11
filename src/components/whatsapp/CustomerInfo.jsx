@@ -10,7 +10,7 @@ const settings = useBusinessSettings();
       <div className="text-center">
 
         <div className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center text-3xl mx-auto">
-          👩
+          
         </div>
 
         <h2 className="mt-4 text-xl font-bold">
@@ -18,7 +18,7 @@ const settings = useBusinessSettings();
         </h2>
 
         <p className="text-gray-500">
-          📞 +91 98765 43210
+           +91 98765 43210
         </p>
 
       </div>
@@ -33,17 +33,17 @@ const settings = useBusinessSettings();
         </div>
 
         <div className="flex justify-between">
-          <span>💇 Last Service</span>
+          <span> Last Service</span>
           <span>Hair Spa</span>
         </div>
 
         <div className="flex justify-between">
-          <span>📅 Last Visit</span>
+          <span> Last Visit</span>
           <span>20 Jun 2026</span>
         </div>
 
         <div className="flex justify-between">
-          <span>💰 Total Spend</span>
+          <span> Total Spend</span>
 <span>
   {formatCurrency(
     12500,
@@ -56,7 +56,7 @@ const settings = useBusinessSettings();
         </div>
 
         <div className="flex justify-between">
-          <span>🎂 Birthday</span>
+          <span> Birthday</span>
           <span>26 Apr</span>
         </div>
 

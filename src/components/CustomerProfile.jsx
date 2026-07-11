@@ -52,7 +52,7 @@ useEffect(() => {
             onClick={onClose}
             className="text-2xl"
           >
-            ✕
+            
           </button>
 
         </div>
@@ -95,15 +95,15 @@ useEffect(() => {
 
             <div className="space-y-2">
 
-              <p>💇 Service: {customer.service}</p>
+              <p> Service: {customer.service}</p>
 
-              <p>📅 Last Visit: {customer.lastVisit}</p>
+              <p> Last Visit: {customer.lastVisit}</p>
 
-              <p>🗓 Next Due: {customer.nextDue}</p>
+              <p> Next Due: {customer.nextDue}</p>
 
               <p>⭐ Loyalty: {customer.loyalty}</p>
 
-              <p>🟢 Status: {customer.status}</p>
+              <p> Status: {customer.status}</p>
 
             </div>
 
@@ -120,7 +120,7 @@ useEffect(() => {
               }
               className="bg-green-600 text-white py-3 rounded-xl"
             >
-              💬 WhatsApp
+               WhatsApp
             </button>
 
             <button
@@ -129,14 +129,14 @@ useEffect(() => {
               }
               className="bg-blue-600 text-white py-3 rounded-xl"
             >
-              📞 Call
+               Call
             </button>
 
           </div>
 <div>
 
             <h3 className="font-bold mb-3">
-              📜 Visit History
+               Visit History
             </h3>
 
             {visits.length === 0 ? (

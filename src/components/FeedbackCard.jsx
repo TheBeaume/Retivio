@@ -22,14 +22,14 @@ return (
           onClick={() => setShowModal(true)}
           className="bg-white text-purple-700 font-semibold px-5 py-3 rounded-xl hover:bg-purple-100 transition"
         >
-          💬 Give Feedback
+           Give Feedback
         </button>
 
         <button
           onClick={() => setHideCard(true)}
           className="bg-white/20 px-5 py-3 rounded-xl hover:bg-white/30 transition"
         >
-          ✕ Maybe Later
+           Maybe Later
         </button>
       </div>
     </div>

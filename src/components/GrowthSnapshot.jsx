@@ -35,19 +35,19 @@ function GrowthSnapshot({ customers }) {
 
   const stats = [
     {
-      icon: "👥",
+      icon: "",
       title: "Customers",
       value: totalCustomers,
       color: "bg-blue-50 border-blue-100",
     },
     {
-      icon: "🛍️",
+      icon: "",
       title: "Visits",
       value: totalVisits,
       color: "bg-green-50 border-green-100",
     },
     {
-      icon: "💰",
+      icon: "",
       title: "Avg Spend",
       value: formatCurrency(
         avgSpend,
@@ -58,7 +58,7 @@ function GrowthSnapshot({ customers }) {
       color: "bg-yellow-50 border-yellow-100",
     },
     {
-      icon: "📈",
+      icon: "",
       title: "Repeat Rate",
       value: `${repeatRate}%`,
       color: "bg-purple-50 border-purple-100",

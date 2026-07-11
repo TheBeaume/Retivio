@@ -6,7 +6,7 @@ function RevenueTrend() {
     <div className="bg-white rounded-2xl shadow p-5 mt-6">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-bold">
-          📈 Revenue Trend
+           Revenue Trend
         </h2>
 
         <select className="border rounded px-2 py-1 text-sm">

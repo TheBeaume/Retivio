@@ -42,13 +42,13 @@ export default function CustomerLookup() {
       {customer ? (
         <div className="bg-green-50 border border-green-200 rounded-xl p-4">
           <h3 className="font-bold text-green-700">
-            ✅ Existing Customer
+             Existing Customer
           </h3>
 
-          <p>👤 {customer.name}</p>
-          <p>📞 {customer.phone}</p>
+          <p> {customer.name}</p>
+          <p> {customer.phone}</p>
           <p>⭐ {customer.loyalty}</p>
-          <p>💇 {customer.service}</p>
+          <p> {customer.service}</p>
         </div>
       ) : (
         phone.length === 10 && (

@@ -12,7 +12,7 @@ const conversations = [
   {
     id: 2,
     name: "Neha Verma",
-    message: "Thank you ❤️",
+    message: "Thank you ",
     time: "Yesterday",
     unread: 0,
   },
@@ -39,7 +39,7 @@ export default function ConversationList({ onSelectChat }) {
       <div className="sticky top-0 bg-green-600 text-white p-4">
 
         <h1 className="text-2xl font-bold">
-💬 AI WhatsApp Booking (Beta)
+ AI WhatsApp Booking (Beta)
         </h1>
 
         <input
