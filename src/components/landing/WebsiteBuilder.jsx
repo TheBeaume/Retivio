@@ -98,6 +98,7 @@ export default function WebsiteBuilder() {
 
   useEffect(() => {
     initializeBuilder();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const initializeBuilder = async () => {
