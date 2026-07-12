@@ -5,6 +5,7 @@ import Problems from "../components/landing/Problems";
 import Features from "../components/landing/Features";
 import DashboardPreview from "../components/landing/DashboardPreview";
 import Products from "../components/landing/Products";
+import WebsiteBuilderCTA from "../components/landing/WebsiteBuilderCTA";
 import HowItWorks from "../components/landing/HowItWorks";
 import GrowthTools from "../components/landing/GrowthTools";
 import Benefits from "../components/landing/Benefits";
@@ -48,6 +49,7 @@ export default function LandingPage() {
         <Features />
         <DashboardPreview />
         <Products />
+        <WebsiteBuilderCTA />
         <HowItWorks />
         <GrowthTools />
         <Benefits />

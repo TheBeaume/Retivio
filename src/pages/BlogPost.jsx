@@ -139,11 +139,47 @@ export default function BlogPost() {
           <div className="mx-auto max-w-3xl px-5 py-12 sm:px-6 sm:py-16">
             <div className="text-[17px] leading-8 text-slate-700">
               {post.content ? (
-                post.content.split("\n\n").map((paragraph, index) => (
-                  <p key={index} className="mb-7">
-                    {paragraph}
-                  </p>
-                ))
+                post.content
+                  .split("\n\n")
+                  .filter(Boolean)
+                  .map((block, index) => {
+                    const text = block.trim();
+
+                    if (text.startsWith("# ")) {
+                      return null;
+                    }
+
+                    if (text.startsWith("## ")) {
+                      return (
+                        <h2
+                          key={index}
+                          className="mb-5 mt-14 text-3xl font-extrabold leading-tight tracking-tight text-slate-950 first:mt-0"
+                        >
+                          {text.slice(3)}
+                        </h2>
+                      );
+                    }
+
+                    if (text.startsWith("### ")) {
+                      return (
+                        <h3
+                          key={index}
+                          className="mb-4 mt-9 text-xl font-bold leading-8 text-slate-950"
+                        >
+                          {text.slice(4)}
+                        </h3>
+                      );
+                    }
+
+                    return (
+                      <p
+                        key={index}
+                        className="mb-7 leading-8 text-slate-700"
+                      >
+                        {text}
+                      </p>
+                    );
+                  })
               ) : (
                 <p>
                   More practical guidance on this topic is being prepared by

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import {
   ArrowLeft,
   ArrowRight,
@@ -16,6 +16,7 @@ import SEO from "../components/SEO";
 
 export default function Login() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -44,7 +45,16 @@ export default function Login() {
       return;
     }
 
-    navigate("/dashboard");
+    const requestedRedirect = searchParams.get("redirect");
+
+    const safeRedirect =
+      requestedRedirect &&
+      requestedRedirect.startsWith("/") &&
+      !requestedRedirect.startsWith("//")
+        ? requestedRedirect
+        : "/dashboard";
+
+    navigate(safeRedirect, { replace: true });
   }
 
   async function forgotPassword() {

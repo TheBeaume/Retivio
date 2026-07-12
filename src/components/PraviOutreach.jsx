@@ -9,6 +9,9 @@ import {
   HelpCircle,
   Search,
   Mail,
+  Plus,
+  X,
+  Save,
 } from "lucide-react";
 
 function PraviOutreach() {
@@ -18,7 +21,16 @@ function PraviOutreach() {
   const [replyType, setReplyType] = React.useState("");
   const [leadSearch, setLeadSearch] = React.useState("");
   const [customerReply, setCustomerReply] = React.useState("");
-
+  const [showAddLead, setShowAddLead] = React.useState(false);
+  const [savingLead, setSavingLead] = React.useState(false);
+  const [manualLead, setManualLead] = React.useState({
+    name: "",
+    phone: "",
+    email: "",
+    address: "",
+    website: "",
+    product: "Unassigned",
+  });
 
   const loadLeads = async () => {
     const { data, error } = await supabase
@@ -66,6 +78,135 @@ function PraviOutreach() {
       email.includes(leadSearch.toLowerCase().trim())
     );
   });
+
+  const handleManualLeadChange = (event) => {
+    const { name, value } = event.target;
+
+    setManualLead((current) => ({
+      ...current,
+      [name]: value,
+    }));
+  };
+
+  const resetManualLead = () => {
+    setManualLead({
+      name: "",
+      phone: "",
+      email: "",
+      address: "",
+      website: "",
+      product: "Unassigned",
+    });
+  };
+
+  const saveManualLead = async (event) => {
+    event.preventDefault();
+
+    const name = manualLead.name.trim();
+    const phone = manualLead.phone.trim();
+    const email = manualLead.email.trim().toLowerCase();
+
+    if (!name) {
+      alert("Please enter the business name.");
+      return;
+    }
+
+    if (!phone && !email) {
+      alert("Please enter at least a mobile number or email address.");
+      return;
+    }
+
+    setSavingLead(true);
+
+    try {
+      const { data: userData, error: userError } =
+        await supabase.auth.getUser();
+
+      if (userError || !userData?.user) {
+        alert("Please login before adding a lead.");
+        return;
+      }
+
+      const normalizedPhone = phone.replace(/\D/g, "");
+
+      const duplicateLead = leads.find((lead) => {
+        const savedPhone = (lead.phone || "").replace(/\D/g, "");
+        const savedEmail = (lead.email || "").trim().toLowerCase();
+
+        return (
+          (normalizedPhone &&
+            savedPhone &&
+            normalizedPhone === savedPhone) ||
+          (email && savedEmail && email === savedEmail)
+        );
+      });
+
+      if (duplicateLead) {
+        alert(
+          `This lead already exists: ${duplicateLead.name || "Saved lead"}`
+        );
+        setSelectedLeadId(String(duplicateLead.id));
+        setShowAddLead(false);
+        return;
+      }
+
+      const sourceId = `manual-${userData.user.id}-${Date.now()}`;
+
+      const { data, error } = await supabase
+        .from("pravi_leads")
+        .insert({
+          owner_id: userData.user.id,
+          source_id: sourceId,
+          name,
+          category: "Manual Lead",
+          phone: phone || null,
+          email: email || null,
+          website: manualLead.website.trim() || null,
+          address: manualLead.address.trim() || null,
+          status: "New",
+          product: manualLead.product,
+        })
+        .select()
+        .single();
+
+      if (error) {
+        if (error.code === "23505") {
+          alert(
+            "Duplicate lead. This business, phone number or email may already be saved."
+          );
+          return;
+        }
+
+        console.error("Manual lead save error:", error);
+        alert(error.message || "Unable to save lead.");
+        return;
+      }
+
+      await loadLeads();
+
+      if (data?.id) {
+        setSelectedLeadId(String(data.id));
+      }
+
+      setLeadSearch("");
+      setMessage("");
+      setReplyType("");
+      setCustomerReply("");
+      resetManualLead();
+      setShowAddLead(false);
+
+      window.dispatchEvent(
+        new Event("pravi-leads-updated")
+      );
+
+      alert("Lead added successfully and selected for outreach.");
+    } catch (error) {
+      console.error("Manual lead save failed:", error);
+      alert("Unable to save lead.");
+    } finally {
+      setSavingLead(false);
+    }
+  };
 
   const updateLeadProduct = async (product) => {
     if (!selectedLead) return;
@@ -435,6 +576,158 @@ Pravi Technology`
       <p className="text-gray-400 mt-2">
         Create outreach messages and respond based on lead interest.
       </p>
+
+      <div className="mt-8">
+        <button
+          type="button"
+          onClick={() => setShowAddLead((current) => !current)}
+          className="inline-flex items-center justify-center gap-2 rounded-xl bg-purple-600 px-5 py-3 font-semibold text-white transition hover:bg-purple-500"
+        >
+          {showAddLead ? <X size={18} /> : <Plus size={18} />}
+          {showAddLead ? "Close Add Lead" : "Add Lead Manually"}
+        </button>
+
+        {showAddLead && (
+          <form
+            onSubmit={saveManualLead}
+            className="mt-5 rounded-2xl border border-purple-500/30 bg-gray-900 p-5 md:p-6"
+          >
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+              <div>
+                <p className="text-sm font-semibold uppercase tracking-wider text-purple-400">
+                  Manual Lead Entry
+                </p>
+
+                <h3 className="mt-2 text-xl font-bold text-white">
+                  Add a business from Google Maps or another source
+                </h3>
+
+                <p className="mt-2 text-sm text-gray-400">
+                  Paste the public contact details you found. A mobile number
+                  or email address is required.
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-6 grid gap-4 md:grid-cols-2">
+              <div>
+                <label className="mb-2 block text-sm font-medium text-gray-300">
+                  Business Name
+                </label>
+
+                <input
+                  type="text"
+                  name="name"
+                  value={manualLead.name}
+                  onChange={handleManualLeadChange}
+                  placeholder="Example: Aura Beauty Salon"
+                  className="w-full rounded-xl border border-white/10 bg-gray-950 px-4 py-3 text-white outline-none placeholder:text-gray-600 focus:border-purple-500"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="mb-2 block text-sm font-medium text-gray-300">
+                  Mobile / WhatsApp
+                </label>
+
+                <input
+                  type="tel"
+                  name="phone"
+                  value={manualLead.phone}
+                  onChange={handleManualLeadChange}
+                  placeholder="Include country code, e.g. +91..."
+                  className="w-full rounded-xl border border-white/10 bg-gray-950 px-4 py-3 text-white outline-none placeholder:text-gray-600 focus:border-purple-500"
+                />
+              </div>
+
+              <div>
+                <label className="mb-2 block text-sm font-medium text-gray-300">
+                  Email Address
+                </label>
+
+                <input
+                  type="email"
+                  name="email"
+                  value={manualLead.email}
+                  onChange={handleManualLeadChange}
+                  placeholder="business@example.com"
+                  className="w-full rounded-xl border border-white/10 bg-gray-950 px-4 py-3 text-white outline-none placeholder:text-gray-600 focus:border-purple-500"
+                />
+              </div>
+
+              <div>
+                <label className="mb-2 block text-sm font-medium text-gray-300">
+                  Outreach Product
+                </label>
+
+                <select
+                  name="product"
+                  value={manualLead.product}
+                  onChange={handleManualLeadChange}
+                  className="w-full rounded-xl border border-white/10 bg-gray-950 px-4 py-3 text-white outline-none focus:border-purple-500"
+                >
+                  <option value="Unassigned">Unassigned</option>
+                  <option value="AURELIA">AURELIA</option>
+                  <option value="Retivio">Retivio</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="mb-2 block text-sm font-medium text-gray-300">
+                  City / Address
+                </label>
+
+                <input
+                  type="text"
+                  name="address"
+                  value={manualLead.address}
+                  onChange={handleManualLeadChange}
+                  placeholder="City or business address"
+                  className="w-full rounded-xl border border-white/10 bg-gray-950 px-4 py-3 text-white outline-none placeholder:text-gray-600 focus:border-purple-500"
+                />
+              </div>
+
+              <div>
+                <label className="mb-2 block text-sm font-medium text-gray-300">
+                  Website
+                </label>
+
+                <input
+                  type="text"
+                  name="website"
+                  value={manualLead.website}
+                  onChange={handleManualLeadChange}
+                  placeholder="Website URL (optional)"
+                  className="w-full rounded-xl border border-white/10 bg-gray-950 px-4 py-3 text-white outline-none placeholder:text-gray-600 focus:border-purple-500"
+                />
+              </div>
+            </div>
+
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-end">
+              <button
+                type="button"
+                onClick={() => {
+                  resetManualLead();
+                  setShowAddLead(false);
+                }}
+                className="rounded-xl border border-white/10 bg-gray-950 px-5 py-3 font-semibold text-gray-300 transition hover:border-white/20 hover:text-white"
+              >
+                Cancel
+              </button>
+
+              <button
+                type="submit"
+                disabled={savingLead}
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-purple-600 px-6 py-3 font-semibold text-white transition hover:bg-purple-500 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                <Save size={18} />
+                {savingLead ? "Saving Lead..." : "Save & Start Outreach"}
+              </button>
+            </div>
+          </form>
+        )}
+      </div>
 
       <div className="grid lg:grid-cols-2 gap-5 mt-8">
         <div className="bg-gray-900 border border-white/10 rounded-2xl p-5">

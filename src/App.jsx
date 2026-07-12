@@ -33,6 +33,7 @@ const ResetPassword = lazy(() => import("./pages/ResetPassword"));
 const ProjectBrief = lazy(() => import("./pages/ProjectBrief"));
 const ProjectSubmitted = lazy(() => import("./pages/ProjectSubmitted"));
 const CommandCenter = lazy(() => import("./pages/CommandCenter"));
+const WebsiteBuilderPage = lazy(() => import("./pages/WebsiteBuilderPage"));
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -95,6 +96,11 @@ function App() {
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
           <Route path="/templates" element={<Templates />} />
+
+          <Route
+            path="/website-builder"
+            element={<WebsiteBuilderPage />}
+          />
 
           <Route
             path="/templates/aurelia"

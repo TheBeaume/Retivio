@@ -1,102 +1,193 @@
-import aiStrategiesSalonOwners from "./blogs/aiStrategiesSalonOwners";
-import whySalonsLoseRepeatCustomers from "./blogs/whySalonsLoseRepeatCustomers";
+import bestSalonCrmSoftware from "./blogs/bestSalonCrmSoftware";
+import buildSalonWebsite from "./blogs/buildSalonWebsite";
+import salonManagementGuide from "./blogs/salonManagementGuide";
+import repeatCustomers from "./blogs/repeatCustomers";
+import manageCustomers from "./blogs/manageCustomers";
+import getRepeatCustomers from "./blogs/getRepeatCustomers";
+import followUpStrategies from "./blogs/followUpStrategies";
+import aiSalonGrowth from "./blogs/aiSalonGrowth";
+import crmVsSoftware from "./blogs/crmVsSoftware";
+import websiteAndBusiness from "./blogs/websiteAndBusiness";
 
 const blogData = [
   {
     id: 1,
-    title: "7 AI Strategies Every Salon Owner Should Know",
-    slug: "7-ai-strategies-for-salon-owners",
-    category: "AI",
-
-    excerpt:
-      "Discover how AI can automate appointments, improve customer retention, and increase salon revenue.",
-
-    content: aiStrategiesSalonOwners,
-
-    image:
-      "https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?w=800",
-
+    title: "Best Salon CRM Software: What Salon Owners Should Actually Look For",
+    slug: "best-salon-crm-software",
+    category: "Salon CRM",
+    excerpt: "Choosing salon CRM software is easier when you stop comparing long feature lists and start looking at the daily problems your team actually needs to solve.",
+    content: bestSalonCrmSoftware,
+    image: "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=1200",
     author: "Retivio Team",
-
-    metaTitle:
-      "7 AI Strategies Every Salon Owner Should Know in 2026 | Retivio",
-
-    metaDescription:
-      "Discover seven practical AI strategies that help salon owners automate appointments, improve customer retention, reduce no-shows and grow their salon business.",
-
-    keywords: [
-      "AI salon software",
-      "AI for salons",
-      "Salon CRM",
-      "Salon automation",
-      "Salon management software"
-    ],
-
+    metaTitle: "Best Salon CRM Software: What Salon Owners Should Actually Look For | Retivio",
+    metaDescription: "Choosing salon CRM software is easier when you stop comparing long feature lists and start looking at the daily problems your team actually needs to solve.",
+    keywords: ["best salon CRM software", "salon CRM", "salon management software", "Retivio"],
     featured: true,
-
-    publishedAt: "2026-07-06",
-
-    updatedAt: "2026-07-06",
-
-    readTime: "8 min read"
+    publishedAt: "2026-07-12",
+    updatedAt: "2026-07-12",
+    readTime: "11 min read"
   },
 
   {
     id: 2,
-    title: "How to Increase Repeat Customers Without Discounts",
-    category: "Customer Retention",
-    readTime: "5 min read",
-    image:
-      "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800",
-    excerpt:
-      "Simple customer retention techniques every salon should use to boost repeat visits.",
-    slug: "increase-repeat-customers",
+    title: "How to Build a Professional Salon Website Without Coding",
+    slug: "build-professional-salon-website-without-coding",
+    category: "Website Growth",
+    excerpt: "A salon website does not need to begin with code. It needs to begin with a clear promise, useful information and an easy path from interest to contact or booking.",
+    content: buildSalonWebsite,
+    image: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=1200",
+    author: "Retivio Team",
+    metaTitle: "How to Build a Professional Salon Website Without Coding | Retivio",
+    metaDescription: "A salon website does not need to begin with code. It needs to begin with a clear promise, useful information and an easy path from interest to contact or booking.",
+    keywords: ["how to build a salon website", "salon CRM", "salon management software", "Retivio"],
+    featured: false,
+    publishedAt: "2026-07-12",
+    updatedAt: "2026-07-12",
+    readTime: "10 min read"
   },
 
   {
     id: 3,
-    title: "WhatsApp Marketing Tips for Beauty Salons",
-    category: "Marketing",
-    readTime: "4 min read",
-    image:
-      "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800",
-    excerpt:
-      "Learn how WhatsApp reminders and promotions can bring customers back more often.",
-    slug: "whatsapp-marketing-salons",
+    title: "Salon Management Software: A Practical Guide for Modern Salon Owners",
+    slug: "salon-management-software-practical-guide",
+    category: "Salon Management",
+    excerpt: "Salon management software should make a busy day easier to understand. This guide looks at the work behind the screen and the features that matter in a real salon.",
+    content: salonManagementGuide,
+    image: "https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?w=1200",
+    author: "Retivio Team",
+    metaTitle: "Salon Management Software: A Practical Guide for Modern Salon Owners | Retivio",
+    metaDescription: "Salon management software should make a busy day easier to understand. This guide looks at the work behind the screen and the features that matter in a real salon.",
+    keywords: ["salon management software", "salon CRM", "salon management software", "Retivio"],
+    featured: false,
+    publishedAt: "2026-07-12",
+    updatedAt: "2026-07-12",
+    readTime: "9 min read"
   },
 
   {
     id: 4,
-    title: "Why Most Salons Lose Repeat Customers (And How to Fix It)",
+    title: "Why Salon Customers Do Not Come Back and How to Fix It",
+    slug: "why-salon-customers-do-not-come-back",
     category: "Customer Retention",
+    excerpt: "A quiet loss of repeat customers can hurt a salon more than one bad week of bookings. The difficult part is that many clients leave without explaining why.",
+    content: repeatCustomers,
+    image: "https://images.unsplash.com/photo-1562322140-8baeececf3df?w=1200",
     author: "Retivio Team",
-    publishedAt: "2026-07-06",
-    readTime: "12 min read",
+    metaTitle: "Why Salon Customers Do Not Come Back and How to Fix It | Retivio",
+    metaDescription: "A quiet loss of repeat customers can hurt a salon more than one bad week of bookings. The difficult part is that many clients leave without explaining why.",
+    keywords: ["salon customer retention", "salon CRM", "salon management software", "Retivio"],
+    featured: false,
+    publishedAt: "2026-07-12",
+    updatedAt: "2026-07-12",
+    readTime: "9 min read"
+  },
 
-    image:
-      "https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?w=1200",
+  {
+    id: 5,
+    title: "How to Manage Salon Customers Without Excel or Paper Registers",
+    slug: "manage-salon-customers-without-excel-paper-registers",
+    category: "Salon CRM",
+    excerpt: "Paper registers and spreadsheets can hold information, but managing customer relationships requires more than storing rows and phone numbers.",
+    content: manageCustomers,
+    image: "https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=1200",
+    author: "Retivio Team",
+    metaTitle: "How to Manage Salon Customers Without Excel or Paper Registers | Retivio",
+    metaDescription: "Paper registers and spreadsheets can hold information, but managing customer relationships requires more than storing rows and phone numbers.",
+    keywords: ["manage salon customers", "salon CRM", "salon management software", "Retivio"],
+    featured: false,
+    publishedAt: "2026-07-12",
+    updatedAt: "2026-07-12",
+    readTime: "9 min read"
+  },
 
-    excerpt:
-      "Discover why salon clients stop coming back and learn practical strategies to improve customer retention, increase repeat bookings and grow your salon business.",
+  {
+    id: 6,
+    title: "How to Get More Repeat Customers for Your Salon",
+    slug: "how-to-get-more-repeat-customers-for-salon",
+    category: "Customer Retention",
+    excerpt: "Getting more repeat customers is not one marketing trick. It is the result of making the next visit feel natural, relevant and easy.",
+    content: getRepeatCustomers,
+    image: "https://images.unsplash.com/photo-1600948836101-f9ffda59d250?w=1200",
+    author: "Retivio Team",
+    metaTitle: "How to Get More Repeat Customers for Your Salon | Retivio",
+    metaDescription: "Getting more repeat customers is not one marketing trick. It is the result of making the next visit feel natural, relevant and easy.",
+    keywords: ["get more repeat salon customers", "salon CRM", "salon management software", "Retivio"],
+    featured: false,
+    publishedAt: "2026-07-12",
+    updatedAt: "2026-07-12",
+    readTime: "9 min read"
+  },
 
-    slug: "why-salons-lose-repeat-customers",
+  {
+    id: 7,
+    title: "Salon Follow Up Strategies That Bring Customers Back",
+    slug: "salon-follow-up-strategies-bring-customers-back",
+    category: "Marketing",
+    excerpt: "Good salon follow up feels like service continuing after the appointment. Bad follow up feels like a stranger repeatedly asking for a sale.",
+    content: followUpStrategies,
+    image: "https://images.unsplash.com/photo-1522337660859-02fbefca4702?w=1200",
+    author: "Retivio Team",
+    metaTitle: "Salon Follow Up Strategies That Bring Customers Back | Retivio",
+    metaDescription: "Good salon follow up feels like service continuing after the appointment. Bad follow up feels like a stranger repeatedly asking for a sale.",
+    keywords: ["salon follow up strategies", "salon CRM", "salon management software", "Retivio"],
+    featured: false,
+    publishedAt: "2026-07-12",
+    updatedAt: "2026-07-12",
+    readTime: "9 min read"
+  },
 
-    metaTitle:
-      "Why Most Salons Lose Repeat Customers (And How to Fix It) | Retivio",
+  {
+    id: 8,
+    title: "How AI Can Help Salon Owners Grow Their Business",
+    slug: "how-ai-can-help-salon-owners-grow-business",
+    category: "AI",
+    excerpt: "AI is most useful in a salon when it removes repetitive work or helps an owner notice something important. It does not need to replace the human experience.",
+    content: aiSalonGrowth,
+    image: "https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?w=1200",
+    author: "Retivio Team",
+    metaTitle: "How AI Can Help Salon Owners Grow Their Business | Retivio",
+    metaDescription: "AI is most useful in a salon when it removes repetitive work or helps an owner notice something important. It does not need to replace the human experience.",
+    keywords: ["AI for salon owners", "salon CRM", "salon management software", "Retivio"],
+    featured: false,
+    publishedAt: "2026-07-12",
+    updatedAt: "2026-07-12",
+    readTime: "9 min read"
+  },
 
-    metaDescription:
-      "Learn why salons lose repeat customers and discover proven customer retention strategies to grow your salon business.",
+  {
+    id: 9,
+    title: "Salon CRM vs Traditional Salon Management Software",
+    slug: "salon-crm-vs-traditional-salon-management-software",
+    category: "Salon CRM",
+    excerpt: "Salon CRM and salon management software overlap, but they begin with different questions. Understanding that difference helps owners choose a system that matches the business.",
+    content: crmVsSoftware,
+    image: "https://images.unsplash.com/photo-1633681926022-84c23e8cb2d6?w=1200",
+    author: "Retivio Team",
+    metaTitle: "Salon CRM vs Traditional Salon Management Software | Retivio",
+    metaDescription: "Salon CRM and salon management software overlap, but they begin with different questions. Understanding that difference helps owners choose a system that matches the business.",
+    keywords: ["salon CRM vs salon management software", "salon CRM", "salon management software", "Retivio"],
+    featured: false,
+    publishedAt: "2026-07-12",
+    updatedAt: "2026-07-12",
+    readTime: "9 min read"
+  },
 
-    keywords: [
-      "salon customer retention",
-      "repeat salon customers",
-      "salon CRM",
-      "salon management software",
-      "increase salon bookings",
-      "customer loyalty"
-    ],
-
-    content: whySalonsLoseRepeatCustomers
+  {
+    id: 10,
+    title: "How to Create a Salon Website and Manage Your Business From One Platform",
+    slug: "create-salon-website-manage-business-one-platform",
+    category: "Website Growth",
+    excerpt: "A website brings people to the front door of a salon business. Customer management determines what happens after they walk through it. Keeping those worlds connected can simplify growth.",
+    content: websiteAndBusiness,
+    image: "https://images.unsplash.com/photo-1470259078422-826894b933aa?w=1200",
+    author: "Retivio Team",
+    metaTitle: "How to Create a Salon Website and Manage Your Business From One Platform | Retivio",
+    metaDescription: "A website brings people to the front door of a salon business. Customer management determines what happens after they walk through it. Keeping those worlds connected can simplify growth.",
+    keywords: ["create salon website and manage business", "salon CRM", "salon management software", "Retivio"],
+    featured: false,
+    publishedAt: "2026-07-12",
+    updatedAt: "2026-07-12",
+    readTime: "10 min read"
   }
 ];
 
