@@ -50,10 +50,31 @@ export default function SEO({
 const websiteSchema = {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  url: SITE_URL,
+  "@id": `${SITE_URL}/#website`,
+  url: `${SITE_URL}/`,
   name: "Retivio",
-  alternateName: "Retivio Salon CRM",
+  alternateName: [
+    "Retivio Salon CRM",
+    "Retivio AI Salon CRM"
+  ],
   description: DEFAULT_DESCRIPTION,
+  publisher: {
+    "@id": `${SITE_URL}/#organization`,
+  },
+};
+
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": `${SITE_URL}/#organization`,
+  name: "Retivio",
+  url: `${SITE_URL}/`,
+  logo: {
+    "@type": "ImageObject",
+    url: `${SITE_URL}/logo512.png`,
+    width: 512,
+    height: 512,
+  },
 };
 
   return (
@@ -113,6 +134,10 @@ const websiteSchema = {
 
 <script type="application/ld+json">
   {JSON.stringify(websiteSchema)}
+</script>
+
+<script type="application/ld+json">
+  {JSON.stringify(organizationSchema)}
 </script>
 
       {jsonLd && (
