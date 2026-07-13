@@ -85,6 +85,13 @@ export default async function handler(req, res) {
     } = await authClient.auth.getUser(token);
 
     if (userError || !user) {
+      console.error("Supabase auth validation error:", {
+        message: userError?.message || null,
+        status: userError?.status || null,
+        code: userError?.code || null,
+        hasUser: Boolean(user),
+      });
+
       return res.status(401).json({
         success: false,
         message: "Invalid authentication session.",
