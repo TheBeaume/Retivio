@@ -17,6 +17,7 @@ const footerGroups = [
       { label: "About", href: "/about" },
       { label: "Contact", href: "/contact" },
       { label: "Salon websites", href: "/templates" },
+      { label: "Website Builder", href: "/website-builder" },
     ],
   },
   {

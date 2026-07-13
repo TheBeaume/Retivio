@@ -34,6 +34,7 @@ const ProjectBrief = lazy(() => import("./pages/ProjectBrief"));
 const ProjectSubmitted = lazy(() => import("./pages/ProjectSubmitted"));
 const CommandCenter = lazy(() => import("./pages/CommandCenter"));
 const WebsiteBuilderPage = lazy(() => import("./pages/WebsiteBuilderPage"));
+const PublicWebsite = lazy(() => import("./pages/PublicWebsite"));
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -100,6 +101,31 @@ function App() {
           <Route
             path="/website-builder"
             element={<WebsiteBuilderPage />}
+          />
+
+          <Route
+            path="/site/:slug"
+            element={<PublicWebsite />}
+          />
+
+          <Route
+            path="/site/:slug/blog"
+            element={<PublicWebsite />}
+          />
+
+          <Route
+            path="/site/:slug/blog/:postSlug"
+            element={<PublicWebsite />}
+          />
+
+          <Route
+            path="/site/:slug/terms"
+            element={<PublicWebsite />}
+          />
+
+          <Route
+            path="/site/:slug/privacy"
+            element={<PublicWebsite />}
           />
 
           <Route

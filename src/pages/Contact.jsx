@@ -261,6 +261,7 @@ export default function Contact() {
                           <option>Product enquiry</option>
                           <option>Retivio support</option>
                           <option>Salon website</option>
+                          <option>Website Builder</option>
                           <option>Partnership</option>
                           <option>Feedback</option>
                           <option>Other</option>
