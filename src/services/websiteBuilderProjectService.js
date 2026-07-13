@@ -283,3 +283,38 @@ export async function deleteWebsiteBuilderImage(path) {
     .from(WEBSITE_MEDIA_BUCKET)
     .remove([path]);
 }
+
+export async function submitWebsiteEnquiry(enquiry) {
+  return await supabase
+    .from("website_builder_enquiries")
+    .insert({
+      project_id: enquiry.projectId,
+      name: enquiry.name.trim(),
+      email: enquiry.email.trim() || null,
+      phone: enquiry.phone.trim() || null,
+      message: enquiry.message.trim(),
+    });
+}
+
+export async function getWebsiteBuilderEnquiries(projectId) {
+  return await supabase
+    .from("website_builder_enquiries")
+    .select("*")
+    .eq("project_id", projectId)
+    .order("created_at", { ascending: false });
+}
+
+export async function updateWebsiteEnquiryStatus(
+  enquiryId,
+  status
+) {
+  return await supabase
+    .from("website_builder_enquiries")
+    .update({
+      status,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", enquiryId)
+    .select()
+    .single();
+}

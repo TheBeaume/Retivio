@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   getCurrentWebsiteBuilderUser,
   signInWebsiteBuilderWithGoogle,
@@ -8,7 +8,14 @@ import {
   deleteWebsiteBuilderProject,
   signOutWebsiteBuilder,
   uploadWebsiteBuilderImage,
+  getWebsiteBuilderEnquiries,
+  updateWebsiteEnquiryStatus,
 } from "../../services/websiteBuilderProjectService";
+import {
+  createWebsitePaymentOrder,
+  verifyWebsitePayment,
+  loadRazorpayCheckout,
+} from "../../services/websitePaymentService";
 import {
   Monitor,
   Smartphone,
@@ -554,6 +561,11 @@ export default function WebsiteBuilder() {
   const [loadingProjects, setLoadingProjects] = useState(true);
   const [saveMessage, setSaveMessage] = useState("");
   const [uploadingImage, setUploadingImage] = useState("");
+  const [enquiries, setEnquiries] = useState([]);
+  const [loadingEnquiries, setLoadingEnquiries] = useState(false);
+  const [updatingEnquiryId, setUpdatingEnquiryId] = useState(null);
+  const [enquiryProjectId, setEnquiryProjectId] = useState(null);
+  const [enquiryProjectName, setEnquiryProjectName] = useState("");
 
   const [websiteMedia, setWebsiteMedia] = useState({
     hero: null,
@@ -585,6 +597,8 @@ export default function WebsiteBuilder() {
   });
 
   const [previewPage, setPreviewPage] = useState("home");
+  const [previewEnquiryMessage, setPreviewEnquiryMessage] =
+    useState("");
 
   const [formData, setFormData] = useState({
     businessName: "Your Business",
@@ -747,17 +761,40 @@ export default function WebsiteBuilder() {
     setActiveStep("business");
   };
 
+  const previewScrollRef = useRef(null);
+
+  useEffect(() => {
+    previewScrollRef.current?.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "instant",
+    });
+  }, [previewPage]);
+
   const navigatePreview = (sectionId) => {
     setPreviewPage("home");
     setPreviewMobileMenuOpen(false);
 
     window.setTimeout(() => {
-      document
-        .getElementById(`builder-preview-${sectionId}`)
-        ?.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
+      const previewContainer = previewScrollRef.current;
+      const target = document.getElementById(
+        `builder-preview-${sectionId}`
+      );
+
+      if (!previewContainer || !target) return;
+
+      const containerRect =
+        previewContainer.getBoundingClientRect();
+      const targetRect = target.getBoundingClientRect();
+
+      previewContainer.scrollTo({
+        top:
+          previewContainer.scrollTop +
+          targetRect.top -
+          containerRect.top,
+        left: 0,
+        behavior: "smooth",
+      });
     }, 0);
   };
 
@@ -769,6 +806,70 @@ export default function WebsiteBuilder() {
         block: "start",
       });
   };
+
+  const loadProjectEnquiries = async (projectId) => {
+    if (!projectId) {
+      setEnquiries([]);
+      return;
+    }
+
+    setLoadingEnquiries(true);
+
+    const { data, error } =
+      await getWebsiteBuilderEnquiries(projectId);
+
+    if (error) {
+      console.error("Website enquiry load error:", error);
+      setEnquiries([]);
+    } else {
+      setEnquiries(data || []);
+    }
+
+    setLoadingEnquiries(false);
+  };
+
+  const openProjectEnquiries = async (project) => {
+    setEnquiryProjectId(project.id);
+    setEnquiryProjectName(
+      project.business_name || "Untitled Website"
+    );
+
+    await loadProjectEnquiries(project.id);
+
+    window.setTimeout(() => {
+      document
+        .getElementById("website-enquiries-inbox")
+        ?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+    }, 0);
+  };
+
+  const changeEnquiryStatus = async (enquiryId, status) => {
+    setUpdatingEnquiryId(enquiryId);
+
+    const { data, error } =
+      await updateWebsiteEnquiryStatus(enquiryId, status);
+
+    setUpdatingEnquiryId(null);
+
+    if (error) {
+      console.error("Website enquiry status error:", error);
+      alert(error.message || "Unable to update enquiry.");
+      return;
+    }
+
+    setEnquiries((current) =>
+      current.map((enquiry) =>
+        enquiry.id === enquiryId ? data : enquiry
+      )
+    );
+  };
+
+  const newEnquiryCount = enquiries.filter(
+    (enquiry) => enquiry.status === "new"
+  ).length;
 
   const getProjectPayload = (
     userId,
@@ -946,19 +1047,94 @@ export default function WebsiteBuilder() {
           );
 
         if (createResult.error) {
-          console.error(
-            "Website create before publish error:",
-            createResult.error
-          );
-          alert(
-            createResult.error.message ||
-              "Unable to prepare website for publishing."
-          );
-          return;
+          throw createResult.error;
         }
 
         projectId = createResult.data.id;
         setCurrentProjectId(projectId);
+      } else {
+        const saveResult =
+          await updateWebsiteBuilderProject(
+            projectId,
+            user.id,
+            getProjectPayload(user.id, {
+              status: "draft",
+              public_slug: null,
+            })
+          );
+
+        if (saveResult.error) {
+          throw saveResult.error;
+        }
+      }
+
+      const order =
+        await createWebsitePaymentOrder(projectId);
+
+      if (!order.alreadyPaid) {
+        await loadRazorpayCheckout();
+
+        await new Promise((resolve, reject) => {
+          const checkout = new window.Razorpay({
+            key: order.keyId,
+            amount: order.amount,
+            currency: order.currency,
+            order_id: order.orderId,
+            name: "Retivio",
+            description: "Professional Website Launch",
+            prefill: {
+              name: formData.businessName,
+              email: user.email || "",
+              contact: formData.phone || "",
+            },
+            notes: {
+              project_id: projectId,
+            },
+            theme: {
+              color: "#7e22ce",
+            },
+            handler: async (response) => {
+              try {
+                await verifyWebsitePayment({
+                  projectId,
+                  razorpayPaymentId:
+                    response.razorpay_payment_id,
+                  razorpayOrderId:
+                    response.razorpay_order_id,
+                  razorpaySignature:
+                    response.razorpay_signature,
+                });
+
+                resolve();
+              } catch (error) {
+                reject(error);
+              }
+            },
+            modal: {
+              ondismiss: () => {
+                reject(
+                  new Error(
+                    "Payment checkout was closed. Your website remains saved as a draft."
+                  )
+                );
+              },
+            },
+          });
+
+          checkout.on(
+            "payment.failed",
+            (response) => {
+              reject(
+                new Error(
+                  response?.error?.description ||
+                    "Payment failed. Please try again."
+                )
+              );
+            }
+          );
+
+          checkout.open();
+        });
       }
 
       if (!slug) {
@@ -979,15 +1155,7 @@ export default function WebsiteBuilder() {
         );
 
       if (publishResult.error) {
-        console.error(
-          "Website publish error:",
-          publishResult.error
-        );
-        alert(
-          publishResult.error.message ||
-            "Unable to publish website."
-        );
-        return;
+        throw publishResult.error;
       }
 
       setCurrentProjectStatus("published");
@@ -1000,7 +1168,17 @@ export default function WebsiteBuilder() {
       await loadProjects(user.id);
 
       setSaveMessage(
-        "Website published successfully. Your public website is live."
+        "Payment verified. Your website is now live."
+      );
+    } catch (error) {
+      console.error(
+        "Website payment or publish error:",
+        error
+      );
+
+      alert(
+        error?.message ||
+          "Unable to complete website launch."
       );
     } finally {
       setPublishing(false);
@@ -2146,32 +2324,97 @@ export default function WebsiteBuilder() {
                 </h2>
 
                 <p className="mt-3 text-sm leading-6 text-slate-400">
-                  Your website can be prepared for different hosting
-                  providers. You are not locked to one platform.
+                  Launch your professional business website with Retivio
+                  hosting and manage it from your own account.
                 </p>
 
-                <div className="mt-7 space-y-4">
-                  <PublishOption
-                    title="Retivio assisted setup"
-                    description="We help prepare the website and guide you through domain and hosting setup."
-                    recommended
-                    selected={hostingOption === "retivio"}
-                    onClick={() => setHostingOption("retivio")}
-                  />
+                <div className="mt-7 rounded-2xl border border-purple-500/50 bg-gradient-to-b from-purple-500/10 to-slate-950 p-5 sm:p-6">
+                  <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
+                    <div>
+                      <div className="inline-flex items-center rounded-full border border-purple-400/30 bg-purple-500/10 px-3 py-1 text-xs font-bold uppercase tracking-[0.14em] text-purple-300">
+                        Recommended
+                      </div>
 
-                  <PublishOption
-                    title="Use my own hosting"
-                    description="Host the website with your preferred compatible hosting provider."
-                    selected={hostingOption === "own-hosting"}
-                    onClick={() => setHostingOption("own-hosting")}
-                  />
+                      <h3 className="mt-4 text-xl font-bold text-white">
+                        Retivio Website Hosting
+                      </h3>
 
-                  <PublishOption
-                    title="Get website files"
-                    description="Prepare your website project for independent deployment."
-                    selected={hostingOption === "website-files"}
-                    onClick={() => setHostingOption("website-files")}
-                  />
+                      <p className="mt-2 max-w-md text-sm leading-6 text-slate-400">
+                        Publish your website on Retivio and continue editing
+                        your content, services, images and blog anytime.
+                      </p>
+                    </div>
+
+                    <div className="sm:text-right">
+                      <div className="flex items-end gap-2 sm:justify-end">
+                        <span className="text-4xl font-extrabold text-white">
+                          ₹2,999
+                        </span>
+                      </div>
+
+                      <p className="mt-1 text-xs font-semibold text-slate-400">
+                        One-time website launch price
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="mt-6 grid gap-3 sm:grid-cols-2">
+                    {[
+                      "Retivio managed hosting",
+                      "Secure SSL website",
+                      "Website enquiry inbox",
+                      "SEO settings and pages",
+                      "Professional blog system",
+                      "Edit website anytime",
+                    ].map((feature) => (
+                      <div
+                        key={feature}
+                        className="flex items-center gap-3 text-sm text-slate-300"
+                      >
+                        <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-400">
+                          <Check size={14} />
+                        </span>
+                        {feature}
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="mt-6 rounded-xl border border-white/10 bg-slate-950/70 p-4">
+                    <p className="text-sm font-semibold text-white">
+                      Domain name is purchased separately
+                    </p>
+
+                    <p className="mt-1 text-xs leading-5 text-slate-500">
+                      You can connect your own domain after launch. Retivio
+                      will provide domain connection guidance.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                  <div className="rounded-xl border border-white/10 bg-slate-950 p-4 opacity-60">
+                    <p className="font-bold text-white">
+                      Use my own hosting
+                    </p>
+                    <p className="mt-2 text-sm leading-5 text-slate-500">
+                      Independent hosting deployment.
+                    </p>
+                    <p className="mt-3 text-xs font-bold uppercase tracking-[0.14em] text-slate-500">
+                      Coming soon
+                    </p>
+                  </div>
+
+                  <div className="rounded-xl border border-white/10 bg-slate-950 p-4 opacity-60">
+                    <p className="font-bold text-white">
+                      Export website files
+                    </p>
+                    <p className="mt-2 text-sm leading-5 text-slate-500">
+                      Download a deployment-ready website package.
+                    </p>
+                    <p className="mt-3 text-xs font-bold uppercase tracking-[0.14em] text-slate-500">
+                      Coming soon
+                    </p>
+                  </div>
                 </div>
 
                 {currentProjectStatus === "published" &&
@@ -2246,7 +2489,7 @@ export default function WebsiteBuilder() {
                       : currentProjectStatus === "published"
                       ? "Update Live Website"
                       : user
-                      ? "Publish Website"
+                      ? "Launch Website — ₹2,999"
                       : "Continue with Google"}
                   </button>
                 </div>
@@ -2299,10 +2542,11 @@ export default function WebsiteBuilder() {
 
             <div className="mt-5 overflow-auto rounded-2xl bg-slate-950 p-3 sm:p-5">
               <div
-                className={`mx-auto overflow-hidden rounded-xl bg-white text-slate-950 shadow-2xl transition-all duration-300 ${
+                ref={previewScrollRef}
+                className={`mx-auto max-h-[780px] overflow-x-hidden overflow-y-auto rounded-xl bg-white text-slate-950 shadow-2xl transition-all duration-300 ${
                   previewMode === "mobile"
                     ? "max-w-[390px]"
-                    : "w-full"
+                    : "min-w-[960px] w-full"
                 }`}
               >
                 <header className="relative border-b border-slate-100 bg-white">
@@ -3069,12 +3313,27 @@ export default function WebsiteBuilder() {
                       </div>
 
                       <form
-                        onSubmit={(event) => event.preventDefault()}
+                        onSubmit={(event) => {
+                          event.preventDefault();
+
+                          const form = event.currentTarget;
+
+                          if (!form.reportValidity()) {
+                            return;
+                          }
+
+                          setPreviewEnquiryMessage(
+                            "Preview enquiry submitted successfully. Published website enquiries will appear in your Enquiries Inbox."
+                          );
+
+                          form.reset();
+                        }}
                         className="mt-8 space-y-3"
                       >
                         <input
                           type="text"
                           placeholder="Your name"
+                          required
                           className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none"
                         />
 
@@ -3093,8 +3352,15 @@ export default function WebsiteBuilder() {
                         <textarea
                           rows={5}
                           placeholder="Your message"
+                          required
                           className="w-full resize-none rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none"
                         />
+
+                        {previewEnquiryMessage && (
+                          <p className="rounded-xl bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-700">
+                            {previewEnquiryMessage}
+                          </p>
+                        )}
 
                         <button
                           type="submit"
@@ -3293,6 +3559,192 @@ export default function WebsiteBuilder() {
           </div>
         </div>
 
+        {user && enquiryProjectId && (
+          <section
+            id="website-enquiries-inbox"
+            className="mt-10 scroll-mt-24 rounded-3xl border border-white/10 bg-slate-900 p-5 sm:p-7"
+          >
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <div className="flex items-center gap-2 text-purple-400">
+                  <Mail size={19} />
+                  <p className="text-sm font-bold uppercase tracking-[0.18em]">
+                    Enquiries Inbox
+                  </p>
+                </div>
+
+                <h2 className="mt-3 text-2xl font-bold text-white">
+                  {enquiryProjectName} enquiries
+                </h2>
+
+                <p className="mt-2 text-sm text-slate-400">
+                  {newEnquiryCount} new enquiry{newEnquiryCount === 1 ? "" : "ies"}
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={() =>
+                  loadProjectEnquiries(enquiryProjectId)
+                }
+                disabled={loadingEnquiries}
+                className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-slate-950 px-5 py-3 text-sm font-bold text-white transition hover:border-purple-500/50 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {loadingEnquiries && (
+                  <Loader2 size={17} className="animate-spin" />
+                )}
+                Refresh inbox
+              </button>
+            </div>
+
+            {loadingEnquiries ? (
+              <div className="mt-8 flex items-center gap-3 text-slate-400">
+                <Loader2 size={18} className="animate-spin" />
+                Loading enquiries...
+              </div>
+            ) : enquiries.length === 0 ? (
+              <div className="mt-8 rounded-2xl border border-dashed border-white/10 bg-slate-950 p-8 text-center">
+                <Mail
+                  size={28}
+                  className="mx-auto text-slate-600"
+                />
+
+                <p className="mt-4 font-semibold text-white">
+                  No enquiries yet
+                </p>
+
+                <p className="mt-2 text-sm leading-6 text-slate-500">
+                  New messages submitted through this website's contact form
+                  will appear here.
+                </p>
+              </div>
+            ) : (
+              <div className="mt-8 space-y-4">
+                {enquiries.map((enquiry) => {
+                  const cleanPhone = String(
+                    enquiry.phone || ""
+                  ).replace(/[^+\d]/g, "");
+
+                  const whatsappPhone = String(
+                    enquiry.phone || ""
+                  ).replace(/\D/g, "");
+
+                  return (
+                    <article
+                      key={enquiry.id}
+                      className={`rounded-2xl border bg-slate-950 p-5 ${
+                        enquiry.status === "new"
+                          ? "border-purple-500/60"
+                          : "border-white/10"
+                      }`}
+                    >
+                      <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+                        <div className="min-w-0">
+                          <div className="flex flex-wrap items-center gap-3">
+                            <h3 className="text-lg font-bold text-white">
+                              {enquiry.name}
+                            </h3>
+
+                            <span
+                              className={`rounded-full px-3 py-1 text-xs font-bold ${
+                                enquiry.status === "new"
+                                  ? "bg-purple-500/15 text-purple-300"
+                                  : enquiry.status === "contacted"
+                                  ? "bg-amber-500/15 text-amber-300"
+                                  : "bg-emerald-500/15 text-emerald-300"
+                              }`}
+                            >
+                              {enquiry.status === "new"
+                                ? "New"
+                                : enquiry.status === "contacted"
+                                ? "Contacted"
+                                : "Closed"}
+                            </span>
+                          </div>
+
+                          <p className="mt-2 text-xs text-slate-500">
+                            {new Date(
+                              enquiry.created_at
+                            ).toLocaleString()}
+                          </p>
+
+                          <p className="mt-5 whitespace-pre-wrap text-sm leading-7 text-slate-300">
+                            {enquiry.message}
+                          </p>
+
+                          <div className="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-sm text-slate-400">
+                            {enquiry.email && (
+                              <a
+                                href={`mailto:${enquiry.email}`}
+                                className="transition hover:text-white"
+                              >
+                                {enquiry.email}
+                              </a>
+                            )}
+
+                            {enquiry.phone && (
+                              <a
+                                href={`tel:${cleanPhone}`}
+                                className="transition hover:text-white"
+                              >
+                                {enquiry.phone}
+                              </a>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="flex flex-wrap gap-2 lg:max-w-[360px] lg:justify-end">
+                          {enquiry.phone && (
+                            <>
+                              <a
+                                href={`tel:${cleanPhone}`}
+                                className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 px-4 py-2.5 text-sm font-bold text-white transition hover:border-purple-500/50"
+                              >
+                                <Phone size={16} />
+                                Call
+                              </a>
+
+                              <a
+                                href={`https://wa.me/${whatsappPhone}`}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-emerald-500"
+                              >
+                                <MessageCircle size={16} />
+                                WhatsApp
+                              </a>
+                            </>
+                          )}
+
+                          <select
+                            value={enquiry.status}
+                            disabled={
+                              updatingEnquiryId === enquiry.id
+                            }
+                            onChange={(event) =>
+                              changeEnquiryStatus(
+                                enquiry.id,
+                                event.target.value
+                              )
+                            }
+                            className="rounded-xl border border-white/10 bg-slate-900 px-4 py-2.5 text-sm font-bold text-white outline-none focus:border-purple-500 disabled:cursor-not-allowed disabled:opacity-60"
+                          >
+                            <option value="new">New</option>
+                            <option value="contacted">
+                              Contacted
+                            </option>
+                            <option value="closed">Closed</option>
+                          </select>
+                        </div>
+                      </div>
+                    </article>
+                  );
+                })}
+              </div>
+            )}
+          </section>
+        )}
+
         {user && (
           <section
             id="my-websites"
@@ -3367,11 +3819,11 @@ export default function WebsiteBuilder() {
                       Status: {project.status || "draft"}
                     </p>
 
-                    <div className="mt-5 flex gap-2">
+                    <div className="mt-5 grid grid-cols-2 gap-2">
                       <button
                         type="button"
                         onClick={() => openProject(project)}
-                        className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-purple-600 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-purple-500"
+                        className="inline-flex items-center justify-center gap-2 rounded-xl bg-purple-600 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-purple-500"
                       >
                         <Pencil size={16} />
                         Edit
@@ -3379,11 +3831,20 @@ export default function WebsiteBuilder() {
 
                       <button
                         type="button"
-                        onClick={() => removeProject(project)}
-                        className="rounded-xl border border-white/10 px-3 py-2.5 text-slate-400 transition hover:border-red-500/30 hover:text-red-400"
-                        aria-label="Delete website"
+                        onClick={() => openProjectEnquiries(project)}
+                        className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 px-4 py-2.5 text-sm font-bold text-white transition hover:border-purple-500/50"
                       >
-                        <Trash2 size={17} />
+                        <Mail size={16} />
+                        Enquiries
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => removeProject(project)}
+                        className="col-span-2 inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 px-4 py-2.5 text-sm font-bold text-slate-400 transition hover:border-red-500/30 hover:text-red-400"
+                      >
+                        <Trash2 size={16} />
+                        Delete website
                       </button>
                     </div>
                   </div>
@@ -3654,38 +4115,3 @@ function WebsiteImageField({
   );
 }
 
-function PublishOption({
-  title,
-  description,
-  recommended = false,
-  selected = false,
-  onClick,
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className={`w-full rounded-xl border bg-slate-950 p-4 text-left transition ${
-        selected
-          ? "border-purple-500 ring-1 ring-purple-500/30"
-          : "border-white/10 hover:border-purple-500/50"
-      }`}
-    >
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <p className="font-bold text-white">{title}</p>
-
-          <p className="mt-2 text-sm leading-6 text-slate-400">
-            {description}
-          </p>
-        </div>
-
-        {recommended && (
-          <span className="rounded-full bg-purple-500/10 px-3 py-1 text-xs font-bold text-purple-300">
-            Recommended
-          </span>
-        )}
-      </div>
-    </button>
-  );
-}

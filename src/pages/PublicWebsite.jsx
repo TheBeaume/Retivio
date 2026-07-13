@@ -9,15 +9,56 @@ import {
   Menu,
   X,
 } from "lucide-react";
-import { getPublishedWebsiteBySlug } from "../services/websiteBuilderProjectService";
+import {
+  getPublishedWebsiteBySlug,
+  submitWebsiteEnquiry,
+} from "../services/websiteBuilderProjectService";
+
+const businessTypes = {
+  salon: {
+    expertise: "Our expertise",
+    sectionTitle: "Services designed around you",
+    aboutTitle: "Beauty with care and expertise",
+  },
+  fashion: {
+    expertise: "Explore our world",
+    sectionTitle: "Collections with character",
+    aboutTitle: "Fashion with a distinct point of view",
+  },
+  jewellery: {
+    expertise: "Our craftsmanship",
+    sectionTitle: "Jewellery made to be remembered",
+    aboutTitle: "Crafted with beauty and intention",
+  },
+  cafe: {
+    expertise: "From our menu",
+    sectionTitle: "Made to enjoy",
+    aboutTitle: "A place made for good moments",
+  },
+  professional: {
+    expertise: "What we do",
+    sectionTitle: "Professional solutions for your needs",
+    aboutTitle: "Experience you can rely on",
+  },
+};
 
 function PublicWebsite() {
   const { slug, postSlug } = useParams();
   const location = useLocation();
+
   const [project, setProject] = useState(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [enquiryForm, setEnquiryForm] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    message: "",
+  });
+  const [enquirySubmitting, setEnquirySubmitting] = useState(false);
+  const [enquiryMessage, setEnquiryMessage] = useState("");
+  const [enquiryError, setEnquiryError] = useState("");
 
   useEffect(() => {
     let active = true;
@@ -75,6 +116,11 @@ function PublicWebsite() {
     () => media.legalContent || {},
     [media]
   );
+
+  const gallery = Array.isArray(media.gallery)
+    ? media.gallery
+    : [];
+
   const services = Array.isArray(project?.services)
     ? project.services
     : [];
@@ -86,6 +132,16 @@ function PublicWebsite() {
     if (location.pathname.endsWith("/blog")) return "blog";
     return "home";
   }, [location.pathname, postSlug]);
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "instant",
+    });
+
+    setMobileMenuOpen(false);
+  }, [location.pathname]);
 
   useEffect(() => {
     if (!project) return;
@@ -128,6 +184,7 @@ function PublicWebsite() {
           <h1 className="text-3xl font-extrabold">
             Website not found
           </h1>
+
           <p className="mt-3 text-slate-400">
             This website is unavailable or has not been published.
           </p>
@@ -138,9 +195,203 @@ function PublicWebsite() {
 
   const color = project.primary_color || "#7e22ce";
   const base = `/site/${slug}`;
+  const businessType = project.business_type || "salon";
+
+  const business =
+    businessTypes[businessType] || businessTypes.salon;
+
+  const templateStyle =
+    String(project.template || "").includes("luxury") ||
+    ["fashion-editorial", "jewellery-luxe", "cafe-dark", "business-premium"].includes(
+      project.template
+    )
+      ? "luxury"
+      : String(project.template || "").includes("minimal") ||
+        ["fashion-soft", "jewellery-minimal", "cafe-soft"].includes(
+          project.template
+        )
+      ? "minimal"
+      : "modern";
+
+  const heroClass =
+    templateStyle === "luxury"
+      ? "bg-slate-950 text-white"
+      : templateStyle === "minimal"
+      ? "bg-stone-50 text-slate-950"
+      : "bg-slate-50 text-slate-950";
+
+  const mutedTextClass =
+    templateStyle === "luxury"
+      ? "text-slate-300"
+      : "text-slate-600";
+
+  const whatsappUrl = project.whatsapp
+    ? `https://wa.me/${String(project.whatsapp).replace(
+        /\D/g,
+        ""
+      )}`
+    : null;
+
+  const phoneUrl = project.phone
+    ? `tel:${String(project.phone).replace(/[^+\d]/g, "")}`
+    : null;
+
   const currentPost = blogPosts.find(
     (post) => post.slug === postSlug
   );
+
+  const handleEnquiryChange = (event) => {
+    const { name, value } = event.target;
+
+    setEnquiryForm((current) => ({
+      ...current,
+      [name]: value,
+    }));
+  };
+
+  const handleEnquirySubmit = async (event) => {
+    event.preventDefault();
+
+    setEnquiryMessage("");
+    setEnquiryError("");
+
+    if (
+      !enquiryForm.name.trim() ||
+      !enquiryForm.message.trim()
+    ) {
+      setEnquiryError(
+        "Please enter your name and message."
+      );
+      return;
+    }
+
+    setEnquirySubmitting(true);
+
+    const { error } = await submitWebsiteEnquiry({
+      projectId: project.id,
+      ...enquiryForm,
+    });
+
+    setEnquirySubmitting(false);
+
+    if (error) {
+      console.error("Website enquiry error:", error);
+      setEnquiryError(
+        "Unable to send your enquiry right now. Please try again."
+      );
+      return;
+    }
+
+    setEnquiryForm({
+      name: "",
+      email: "",
+      phone: "",
+      message: "",
+    });
+
+    setEnquiryMessage(
+      "Thank you. Your enquiry has been sent successfully."
+    );
+  };
+
+  const secondaryAbout =
+    businessType === "salon"
+      ? "Every experience is designed with personal care, attention to detail and a commitment to helping you look and feel your best."
+      : businessType === "fashion"
+      ? "We believe personal style should feel expressive, confident and uniquely yours. Every collection is selected with character and intention."
+      : businessType === "jewellery"
+      ? "Our approach combines refined design, meaningful details and craftsmanship created to celebrate life's most memorable moments."
+      : businessType === "cafe"
+      ? "From fresh flavours to a welcoming atmosphere, we create a place where good food and warm conversations naturally come together."
+      : "We combine practical thinking, professional experience and a clear understanding of client priorities to deliver dependable solutions.";
+
+  const promise =
+    businessType === "salon"
+      ? "Care, confidence and beautiful experiences."
+      : businessType === "fashion"
+      ? "Style that feels personal and memorable."
+      : businessType === "jewellery"
+      ? "Timeless beauty made meaningful."
+      : businessType === "cafe"
+      ? "Fresh flavours and moments worth sharing."
+      : "Clear thinking. Reliable service. Meaningful results.";
+
+  const ctaTitle =
+    businessType === "salon"
+      ? "Ready to feel your best?"
+      : businessType === "fashion"
+      ? "Find a style that feels like you."
+      : businessType === "jewellery"
+      ? "Discover jewellery made to be remembered."
+      : businessType === "cafe"
+      ? "Come in, get comfortable and stay awhile."
+      : "Let's talk about what you need.";
+
+  const ctaLabel =
+    businessType === "salon"
+      ? "Book your appointment"
+      : businessType === "fashion"
+      ? "Explore collection"
+      : businessType === "jewellery"
+      ? "Explore collection"
+      : businessType === "cafe"
+      ? "Visit us today"
+      : "Contact us";
+
+  const whyItems = [
+    {
+      title:
+        businessType === "cafe"
+          ? "Fresh & Thoughtful"
+          : "Quality First",
+      description:
+        businessType === "cafe"
+          ? "Fresh favourites prepared with care and attention."
+          : "We focus on quality in every detail of the experience.",
+    },
+    {
+      title:
+        businessType === "professional"
+          ? "Clear Communication"
+          : "Personal Experience",
+      description:
+        businessType === "professional"
+          ? "Straightforward communication and dependable support."
+          : "Every customer experience is approached with personal care.",
+    },
+    {
+      title:
+        businessType === "fashion"
+          ? "Curated Style"
+          : businessType === "jewellery"
+          ? "Meaningful Details"
+          : "Trusted Service",
+      description:
+        businessType === "fashion"
+          ? "Collections selected with individuality and modern style."
+          : businessType === "jewellery"
+          ? "Refined details designed to make every piece memorable."
+          : "Friendly, reliable service designed to build lasting trust.",
+    },
+  ];
+
+  const reviews = [
+    {
+      quote:
+        "The experience felt thoughtful from beginning to end. Professional, welcoming and genuinely impressive.",
+      name: "Happy Customer",
+    },
+    {
+      quote:
+        "Beautiful attention to detail and excellent service. I would happily recommend them to others.",
+      name: "Regular Customer",
+    },
+    {
+      quote:
+        "A wonderful experience and a team that truly cares about quality. Definitely worth visiting again.",
+      name: "Local Customer",
+    },
+  ];
 
   const LegalPage = ({ title, content }) => (
     <main className="min-h-screen bg-white px-5 py-16 text-slate-950">
@@ -152,9 +403,11 @@ function PublicWebsite() {
         >
           ← Back to home
         </a>
+
         <h1 className="mt-8 text-4xl font-extrabold">
           {title}
         </h1>
+
         <div className="mt-8 whitespace-pre-wrap text-sm leading-8 text-slate-600">
           {content}
         </div>
@@ -185,9 +438,14 @@ function PublicWebsite() {
       return (
         <main className="min-h-screen bg-white px-5 py-16">
           <div className="mx-auto max-w-3xl">
-            <a href={`${base}/blog`} style={{ color }}>
+            <a
+              href={`${base}/blog`}
+              className="font-bold"
+              style={{ color }}
+            >
               ← Back to blog
             </a>
+
             <h1 className="mt-8 text-4xl font-extrabold">
               Article not found
             </h1>
@@ -206,12 +464,15 @@ function PublicWebsite() {
           >
             ← Back to blog
           </a>
+
           <h1 className="mt-8 text-4xl font-extrabold sm:text-5xl">
             {currentPost.title}
           </h1>
+
           <p className="mt-5 text-lg leading-8 text-slate-500">
             {currentPost.metaDescription}
           </p>
+
           <div className="mt-10 whitespace-pre-wrap leading-8 text-slate-700">
             {currentPost.content}
           </div>
@@ -231,15 +492,18 @@ function PublicWebsite() {
           >
             ← Back to home
           </a>
+
           <div className="mt-10 text-center">
             <BookOpen
               className="mx-auto"
               style={{ color }}
             />
+
             <h1 className="mt-5 text-4xl font-extrabold">
               {blogSettings.title || "Latest from our blog"}
             </h1>
           </div>
+
           <div className="mt-12 grid gap-5 md:grid-cols-3">
             {blogPosts.map((post) => (
               <a
@@ -250,10 +514,12 @@ function PublicWebsite() {
                 <h2 className="text-xl font-extrabold">
                   {post.title || "Untitled article"}
                 </h2>
+
                 <p className="mt-4 text-sm leading-6 text-slate-600">
                   {post.metaDescription ||
                     post.content?.slice(0, 150)}
                 </p>
+
                 <p
                   className="mt-5 text-sm font-bold"
                   style={{ color }}
@@ -274,77 +540,46 @@ function PublicWebsite() {
         <div className="mx-auto max-w-7xl px-5">
           <div className="flex min-h-[72px] items-center justify-between">
             <a
-              href={base}
-              className="min-w-0 text-xl font-extrabold tracking-tight"
+              href={`${base}#home`}
+              className="min-w-0 truncate text-xl font-extrabold"
+              style={{ color }}
             >
               {project.business_name}
             </a>
 
-            <nav className="hidden items-center gap-7 lg:flex">
-              <a
-                href={`${base}#home`}
-                className="text-sm font-semibold text-slate-600 transition hover:text-slate-950"
-              >
-                Home
-              </a>
+            <div className="hidden items-center gap-5 lg:flex">
+              <nav className="flex gap-7 text-sm font-semibold text-slate-600">
+                <a href={`${base}#home`}>Home</a>
+                <a href={`${base}#about`}>About</a>
+                <a href={`${base}#services`}>Services</a>
 
-              <a
-                href={`${base}#about`}
-                className="text-sm font-semibold text-slate-600 transition hover:text-slate-950"
-              >
-                About
-              </a>
+                {blogSettings.enabled && (
+                  <a href={`${base}/blog`}>Blog</a>
+                )}
 
-              <a
-                href={`${base}#services`}
-                className="text-sm font-semibold text-slate-600 transition hover:text-slate-950"
-              >
-                Services
-              </a>
-
-              {blogSettings.enabled && (
-                <a
-                  href={`${base}/blog`}
-                  className="text-sm font-semibold text-slate-600 transition hover:text-slate-950"
-                >
-                  Blog
-                </a>
-              )}
+                <a href={`${base}#contact`}>Contact</a>
+              </nav>
 
               <a
                 href={`${base}#contact`}
-                className="text-sm font-semibold text-slate-600 transition hover:text-slate-950"
+                className="rounded-full px-5 py-2.5 text-sm font-bold text-white"
+                style={{ backgroundColor: color }}
               >
-                Contact
+                BOOK NOW
               </a>
-
-              {project.whatsapp && (
-                <a
-                  href={`https://wa.me/${String(
-                    project.whatsapp
-                  ).replace(/\D/g, "")}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="rounded-full px-5 py-2.5 text-sm font-bold text-white transition hover:opacity-90"
-                  style={{ backgroundColor: color }}
-                >
-                  WhatsApp
-                </a>
-              )}
-            </nav>
+            </div>
 
             <button
               type="button"
               onClick={() =>
                 setMobileMenuOpen((current) => !current)
               }
-              className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-slate-200 text-slate-800 lg:hidden"
+              className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-slate-200 lg:hidden"
               aria-label={
                 mobileMenuOpen
                   ? "Close navigation"
                   : "Open navigation"
               }
-              aria-expanded={mobileMenuOpen}
             >
               {mobileMenuOpen ? (
                 <X size={22} />
@@ -367,7 +602,7 @@ function PublicWebsite() {
                     key={label}
                     href={href}
                     onClick={() => setMobileMenuOpen(false)}
-                    className="rounded-xl px-4 py-3 text-sm font-bold text-slate-700 transition hover:bg-slate-50"
+                    className="rounded-xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50"
                   >
                     {label}
                   </a>
@@ -376,27 +611,20 @@ function PublicWebsite() {
                 {blogSettings.enabled && (
                   <a
                     href={`${base}/blog`}
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="rounded-xl px-4 py-3 text-sm font-bold text-slate-700 transition hover:bg-slate-50"
+                    className="rounded-xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50"
                   >
                     Blog
                   </a>
                 )}
 
-                {project.whatsapp && (
-                  <a
-                    href={`https://wa.me/${String(
-                      project.whatsapp
-                    ).replace(/\D/g, "")}`}
-                    target="_blank"
-                    rel="noreferrer"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="mt-2 rounded-xl px-4 py-3 text-center text-sm font-bold text-white"
-                    style={{ backgroundColor: color }}
-                  >
-                    Chat on WhatsApp
-                  </a>
-                )}
+                <a
+                  href={`${base}#contact`}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="mt-2 rounded-xl px-4 py-3 text-center text-sm font-bold text-white"
+                  style={{ backgroundColor: color }}
+                >
+                  BOOK NOW
+                </a>
               </div>
             </nav>
           )}
@@ -405,83 +633,93 @@ function PublicWebsite() {
 
       <section
         id="home"
-        className="scroll-mt-24 px-5 py-24 text-center text-white sm:py-32"
-        style={{ backgroundColor: color }}
+        className={`scroll-mt-24 px-5 py-16 text-center sm:px-10 sm:py-24 ${heroClass}`}
       >
-        <div className="mx-auto max-w-4xl">
-          <p className="text-sm font-bold uppercase tracking-[0.24em] text-white/70">
-            {project.city || project.business_type}
-          </p>
-          <h1 className="mt-5 text-5xl font-extrabold tracking-tight sm:text-7xl">
-            {project.business_name}
-          </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-white/80">
-            {project.tagline}
-          </p>
-
-          <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            {project.whatsapp && (
-              <a
-                href={`https://wa.me/${String(
-                  project.whatsapp
-                ).replace(/\D/g, "")}`}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex min-w-[190px] items-center justify-center gap-2 rounded-full bg-white px-6 py-3.5 font-bold text-slate-950 transition hover:bg-slate-100"
-              >
-                <MessageCircle size={18} />
-                WhatsApp us
-              </a>
-            )}
-
-            {project.phone && (
-              <a
-                href={`tel:${String(project.phone).replace(
-                  /[^+\d]/g,
-                  ""
-                )}`}
-                className="inline-flex min-w-[190px] items-center justify-center gap-2 rounded-full border border-white/30 px-6 py-3.5 font-bold text-white transition hover:bg-white/10"
-              >
-                <Phone size={18} />
-                Call now
-              </a>
-            )}
+        {media.hero?.url && (
+          <div className="mx-auto mb-8 max-w-5xl overflow-hidden rounded-3xl">
+            <img
+              src={media.hero.url}
+              alt={`${project.business_name} hero`}
+              className="h-64 w-full object-cover sm:h-[460px]"
+            />
           </div>
-        </div>
-      </section>
+        )}
 
-      <section
-        id="about"
-        className="scroll-mt-24 px-5 py-20"
-      >
-        <div className="mx-auto max-w-4xl text-center">
-          <h2 className="text-4xl font-extrabold">
-            About us
-          </h2>
-          <p className="mt-6 text-lg leading-8 text-slate-600">
-            {project.about}
-          </p>
-        </div>
+        <p
+          className="text-xs font-bold uppercase tracking-[0.28em]"
+          style={{ color }}
+        >
+          Welcome to
+        </p>
+
+        <h1 className="mx-auto mt-5 max-w-4xl text-4xl font-extrabold tracking-tight sm:text-6xl">
+          {project.business_name}
+        </h1>
+
+        <p
+          className={`mx-auto mt-5 max-w-xl text-base leading-7 sm:text-lg ${mutedTextClass}`}
+        >
+          {project.tagline}
+        </p>
+
+        <a
+          href={
+            businessType === "fashion" ||
+            businessType === "jewellery"
+              ? `${base}#services`
+              : `${base}#contact`
+          }
+          className="mt-8 inline-flex rounded-full px-7 py-3.5 font-bold text-white"
+          style={{ backgroundColor: color }}
+        >
+          {businessType === "fashion"
+            ? "Explore collection"
+            : businessType === "jewellery"
+            ? "Explore jewellery"
+            : businessType === "cafe"
+            ? "View our menu"
+            : businessType === "professional"
+            ? "Get in touch"
+            : "Book an appointment"}
+        </a>
       </section>
 
       <section
         id="services"
-        className="scroll-mt-24 bg-slate-50 px-5 py-20"
+        className="scroll-mt-24 bg-white px-5 py-16 sm:px-8"
       >
         <div className="mx-auto max-w-6xl">
-          <h2 className="text-center text-4xl font-extrabold">
-            Our services
-          </h2>
-          <div className="mt-12 grid gap-5 md:grid-cols-3">
-            {services.map((service) => (
+          <div className="text-center">
+            <p
+              className="text-xs font-bold uppercase tracking-[0.22em]"
+              style={{ color }}
+            >
+              {business.expertise}
+            </p>
+
+            <h2 className="mt-3 text-3xl font-extrabold sm:text-4xl">
+              {business.sectionTitle}
+            </h2>
+          </div>
+
+          <div className="mt-10 grid gap-4 md:grid-cols-3">
+            {services.map((service, index) => (
               <article
-                key={service.id}
-                className="rounded-2xl bg-white p-7 shadow-sm"
+                key={service.id || index}
+                className="rounded-2xl border border-slate-100 bg-slate-50 p-6"
               >
-                <h3 className="text-xl font-extrabold">
+                <div
+                  className="flex h-10 w-10 items-center justify-center rounded-xl text-sm font-extrabold text-white"
+                  style={{ backgroundColor: color }}
+                >
+                  {String(index + 1).padStart(2, "0")}
+                </div>
+
+                <h3 className="mt-5 text-lg font-bold">
                   {service.name}
                 </h3>
-                <p className="mt-4 leading-7 text-slate-600">
+
+                <p className="mt-2 text-sm leading-6 text-slate-600">
                   {service.description}
                 </p>
               </article>
@@ -491,50 +729,368 @@ function PublicWebsite() {
       </section>
 
       <section
-        id="contact"
-        className="scroll-mt-24 px-5 py-20"
+        id="about"
+        className="scroll-mt-24 bg-slate-50 px-5 py-16 sm:px-10 sm:py-20"
       >
-        <div className="mx-auto max-w-5xl text-center">
-          <h2 className="text-4xl font-extrabold">
-            Visit or contact us
-          </h2>
+        <div className="mx-auto grid max-w-5xl gap-10 md:grid-cols-2 md:items-center md:gap-12">
+          <div>
+            <p
+              className="text-xs font-bold uppercase tracking-[0.22em]"
+              style={{ color }}
+            >
+              About us
+            </p>
+
+            <h2 className="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl">
+              {business.aboutTitle}
+            </h2>
+
+            <p className="mt-5 leading-7 text-slate-600">
+              {project.about}
+            </p>
+
+            <p className="mt-4 leading-7 text-slate-600">
+              {secondaryAbout}
+            </p>
+          </div>
+
+          {media.about?.url ? (
+            <div className="overflow-hidden rounded-3xl bg-slate-200">
+              <img
+                src={media.about.url}
+                alt={`${project.business_name} about`}
+                className="h-72 w-full object-cover sm:h-[430px]"
+              />
+            </div>
+          ) : (
+            <div
+              className="rounded-3xl p-8 text-white"
+              style={{ backgroundColor: color }}
+            >
+              <p className="text-sm font-bold uppercase tracking-[0.2em] text-white/70">
+                Our promise
+              </p>
+
+              <p className="mt-5 text-3xl font-extrabold leading-tight">
+                {promise}
+              </p>
+
+              <p className="mt-5 text-sm leading-6 text-white/80">
+                We focus on quality, thoughtful service and experiences
+                that give people a reason to return.
+              </p>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {gallery.length > 0 && (
+        <section className="bg-white px-5 py-16 sm:px-8 sm:py-20">
+          <div className="text-center">
+            <p
+              className="text-xs font-bold uppercase tracking-[0.22em]"
+              style={{ color }}
+            >
+              Gallery
+            </p>
+
+            <h2 className="mt-3 text-3xl font-extrabold sm:text-4xl">
+              A glimpse of our world
+            </h2>
+          </div>
+
+          <div className="mx-auto mt-10 grid max-w-6xl grid-cols-2 gap-3 md:grid-cols-3">
+            {gallery.map((image, index) => (
+              <div
+                key={`${image.url}-${index}`}
+                className="overflow-hidden rounded-2xl bg-slate-100"
+              >
+                <img
+                  src={image.url}
+                  alt={`${project.business_name} gallery ${index + 1}`}
+                  className="h-40 w-full object-cover sm:h-60"
+                />
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <section className="bg-white px-5 py-16 sm:px-8 sm:py-20">
+        <div className="mx-auto max-w-6xl">
+          <div className="text-center">
+            <p
+              className="text-xs font-bold uppercase tracking-[0.22em]"
+              style={{ color }}
+            >
+              Why choose us
+            </p>
+
+            <h2 className="mt-3 text-3xl font-extrabold sm:text-4xl">
+              An experience built around you
+            </h2>
+
+            <p className="mx-auto mt-4 max-w-2xl leading-7 text-slate-600">
+              Thoughtful service, consistent quality and attention to
+              the details that matter.
+            </p>
+          </div>
+
           <div className="mt-10 grid gap-4 md:grid-cols-3">
-            <ContactItem
+            {whyItems.map((item, index) => (
+              <article
+                key={item.title}
+                className="rounded-2xl border border-slate-100 bg-slate-50 p-6"
+              >
+                <div
+                  className="flex h-11 w-11 items-center justify-center rounded-full text-sm font-extrabold text-white"
+                  style={{ backgroundColor: color }}
+                >
+                  {index + 1}
+                </div>
+
+                <h3 className="mt-5 text-lg font-bold">
+                  {item.title}
+                </h3>
+
+                <p className="mt-3 text-sm leading-6 text-slate-600">
+                  {item.description}
+                </p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-slate-950 px-5 py-16 text-white sm:px-8 sm:py-20">
+        <div className="text-center">
+          <p
+            className="text-xs font-bold uppercase tracking-[0.22em]"
+            style={{ color }}
+          >
+            What people say
+          </p>
+
+          <h2 className="mt-3 text-3xl font-extrabold sm:text-4xl">
+            Experiences worth sharing
+          </h2>
+        </div>
+
+        <div className="mx-auto mt-10 grid max-w-5xl gap-4 md:grid-cols-3">
+          {reviews.map((review) => (
+            <article
+              key={review.quote}
+              className="rounded-2xl border border-white/10 bg-white/5 p-6"
+            >
+              <p
+                className="text-lg tracking-widest"
+                style={{ color }}
+              >
+                ★★★★★
+              </p>
+
+              <p className="mt-5 text-sm leading-7 text-slate-300">
+                “{review.quote}”
+              </p>
+
+              <p className="mt-5 text-sm font-bold text-white">
+                {review.name}
+              </p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section
+        className="px-5 py-16 text-center text-white sm:px-10 sm:py-20"
+        style={{ backgroundColor: color }}
+      >
+        <p className="text-xs font-bold uppercase tracking-[0.24em] text-white/70">
+          Ready when you are
+        </p>
+
+        <h2 className="mx-auto mt-4 max-w-3xl text-3xl font-extrabold tracking-tight sm:text-5xl">
+          {ctaTitle}
+        </h2>
+
+        <p className="mx-auto mt-5 max-w-xl leading-7 text-white/80">
+          Connect with {project.business_name} and take the next step
+          today.
+        </p>
+
+        <a
+          href={`${base}#contact`}
+          className="mt-8 inline-flex rounded-full bg-white px-7 py-3.5 font-bold text-slate-950"
+        >
+          {ctaLabel}
+        </a>
+      </section>
+
+      <section
+        id="contact"
+        className="scroll-mt-24 bg-white px-5 py-16 sm:px-8"
+      >
+        <div className="mx-auto max-w-6xl">
+          <div className="text-center">
+            <p
+              className="text-xs font-bold uppercase tracking-[0.22em]"
+              style={{ color }}
+            >
+              Contact
+            </p>
+
+            <h2 className="mt-3 text-3xl font-extrabold">
+              Visit or contact us
+            </h2>
+
+            <p className="mx-auto mt-4 max-w-xl leading-7 text-slate-600">
+              We would love to hear from you. Call, message or visit us.
+            </p>
+          </div>
+
+          <div className="mt-9 grid gap-3 md:grid-cols-3">
+            <ContactCard
               icon={Phone}
               label="Call us"
               value={project.phone}
+              href={phoneUrl}
+              color={color}
             />
-            <ContactItem
+
+            <ContactCard
               icon={MessageCircle}
               label="WhatsApp"
               value={project.whatsapp}
+              href={whatsappUrl}
+              color={color}
+              external
             />
-            <ContactItem
+
+            <ContactCard
               icon={MapPin}
-              label={project.city}
+              label={project.city || "Location"}
               value={project.address}
+              color={color}
             />
           </div>
         </div>
       </section>
 
+      {siteSettings.contactFormEnabled && (
+        <section className="border-t border-slate-100 bg-slate-50 px-5 py-16 sm:px-8">
+          <div className="mx-auto max-w-2xl">
+            <div className="text-center">
+              <p
+                className="text-xs font-bold uppercase tracking-[0.22em]"
+                style={{ color }}
+              >
+                Send an enquiry
+              </p>
+
+              <h2 className="mt-3 text-3xl font-extrabold">
+                How can we help?
+              </h2>
+
+              <p className="mx-auto mt-4 max-w-xl text-sm leading-6 text-slate-600">
+                Send your details and a message. The business can
+                respond to your enquiry directly.
+              </p>
+            </div>
+
+            <form
+              onSubmit={handleEnquirySubmit}
+              className="mt-8 space-y-3"
+            >
+              <input
+                type="text"
+                name="name"
+                value={enquiryForm.name}
+                onChange={handleEnquiryChange}
+                placeholder="Your name"
+                required
+                className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none focus:border-slate-400"
+              />
+
+              <input
+                type="email"
+                name="email"
+                value={enquiryForm.email}
+                onChange={handleEnquiryChange}
+                placeholder="Email address"
+                className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none focus:border-slate-400"
+              />
+
+              <input
+                type="tel"
+                name="phone"
+                value={enquiryForm.phone}
+                onChange={handleEnquiryChange}
+                placeholder="Phone number"
+                className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none focus:border-slate-400"
+              />
+
+              <textarea
+                rows={5}
+                name="message"
+                value={enquiryForm.message}
+                onChange={handleEnquiryChange}
+                placeholder="Your message"
+                required
+                className="w-full resize-none rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none focus:border-slate-400"
+              />
+
+              {enquiryError && (
+                <p className="rounded-xl bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">
+                  {enquiryError}
+                </p>
+              )}
+
+              {enquiryMessage && (
+                <p className="rounded-xl bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-700">
+                  {enquiryMessage}
+                </p>
+              )}
+
+              <button
+                type="submit"
+                disabled={enquirySubmitting}
+                className="w-full rounded-xl px-5 py-3.5 font-bold text-white disabled:cursor-not-allowed disabled:opacity-60"
+                style={{ backgroundColor: color }}
+              >
+                {enquirySubmitting
+                  ? "Sending..."
+                  : "Send enquiry"}
+              </button>
+            </form>
+          </div>
+        </section>
+      )}
+
       <footer className="bg-slate-950 px-5 py-10 text-center text-white">
-        <p className="font-bold">{project.business_name}</p>
-        <div className="mt-5 flex flex-wrap justify-center gap-5 text-sm text-slate-400">
+        <p className="font-bold">
+          {project.business_name}
+        </p>
+
+        <div className="mt-5 flex flex-wrap items-center justify-center gap-5 text-sm text-slate-400">
+          <a href={base}>Home</a>
+
           {blogSettings.enabled && (
             <a href={`${base}/blog`}>Blog</a>
           )}
+
           {siteSettings.privacyEnabled && (
             <a href={`${base}/privacy`}>
               Privacy Policy
             </a>
           )}
+
           {siteSettings.termsEnabled && (
             <a href={`${base}/terms`}>
               Terms & Conditions
             </a>
           )}
         </div>
+
         <p className="mt-6 text-xs text-slate-500">
           Professional business website powered by Retivio
         </p>
@@ -543,14 +1099,44 @@ function PublicWebsite() {
   );
 }
 
-function ContactItem({ icon: Icon, label, value }) {
-  return (
-    <div className="rounded-2xl border border-slate-200 p-6">
-      <Icon className="mx-auto text-slate-500" />
-      <p className="mt-4 font-bold">{label || "Contact"}</p>
-      <p className="mt-2 text-sm text-slate-500">
+function ContactCard({
+  icon: Icon,
+  label,
+  value,
+  href,
+  color,
+  external = false,
+}) {
+  const content = (
+    <>
+      <Icon className="mx-auto" style={{ color }} />
+
+      <p className="mt-4 font-bold">
+        {label || "Contact"}
+      </p>
+
+      <p className="mt-2 break-words text-sm text-slate-500">
         {value || "Information coming soon"}
       </p>
+    </>
+  );
+
+  if (href) {
+    return (
+      <a
+        href={href}
+        target={external ? "_blank" : undefined}
+        rel={external ? "noreferrer" : undefined}
+        className="rounded-2xl border border-slate-200 p-6 text-center transition hover:-translate-y-1 hover:shadow-lg"
+      >
+        {content}
+      </a>
+    );
+  }
+
+  return (
+    <div className="rounded-2xl border border-slate-200 p-6 text-center">
+      {content}
     </div>
   );
 }
