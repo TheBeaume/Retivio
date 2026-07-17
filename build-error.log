@@ -1,0 +1,69 @@
+
+> my-app@0.1.0 build
+> react-scripts build
+
+Creating an optimized production build...
+Compiled with warnings.
+
+[eslint] 
+src/components/landing/WebsiteBuilder.jsx
+  Line 101:6:  React Hook useEffect has a missing dependency: 'initializeBuilder'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+File sizes after gzip:
+
+  2.16 MB    build/static/js/66.cdc991a4.chunk.js
+  256.92 kB  build/static/js/925.2e2b5fd7.chunk.js
+  139.7 kB   build/static/js/main.07450fe2.js
+  45.93 kB   build/static/js/239.6cc48eab.chunk.js
+  43.2 kB    build/static/js/455.eb6d4aab.chunk.js
+  32.79 kB   build/static/js/905.f6345eb1.chunk.js
+  19.04 kB   build/static/js/201.c9481884.chunk.js
+  13.27 kB   build/static/js/789.2c88987f.chunk.js
+  10.63 kB   build/static/js/977.0f88a1ce.chunk.js
+  10.25 kB   build/static/js/349.8a13e67f.chunk.js
+  10.11 kB   build/static/css/main.152ddfe7.css
+  9.86 kB    build/static/js/565.59cba54e.chunk.js
+  7.87 kB    build/static/js/312.b7d1bd15.chunk.js
+  6.34 kB    build/static/js/409.71657ff1.chunk.js
+  6.09 kB    build/static/js/323.871aa345.chunk.js
+  5.85 kB    build/static/js/885.9a79916d.chunk.js
+  5.18 kB    build/static/js/802.c903460f.chunk.js
+  5.17 kB    build/static/js/14.d24943a3.chunk.js
+  4.71 kB    build/static/js/478.f1221ebe.chunk.js
+  4.5 kB     build/static/js/663.82ef5eda.chunk.js
+  4.04 kB    build/static/js/523.e8152f41.chunk.js
+  3.89 kB    build/static/js/775.e22e891d.chunk.js
+  3.02 kB    build/static/js/156.c918add5.chunk.js
+  2.8 kB     build/static/js/633.c3c776b0.chunk.js
+  2.75 kB    build/static/js/152.fd35f3e0.chunk.js
+  2.31 kB    build/static/js/832.52b9da35.chunk.js
+  2.3 kB     build/static/js/103.7bdea2e6.chunk.js
+  2.04 kB    build/static/js/645.3549e699.chunk.js
+  1.76 kB    build/static/js/453.a04ae9d0.chunk.js
+  1.09 kB    build/static/js/780.14d3fed7.chunk.js
+  936 B      build/static/js/852.230eb899.chunk.js
+  845 B      build/static/js/51.e070ba1d.chunk.js
+  728 B      build/static/js/163.dab89d13.chunk.js
+  674 B      build/static/js/61.35900acb.chunk.js
+  132 B      build/static/js/38.70b624f7.chunk.js
+
+The bundle size is significantly larger than recommended.
+Consider reducing it with code splitting: https://goo.gl/9VhYWB
+You can also analyze the project dependencies: https://goo.gl/LeUzfb
+
+The project was built assuming it is hosted at /.
+You can control this with the homepage field in your package.json.
+
+The build folder is ready to be deployed.
+You may serve it with a static server:
+
+  npm install -g serve
+  serve -s build
+
+Find out more about deployment here:
+
+  https://cra.link/deployment
+
