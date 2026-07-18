@@ -16,9 +16,9 @@ import {
   verifyWebsitePayment,
   loadRazorpayCheckout,
 } from "../../services/websitePaymentService";
+
 import {
-  generateReadme,
-  buildDeploymentSummary,
+  createDeploymentZip,
 } from "../../services/websiteExportService";
 
 import {
@@ -597,28 +597,27 @@ const generateDeploymentPackage = async () => {
   setDeploymentReady(true);
 };
 
-const downloadDeploymentGuide = () => {
-  const summary = buildDeploymentSummary({
-businessName: formData.businessName,
-    domain: customDomain,
-    hostingProvider,
-  });
+const downloadDeploymentGuide = async () => {
 
-  const guide = generateReadme({
-    businessName: summary.businessName,
-    domain: summary.domain,
-    hostingProvider,
-  });
+const zipBlob = await createDeploymentZip({
+  formData,
+  services,
+  websiteMedia,
+  siteSettings,
+  blogSettings,
+  blogPosts,
+  legalContent,
+  domain: customDomain,
+  hostingProvider,
+});
 
-  const blob = new Blob([guide], {
-    type: "text/plain;charset=utf-8",
-  });
+const blob = zipBlob;
 
   const url = URL.createObjectURL(blob);
 
   const a = document.createElement("a");
   a.href = url;
-  a.download = "RETIVIO_DEPLOYMENT_GUIDE.txt";
+a.download = "website-package.zip";
   a.click();
 
   URL.revokeObjectURL(url);
@@ -2509,8 +2508,6 @@ const deploymentFiles = [
   placeholder="example.com"
   className="w-full rounded-lg border border-white/10 bg-slate-900 px-3 py-2 text-white"
 />
-      className="w-full rounded-lg border border-white/10 bg-slate-900 px-3 py-2 text-white"
-    />
 
 <select
   value={hostingProvider}
@@ -2535,8 +2532,8 @@ disabled={generatingPackage || !domainLooksValid(customDomain)}
   : domainLooksValid(customDomain)
   ? "Generate Deployment Package"
   : "Enter Valid Domain First"}
-  )}
 </button>
+
 {deploymentReady && (
   <div className="mt-4 rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-4">
     <div className="flex items-center justify-between">
