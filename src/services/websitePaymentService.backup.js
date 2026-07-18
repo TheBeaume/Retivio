@@ -20,37 +20,24 @@ async function getAccessToken() {
 async function paymentApiRequest(url, body) {
   const accessToken = await getAccessToken();
 
-const response = await fetch(url, {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${accessToken}`,
-  },
-  body: JSON.stringify(body),
-});
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify(body),
+  });
 
-const text = await response.text();
+  const data = await response.json();
 
-console.log("Payment API Status:", response.status);
-console.log("Payment API Response:", text);
+  if (!response.ok || !data.success) {
+    throw new Error(
+      data.message || "Payment request failed."
+    );
+  }
 
-let data;
-
-try {
-  data = JSON.parse(text);
-} catch {
-  throw new Error(
-    `Server returned non-JSON response:\n${text.substring(0, 300)}`
-  );
-}
-
-if (!response.ok || !data.success) {
-  throw new Error(
-    data.message || "Payment request failed."
-  );
-}
-
-return data;
+  return data;
 }
 
 export async function createWebsitePaymentOrder(projectId) {

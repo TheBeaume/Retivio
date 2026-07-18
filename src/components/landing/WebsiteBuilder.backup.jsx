@@ -17,11 +17,6 @@ import {
   loadRazorpayCheckout,
 } from "../../services/websitePaymentService";
 import {
-  generateReadme,
-  buildDeploymentSummary,
-} from "../../services/websiteExportService";
-
-import {
   Monitor,
   Smartphone,
   Sparkles,
@@ -46,6 +41,7 @@ import {
   FileText,
   BookOpen,
   Mail,
+  Link,
   Menu,
   X,
 } from "lucide-react";
@@ -554,103 +550,13 @@ export default function WebsiteBuilder() {
   const [projects, setProjects] = useState([]);
   const [currentProjectId, setCurrentProjectId] = useState(null);
   const [hostingOption, setHostingOption] = useState("retivio");
-const [customDomain, setCustomDomain] = useState("");
-const [deploymentReady, setDeploymentReady] = useState(false);
-const [generatingPackage, setGeneratingPackage] = useState(false);
-const [hostingProvider, setHostingProvider] = useState("Hostinger");  
-const domainLooksValid = (domain) => {
-  return /^[a-zA-Z0-9][a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(domain.trim());
-};
-const [saving, setSaving] = useState(false);
+  const [saving, setSaving] = useState(false);
   const [previewMobileMenuOpen, setPreviewMobileMenuOpen] =
     useState(false);
   const [publishing, setPublishing] = useState(false);
-  const [publishSuccess, setPublishSuccess] = useState(false);
-  const [publishedAt, setPublishedAt] = useState(null);
   const [currentProjectStatus, setCurrentProjectStatus] =
     useState("draft");
   const [publicSlug, setPublicSlug] = useState("");
-
-  const websiteUrl = publicSlug
-    ? `${window.location.origin}/site/${publicSlug}`
-    : "";
-
-  const futureSubdomain = publicSlug
-    ? `${publicSlug.split("-")[0]}.retivio.in`
-    : "";
-
-  const copyWebsiteUrl = async () => {
-    if (!websiteUrl) return;
-    try {
-      await navigator.clipboard.writeText(websiteUrl);
-    } catch {
-      window.prompt("Copy Website URL", websiteUrl);
-    }
-  };
-
-const generateDeploymentPackage = async () => {
-  setGeneratingPackage(true);
-
-  await new Promise((resolve) => setTimeout(resolve, 1500));
-
-  setGeneratingPackage(false);
-  setDeploymentReady(true);
-};
-
-const downloadDeploymentGuide = () => {
-  const summary = buildDeploymentSummary({
-businessName: formData.businessName,
-    domain: customDomain,
-    hostingProvider,
-  });
-
-  const guide = generateReadme({
-    businessName: summary.businessName,
-    domain: summary.domain,
-    hostingProvider,
-  });
-
-  const blob = new Blob([guide], {
-    type: "text/plain;charset=utf-8",
-  });
-
-  const url = URL.createObjectURL(blob);
-
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "RETIVIO_DEPLOYMENT_GUIDE.txt";
-  a.click();
-
-  URL.revokeObjectURL(url);
-};
-const deploymentChecklist = [
-  {
-    title: "Website Package",
-    completed: deploymentReady,
-  },
-  {
-    title: "Domain Entered",
-    completed: domainLooksValid(customDomain),
-  },
-  {
-    title: "Hosting Selected",
-    completed: hostingProvider.length > 0,
-  },
-];
-const deploymentFiles = [
-  "index.html",
-  "robots.txt",
-  "sitemap.xml",
-  "manifest.json",
-  "assets/",
-  "README.txt",
-];
-
-  const openWebsite = () => {
-    if (!websiteUrl) return;
-    window.open(websiteUrl, "_blank", "noopener,noreferrer");
-  };
-
   const [googleSigningIn, setGoogleSigningIn] = useState(false);
   const [loadingProjects, setLoadingProjects] = useState(true);
   const [saveMessage, setSaveMessage] = useState("");
@@ -1255,10 +1161,6 @@ const deploymentFiles = [
       setCurrentProjectStatus("published");
       setPublicSlug(slug);
 
-      const now = new Date();
-      setPublishedAt(now);
-      setPublishSuccess(true);
-
       localStorage.removeItem(
         "retivioWebsiteBuilderDraft"
       );
@@ -1266,7 +1168,7 @@ const deploymentFiles = [
       await loadProjects(user.id);
 
       setSaveMessage(
-        "🎉 Payment verified. Your website is now live."
+        "Payment verified. Your website is now live."
       );
     } catch (error) {
       console.error(
@@ -1434,7 +1336,6 @@ const deploymentFiles = [
     setSaveMessage("");
     setActiveStep("business");
   };
-
 
   const removeProject = async (project) => {
     if (!user) return;
@@ -2490,200 +2391,19 @@ const deploymentFiles = [
                   </div>
                 </div>
 
-<div className="rounded-xl border border-emerald-500/30 bg-slate-950 p-4">
-  <p className="font-bold text-white">
-    Use my own hosting
-  </p>
+                <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                  <div className="rounded-xl border border-white/10 bg-slate-950 p-4 opacity-60">
+                    <p className="font-bold text-white">
+                      Use my own hosting
+                    </p>
+                    <p className="mt-2 text-sm leading-5 text-slate-500">
+                      Independent hosting deployment.
+                    </p>
+                    <p className="mt-3 text-xs font-bold uppercase tracking-[0.14em] text-slate-500">
+                      Coming soon
+                    </p>
+                  </div>
 
-  <p className="mt-2 text-sm leading-6 text-slate-400">
-    Deploy your website on Hostinger, GoDaddy, Namecheap, cPanel or any
-    hosting provider using a downloadable deployment package.
-  </p>
-
-  <div className="mt-4 space-y-3">
-
-<input
-  type="text"
-  value={customDomain}
-  onChange={(e) => setCustomDomain(e.target.value)}
-  placeholder="example.com"
-  className="w-full rounded-lg border border-white/10 bg-slate-900 px-3 py-2 text-white"
-/>
-      className="w-full rounded-lg border border-white/10 bg-slate-900 px-3 py-2 text-white"
-    />
-
-<select
-  value={hostingProvider}
-  onChange={(e) => setHostingProvider(e.target.value)}
-  className="w-full rounded-lg border border-white/10 bg-slate-900 px-3 py-2 text-white"
->
-  <option>Hostinger</option>
-  <option>GoDaddy</option>
-  <option>Namecheap</option>
-  <option>cPanel Hosting</option>
-  <option>Other</option>
-</select>
-<button
-  type="button"
-  onClick={generateDeploymentPackage}
-disabled={generatingPackage || !domainLooksValid(customDomain)}
-  className="w-full rounded-xl bg-emerald-600 px-4 py-3 font-bold text-white transition hover:bg-emerald-500 disabled:cursor-not-allowed disabled:opacity-50"
->
-
-{generatingPackage
-  ? "Generating Package..."
-  : domainLooksValid(customDomain)
-  ? "Generate Deployment Package"
-  : "Enter Valid Domain First"}
-  )}
-</button>
-{deploymentReady && (
-  <div className="mt-4 rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-4">
-    <div className="flex items-center justify-between">
-      <h3 className="font-bold text-emerald-300">
-        Deployment Package Ready
-      </h3>
-
-      <span className="rounded-full bg-emerald-500/20 px-3 py-1 text-xs font-semibold text-emerald-300">
-        READY
-      </span>
-    </div>
-
-    <ul className="mt-4 space-y-2 text-sm text-slate-300">
-      <li>✅ website.zip</li>
-      <li>✅ sitemap.xml</li>
-      <li>✅ robots.txt</li>
-      <li>✅ README.txt</li>
-      <li>✅ Deployment Guide</li>
-    </ul>
-
-<button
-  type="button"
-  onClick={downloadDeploymentGuide}
-  className="mt-5 w-full rounded-xl border border-white/10 bg-white px-4 py-3 font-semibold text-slate-900 hover:bg-slate-100"
->
-  Download Deployment Guide
-</button>
-<div className="mt-5 rounded-xl border border-white/10 bg-slate-900 p-4">
-  <h4 className="text-sm font-bold text-white">
-    Deployment Guide
-  </h4>
-
-  <ol className="mt-3 space-y-2 text-sm text-slate-300 list-decimal pl-5">
-    <li>Download the deployment package.</li>
-    <li>Login to your hosting account.</li>
-    <li>Open File Manager.</li>
-    <li>Upload <strong>website.zip</strong>.</li>
-    <li>Extract the ZIP file into the public_html folder.</li>
-    <li>Point your domain to the hosting account.</li>
-    <li>Enable SSL and verify your website.</li>
-  </ol>
-
-  <div className="mt-4 rounded-lg border border-emerald-500/20 bg-emerald-500/5 p-3">
-    <p className="text-xs text-emerald-300">
-      Supported providers: Hostinger, GoDaddy, Namecheap, cPanel Hosting and other standard web hosts.
-    </p>
-  </div>
-<div className="mt-5 rounded-xl border border-white/10 bg-slate-900 p-4">
-  <h4 className="text-sm font-bold text-white">
-    Deployment Checklist
-  </h4>
-
-  <div className="mt-4 space-y-3">
-    {deploymentChecklist.map((item) => (
-      <div
-        key={item.title}
-        className="flex items-center justify-between"
-      >
-        <span className="text-sm text-slate-300">
-          {item.title}
-        </span>
-
-        <span
-          className={`text-xs font-bold ${
-            item.completed
-              ? "text-emerald-300"
-              : "text-slate-500"
-          }`}
-        >
-          {item.completed ? "Completed" : "Pending"}
-        </span>
-      </div>
-    ))}
-  </div>
-</div>
-<div className="mt-5 rounded-xl border border-white/10 bg-slate-900 p-4">
-  <h4 className="text-sm font-bold text-white">
-    Deployment Package Contents
-  </h4>
-
-  <div className="mt-4 space-y-2">
-    {deploymentFiles.map((file) => (
-      <div
-        key={file}
-        className="flex items-center justify-between rounded-lg border border-white/5 px-3 py-2"
-      >
-        <span className="text-sm text-slate-300">
-          {file}
-        </span>
-
-        <span className="text-xs font-semibold text-emerald-300">
-          Included
-        </span>
-      </div>
-    ))}
-  </div>
-</div>
-
-</div> 
-{customDomain && (
-  <div className="mt-4 rounded-lg border border-emerald-500/20 bg-emerald-500/5 p-3">
-    <div className="flex items-center justify-between">
-      <span className="text-sm font-bold text-emerald-300">
-        Domain
-      </span>
-      <span className="text-sm text-white">
-        {customDomain}
-      </span>
-    </div>
-
-    <div className="mt-2 flex items-center justify-between">
-      <span className="text-xs text-slate-400">
-        Hosting Provider
-      </span>
-      <span className="text-xs text-slate-200">
-        {hostingProvider}
-      </span>
-<div className="mt-3">
-  {customDomain.length === 0 ? (
-    <p className="text-xs text-slate-400">
-      Enter your domain name.
-    </p>
-  ) : domainLooksValid(customDomain) ? (
-    <p className="text-xs font-semibold text-emerald-300">
-      ✓ Valid domain format
-    </p>
-  ) : (
-    <p className="text-xs font-semibold text-red-400">
-      Invalid domain format
-    </p>
-  )}
-</div>
-
-    </div>
-  </div>
-)}
-
- </div>
-)}
-
-    <div className="rounded-lg border border-dashed border-white/10 p-3 text-xs leading-6 text-slate-400">
-      After payment Retivio will generate a deployment package containing your
-      website, sitemap, robots.txt and a step-by-step deployment guide for your
-      hosting provider.
-    </div>
-
-  </div>
                   <div className="rounded-xl border border-white/10 bg-slate-950 p-4 opacity-60">
                     <p className="font-bold text-white">
                       Export website files
@@ -2699,40 +2419,20 @@ disabled={generatingPackage || !domainLooksValid(customDomain)}
 
                 {currentProjectStatus === "published" &&
                   publicSlug && (
-                    <div className="mt-6 space-y-4">
-                      <div className="rounded-xl border border-emerald-400/20 bg-emerald-400/5 p-4">
-                        <div className="flex items-center justify-between">
-                          <p className="text-sm font-bold text-emerald-300">
-                            Your website is live
-                          </p>
-                          <span className="rounded-full bg-emerald-500/10 px-2 py-1 text-xs font-bold text-emerald-300">
-                            LIVE
-                          </span>
-                        </div>
+                    <div className="mt-6 rounded-xl border border-emerald-400/20 bg-emerald-400/5 p-4">
+                      <p className="text-sm font-bold text-emerald-300">
+                        Your website is live
+                      </p>
 
-                        <div className="mt-3 break-all rounded-lg border border-white/10 bg-slate-950 p-3 text-sm text-white">
-                          {websiteUrl}
-                        </div>
-
-                        <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                          <button type="button" onClick={copyWebsiteUrl} className="rounded-xl border border-white/10 px-4 py-3 text-sm font-bold text-white hover:border-purple-500">
-                            Copy URL
-                          </button>
-
-                          <button type="button" onClick={openWebsite} className="rounded-xl bg-purple-600 px-4 py-3 text-sm font-bold text-white hover:bg-purple-500">
-                            Open Website
-                          </button>
-                        </div>
-                      </div>
-
-                      <div className="rounded-xl border border-purple-500/20 bg-purple-500/5 p-4">
-                        <p className="text-xs font-bold uppercase tracking-wide text-purple-300">
-                          Future Retivio Address
-                        </p>
-                        <p className="mt-2 text-lg font-bold text-white">
-                          {futureSubdomain}
-                        </p>
-                      </div>
+                      <a
+                        href={`/site/${publicSlug}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="mt-2 flex items-center gap-2 break-all text-sm text-emerald-100 hover:text-white"
+                      >
+                        <Link size={16} />
+                        {`${window.location.origin}/site/${publicSlug}`}
+                      </a>
                     </div>
                   )}
 
@@ -2801,29 +2501,7 @@ disabled={generatingPackage || !domainLooksValid(customDomain)}
                   </p>
                 )}
 
-                
-                {publishSuccess && (
-                  <div className="mt-6 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-6">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <h3 className="text-xl font-bold text-white">🎉 Website Published Successfully</h3>
-                        <p className="mt-2 text-sm text-emerald-200">Your website is live and ready to receive visitors.</p>
-                      </div>
-                      <span className="rounded-full bg-emerald-500/20 px-3 py-1 text-sm font-bold text-emerald-300">LIVE</span>
-                    </div>
-                    <div className="mt-4 rounded-xl border border-white/10 bg-slate-950 p-3">
-                      <p className="text-xs text-slate-400">Published</p>
-                      <p className="text-white">{publishedAt?.toLocaleString()}</p>
-                    </div>
-                    <div className="mt-4 grid gap-3 sm:grid-cols-3">
-                      <button type="button" onClick={openWebsite} className="rounded-xl bg-purple-600 px-4 py-3 font-bold text-white">View Website</button>
-                      <button type="button" onClick={copyWebsiteUrl} className="rounded-xl border border-white/10 px-4 py-3 font-bold text-white">Copy Link</button>
-                      <button type="button" onClick={()=>setPublishSuccess(false)} className="rounded-xl border border-white/10 px-4 py-3 font-bold text-white">Continue Editing</button>
-                    </div>
-                  </div>
-                )}
-
-{saveMessage && (
+                {saveMessage && (
                   <p className="mt-3 text-center text-sm font-semibold text-emerald-400">
                     {saveMessage}
                   </p>
@@ -4137,34 +3815,9 @@ disabled={generatingPackage || !domainLooksValid(customDomain)}
                       {project.template || "luxury"} template
                     </p>
 
-<div className="mt-3 flex items-center justify-between">
-  <span
-    className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-bold ${
-      (project.status || "draft") === "published"
-        ? "bg-green-500/15 text-green-400 border border-green-500/30"
-        : "bg-yellow-500/15 text-yellow-300 border border-yellow-500/30"
-    }`}
-  >
-    {(project.status || "draft") === "published"
-      ? "🟢 LIVE"
-      : "🟡 DRAFT"}
-  </span>
-
-  {project.updated_at && (
-    <span className="text-xs text-slate-500">
-      {new Date(project.updated_at).toLocaleDateString()}
-    </span>
-  )}
-</div>
-{project.public_slug && (
-  <div className="mt-4 rounded-xl border border-white/10 bg-slate-900 p-3">
-    <p className="text-xs text-slate-500">Website URL</p>
-
-    <p className="mt-1 truncate text-sm text-purple-400">
-      https://retivio.in/{project.public_slug}
-    </p>
-  </div>
-)}
+                    <p className="mt-1 text-xs text-slate-600">
+                      Status: {project.status || "draft"}
+                    </p>
 
                     <div className="mt-5 grid grid-cols-2 gap-2">
                       <button

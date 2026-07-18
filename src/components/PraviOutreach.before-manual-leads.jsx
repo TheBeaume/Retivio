@@ -18,6 +18,7 @@ function PraviOutreach() {
   const [replyType, setReplyType] = React.useState("");
   const [leadSearch, setLeadSearch] = React.useState("");
   const [customerReply, setCustomerReply] = React.useState("");
+  const [instagramBulk, setInstagramBulk] = React.useState("");
 
 
   const loadLeads = async () => {
@@ -60,7 +61,21 @@ function PraviOutreach() {
 
     const email = (lead.email || "").toLowerCase();
 
-    return (
+  
+  const parseInstagramUsernames = () => {
+    const usernames = Array.from(new Set(
+      instagramBulk
+        .split(/\r?\n|,|\s+/)
+        .map(v=>v.trim())
+        .filter(Boolean)
+        .map(v=>v.replace(/^https?:\/\/(www\.)?instagram\.com\//i,""))
+        .map(v=>v.replace(/^@/,""))
+        .map(v=>v.replace(/\/$/,""))
+    ));
+    alert(`Found ${usernames.length} Instagram username(s).\n\n`+usernames.join("\n"));
+  };
+
+  return (
       name.includes(normalizedSearch) ||
       (searchPhone && phone.includes(searchPhone)) ||
       email.includes(leadSearch.toLowerCase().trim())
@@ -435,6 +450,22 @@ Pravi Technology`
       <p className="text-gray-400 mt-2">
         Create outreach messages and respond based on lead interest.
       </p>
+
+      <div className="mt-6 bg-gray-900 border border-white/10 rounded-2xl p-5">
+        <h3 className="text-lg font-bold">Instagram Bulk Import (Preview)</h3>
+        <textarea
+          value={instagramBulk}
+          onChange={(e)=>setInstagramBulk(e.target.value)}
+          placeholder="@abc_salon\nhttps://instagram.com/xyz\nbeautyhub"
+          className="mt-4 w-full h-32 rounded-xl bg-gray-950 border border-white/10 p-3 text-white"
+        />
+        <button
+          type="button"
+          onClick={parseInstagramUsernames}
+          className="mt-4 rounded-xl bg-purple-600 px-5 py-3 font-bold text-white">
+          Parse Usernames
+        </button>
+      </div>
 
       <div className="grid lg:grid-cols-2 gap-5 mt-8">
         <div className="bg-gray-900 border border-white/10 rounded-2xl p-5">
