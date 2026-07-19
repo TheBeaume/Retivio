@@ -196,17 +196,93 @@ export const generateSitemapXml = (domain) => {
 };
 
 export const createDeploymentZip = async (project) => {
-  const zip = new JSZip();
+ 
+console.log("=== EXPORT DEBUG ===");
+console.log(project?.websiteMedia);
+console.log(project?.formData);
+console.log("====================");
+ const zip = new JSZip();
 
   const bundle = generateDeploymentBundle(project);
 
   Object.entries(bundle).forEach(([fileName, content]) => {
     zip.file(fileName, content);
   });
+const heroUrl = project?.websiteMedia?.hero?.url;
 
-  return await zip.generateAsync({
-    type: "blob",
-  });
+if (heroUrl) {
+  try {
+    const response = await fetch(heroUrl);
+
+    if (response.ok) {
+      const blob = await response.blob();
+
+      const extension =
+        heroUrl.split(".").pop().split("?")[0] || "jpg";
+
+      zip.file(
+        `assets/images/hero.${extension}`,
+        blob
+      );
+    }
+  } catch (error) {
+    console.error("Hero image export failed:", error);
+  }
+}
+const aboutUrl = project?.websiteMedia?.about?.url;
+
+if (aboutUrl) {
+  try {
+    const response = await fetch(aboutUrl);
+
+    if (response.ok) {
+      const blob = await response.blob();
+
+      const extension =
+        aboutUrl.split(".").pop().split("?")[0] || "jpg";
+
+      zip.file(
+        `assets/images/about.${extension}`,
+        blob
+      );
+    }
+  } catch (error) {
+    console.error("About image export failed:", error);
+  }
+}
+const gallery = project?.websiteMedia?.gallery || [];
+
+for (let i = 0; i < gallery.length; i++) {
+  const imageUrl = gallery[i]?.url;
+
+  if (!imageUrl) continue;
+
+  try {
+    const response = await fetch(imageUrl);
+
+    if (response.ok) {
+      const blob = await response.blob();
+
+      const extension =
+        imageUrl.split(".").pop().split("?")[0] || "jpg";
+
+      zip.file(
+        `assets/images/gallery-${i + 1}.${extension}`,
+        blob
+      );
+    }
+  } catch (error) {
+    console.error(
+      `Gallery image ${i + 1} export failed:`,
+      error
+    );
+  }
+}
+
+return await zip.generateAsync({
+  type: "blob",
+  compression: "DEFLATE",
+});
 };
 
 export const generateIndexHtml = (project) => {
@@ -249,11 +325,15 @@ margin-top:20px;
   )
   .join("");
 
+const heroImage = project?.websiteMedia?.hero?.url || "";
+
+const aboutImage = project?.websiteMedia?.about?.url || "";
+
 const gallery = project?.websiteMedia?.gallery || [];
 
 const galleryHtml = gallery
   .map(
-    (image) => `
+    (image, index) => `
 <div style="
 width:220px;
 height:220px;
@@ -266,7 +346,7 @@ justify-content:center;
 background:#f8fafc;
 ">
 <img
-src="${image?.url || image}"
+src="./assets/images/gallery-${index + 1}.webp"
 style="width:100%;height:100%;object-fit:cover;"
 />
 </div>
@@ -308,31 +388,156 @@ margin-top:20px;
 
 <body>
 
-<header style="padding:60px 20px;text-align:center;background:${primaryColor};color:white;">
-  <h1>${businessName}</h1>
+<header id="home"
+style="
+background:${primaryColor};
+color:white;
+text-align:center;
+padding:0 0 60px;
+"
+>
 
-  <p>${tagline}</p>
+<nav
+style="
+display:flex;
+justify-content:center;
+gap:24px;
+padding:18px;
+background:rgba(255,255,255,.08);
+backdrop-filter:blur(8px);
+flex-wrap:wrap;
+"
+>
+
+<a href="#home" style="color:white;text-decoration:none;font-weight:600;">Home</a>
+
+<a href="#about" style="color:white;text-decoration:none;font-weight:600;">About</a>
+
+<a href="#services" style="color:white;text-decoration:none;font-weight:600;">Services</a>
+
+<a href="#gallery" style="color:white;text-decoration:none;font-weight:600;">Gallery</a>
+
+<a href="#blog" style="color:white;text-decoration:none;font-weight:600;">Blog</a>
+
+<a href="#contact" style="color:white;text-decoration:none;font-weight:600;">Contact</a>
+
+</nav>
+${heroImage ? `
+<img
+src="./assets/images/hero.webp"
+alt="${businessName}"
+style="
+width:100%;
+max-height:480px;
+object-fit:cover;
+display:block;
+margin-bottom:40px;
+"
+/>
+` : ""}
+
+<div style="padding:0 20px;">
+
+<h1>${businessName}</h1>
+
+<p>${tagline}</p>
+
+<a
+href="#contact"
+style="
+display:inline-block;
+margin-top:25px;
+padding:14px 28px;
+background:white;
+color:${primaryColor};
+text-decoration:none;
+font-weight:bold;
+border-radius:999px;
+"
+>
+Book Now
+</a>
+
+</div>
+
 </header>
-
 <main style="max-width:1100px;margin:auto;padding:40px;">
 
-<section>
+<section id="about">
 <h2>About</h2>
+<div
+style="
+display:flex;
+flex-wrap:wrap;
+gap:40px;
+align-items:center;
+margin-top:20px;
+"
+>
 
+<div style="flex:1;min-width:280px;">
 <p>${about}</p>
+</div>
+
+${
+  aboutImage
+    ? `
+<div style="flex:1;min-width:280px;">
+<img
+src="./assets/images/about.webp"
+alt="${businessName} about"
+style="
+width:100%;
+border-radius:16px;
+display:block;
+"
+/>
+</div>
+`
+    : ""
+}
+
+</div>
 </section>
 
-<section style="margin-top:40px;">
+<section id="contact" style="margin-top:40px;">
 
 <h2>Contact</h2>
 
-<p>Phone: ${phone}</p>
+<div
+style="
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+gap:20px;
+margin-top:25px;
+"
+>
 
-<p>Address: ${address}</p>
+<div style="padding:20px;border:1px solid #e5e7eb;border-radius:14px;">
+<h3>📞 Phone</h3>
+<p>${phone || "Not Available"}</p>
+</div>
+
+<div style="padding:20px;border:1px solid #e5e7eb;border-radius:14px;">
+<h3>📍 Address</h3>
+<p>${address || "Not Available"}</p>
+</div>
+
+<div style="padding:20px;border:1px solid #e5e7eb;border-radius:14px;">
+<h3>📧 Email</h3>
+<p>${formData.email || "Not Available"}</p>
+</div>
+
+<div style="padding:20px;border:1px solid #e5e7eb;border-radius:14px;">
+<h3>💬 WhatsApp</h3>
+<p>${phone || "Not Available"}</p>
+</div>
+
+</div>
 
 </section>
 
-<section style="margin-top:50px;">
+<section id="services" style="margin-top:50px;">
 
 <h2>Our Services</h2>
 
@@ -359,8 +564,7 @@ ${galleryHtml}
 
 </section>
 
-<section style="margin-top:60px;">
-
+<section id="blog" style="margin-top:60px;">
 <h2>Latest Articles</h2>
 
 ${blogHtml}
@@ -372,25 +576,35 @@ ${blogHtml}
 <footer
 style="
 margin-top:80px;
-padding:40px;
+padding:50px 20px;
 background:#111827;
 color:white;
 text-align:center;
 "
 >
 
-<h3>${businessName}</h3>
+<h3 style="margin-bottom:12px;">
+${businessName}
+</h3>
 
 <p>${address}</p>
 
-<p>${phone}</p>
-
-<p style="margin-top:20px;">
-© ${new Date().getFullYear()} ${businessName}
+<p style="margin-top:8px;">
+${phone}
 </p>
 
-<p style="font-size:12px;opacity:.7;">
-Generated by Retivio Website Builder
+<div style="margin:30px 0;">
+<a href="privacy.html" style="color:white;margin:0 15px;text-decoration:none;">Privacy Policy</a>
+
+<a href="terms.html" style="color:white;margin:0 15px;text-decoration:none;">Terms & Conditions</a>
+</div>
+
+<p style="opacity:.75;">
+© ${new Date().getFullYear()} ${businessName}. All Rights Reserved.
+</p>
+
+<p style="margin-top:15px;font-size:13px;opacity:.65;">
+Powered by Retivio Website Builder
 </p>
 
 </footer>

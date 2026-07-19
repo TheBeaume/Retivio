@@ -8,6 +8,7 @@ import followUpStrategies from "./blogs/followUpStrategies";
 import aiSalonGrowth from "./blogs/aiSalonGrowth";
 import crmVsSoftware from "./blogs/crmVsSoftware";
 import websiteAndBusiness from "./blogs/websiteAndBusiness";
+import whyEverySmallBusinessNeedsWebsite from "./blogs/whyEverySmallBusinessNeedsWebsite";
 
 const blogData = [
   {
@@ -188,7 +189,32 @@ const blogData = [
     publishedAt: "2026-07-12",
     updatedAt: "2026-07-12",
     readTime: "10 min read"
-  }
+  },
+
+{
+  id: 11,
+  title: "Why Every Small Business Needs a Professional Website in 2026",
+  slug: "why-every-small-business-needs-a-professional-website-2026",
+  category: "Website Growth",
+  excerpt: "Discover why every small business needs a professional website in 2026 and how it helps build trust, attract customers, improve Google visibility and support long-term business growth.",
+  content: whyEverySmallBusinessNeedsWebsite,
+  image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200",
+  author: "Retivio Team",
+  metaTitle: "Why Every Small Business Needs a Professional Website in 2026 | Retivio",
+  metaDescription: "Learn why every small business needs a professional website in 2026. Discover how websites improve credibility, SEO, customer trust and business growth.",
+  keywords: [
+    "small business website",
+    "professional website",
+    "website builder",
+    "business website",
+    "SEO for small business",
+    "Retivio"
+  ],
+  featured: false,
+  publishedAt: "2026-07-19",
+  updatedAt: "2026-07-19",
+  readTime: "10 min read"
+},
 ];
 
 export default blogData;
