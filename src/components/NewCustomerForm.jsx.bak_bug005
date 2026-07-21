@@ -11,30 +11,18 @@ function NewCustomerForm({ customers, setCustomers }) {
       return;
     }
 
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
-      alert("Please sign in again.");
-      return;
-    }
-
-    const { data: exists, error: existsError } = await supabase
+    const { data: exists } = await supabase
       .from("customers")
       .select("id")
-      .eq("user_id", user.id)
       .eq("phone", phone);
-
-    if (existsError) {
-      alert(existsError.message);
-      return;
-    }
 
     if (exists && exists.length > 0) {
       alert("Customer already exists");
       return;
     }
+const {
+  data: { user },
+} = await supabase.auth.getUser();
 
 const { error } = await supabase
   .from("customers")

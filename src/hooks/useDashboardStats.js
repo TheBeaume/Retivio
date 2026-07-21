@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
+import { getDashboardFinancialStats } from "../services/financialService";
 
 export default function useDashboardStats() {
   const [stats, setStats] = useState({
@@ -42,10 +43,24 @@ export default function useDashboardStats() {
         (a) => a.appointment_date === today
       ) || [];
 
-    const todayRevenue = todayAppointments.reduce(
-      (sum, a) => sum + Number(a.price || 0),
-      0
-    );
+    let todayRevenue = 0;
+
+    try {
+      const financialStats =
+        await getDashboardFinancialStats(user.id);
+
+      todayRevenue =
+        Number(financialStats.todayRevenue || 0);
+
+    } catch (error) {
+      console.error("Financial service failed:", error);
+
+      // Temporary fallback until migration completes
+      todayRevenue = todayAppointments.reduce(
+        (sum, a) => sum + Number(a.price || 0),
+        0
+      );
+    }
 
     const pendingAppointments =
       appointments?.filter(

@@ -23,30 +23,36 @@ function Header({ setSidebarOpen }) {
     const today = new Date().toISOString().split("T")[0];
     let count = 0;
 
-    const { data: todayFollowups } = await supabase
-      .from("follow_ups")
-      .select("id")
-      .eq("user_id", user.id)
-      .eq("status", "Pending")
-      .eq("followup_date", today);
+    const [
+      { data: todayFollowups },
+      { data: overdue },
+      { data: appointments },
+    ] = await Promise.all([
+
+      supabase
+        .from("follow_ups")
+        .select("id")
+        .eq("user_id", user.id)
+        .eq("status", "Pending")
+        .eq("followup_date", today),
+
+      supabase
+        .from("follow_ups")
+        .select("id")
+        .eq("user_id", user.id)
+        .eq("status", "Pending")
+        .lt("followup_date", today),
+
+      supabase
+        .from("appointments")
+        .select("id")
+        .eq("user_id", user.id)
+        .eq("appointment_date", today),
+
+    ]);
 
     if (todayFollowups?.length) count++;
-
-    const { data: overdue } = await supabase
-      .from("follow_ups")
-      .select("id")
-      .eq("user_id", user.id)
-      .eq("status", "Pending")
-      .lt("followup_date", today);
-
     if (overdue?.length) count++;
-
-    const { data: appointments } = await supabase
-      .from("appointments")
-      .select("id")
-      .eq("user_id", user.id)
-      .eq("appointment_date", today);
-
     if (appointments?.length) count++;
 
     setNotificationCount(count);
