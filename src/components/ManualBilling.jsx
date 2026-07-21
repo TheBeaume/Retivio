@@ -604,6 +604,7 @@ export default function ManualBilling({ onInvoiceCreated }) {
         .eq("user_id", user.id);
 
       if (paymentStatus === "Paid") {
+
         await supabase
           .from("customers")
           .update({

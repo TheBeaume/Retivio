@@ -48,22 +48,8 @@ if (error) {
   setLoading(false);
   return;
 }
-const { data: customer } = await supabase
-  .from("customers")
-  .select("total_spend")
-  .eq("id", appointment.customer_id)
-  .single();
-
-const newTotal =
-  Number(customer?.total_spend || 0) +
-  Number(amount);
-
-await supabase
-  .from("customers")
-  .update({
-    total_spend: newTotal,
-  })
-  .eq("id", appointment.customer_id);
+// total_spend is maintained by the billing workflow.
+// Do not update it again during payment collection to avoid double counting.
     setLoading(false);
 
 await supabase

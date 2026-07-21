@@ -1,0 +1,131 @@
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { Menu, X, ArrowRight } from "lucide-react";
+
+const navItems = [
+  { label: "Product", href: "#product" },
+  { label: "Solutions", href: "#features" },
+  { label: "How it works", href: "#how-it-works" },
+  { label: "Products", href: "#products" },
+  { label: "FAQ", href: "#faq" },
+];
+
+export default function Navbar() {
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [menuOpen]);
+
+  const closeMenu = () => setMenuOpen(false);
+
+  return (
+    <nav className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/95 backdrop-blur-xl">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 sm:px-6 lg:px-8">
+        <Link
+          to="/"
+          className="text-2xl font-extrabold tracking-tight text-purple-700"
+          aria-label="Retivio home"
+        >
+          Retivio
+        </Link>
+
+        <div className="hidden items-center gap-7 lg:flex">
+          {navItems.map((item) => (
+            <a
+              key={item.label}
+              href={item.href}
+              className="text-sm font-medium text-slate-600 transition hover:text-purple-700"
+            >
+              {item.label}
+            </a>
+          ))}
+
+          <Link
+            to="/blog"
+            className="text-sm font-medium text-slate-600 transition hover:text-purple-700"
+          >
+            Blog
+          </Link>
+        </div>
+
+        <div className="hidden items-center gap-3 lg:flex">
+          <Link
+            to="/login"
+            className="px-4 py-2 text-sm font-semibold text-slate-700 transition hover:text-purple-700"
+          >
+            Log in
+          </Link>
+
+          <Link
+            to="/signup"
+            className="inline-flex items-center gap-2 rounded-xl bg-purple-700 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-purple-800"
+          >
+            Start free
+            <ArrowRight size={16} />
+          </Link>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => setMenuOpen((current) => !current)}
+          className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 text-slate-700 lg:hidden"
+          aria-label={menuOpen ? "Close navigation" : "Open navigation"}
+          aria-expanded={menuOpen}
+        >
+          {menuOpen ? <X size={21} /> : <Menu size={21} />}
+        </button>
+      </div>
+
+      {menuOpen && (
+        <div className="fixed inset-x-0 top-16 z-50 min-h-[calc(100vh-4rem)] border-t border-slate-200 bg-white px-5 py-6 lg:hidden">
+          <div className="mx-auto max-w-7xl">
+            <div className="space-y-1">
+              {navItems.map((item) => (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  onClick={closeMenu}
+                  className="block rounded-xl px-4 py-3.5 text-base font-semibold text-slate-800 transition hover:bg-purple-50 hover:text-purple-700"
+                >
+                  {item.label}
+                </a>
+              ))}
+
+              <Link
+                to="/blog"
+                onClick={closeMenu}
+                className="block rounded-xl px-4 py-3.5 text-base font-semibold text-slate-800 transition hover:bg-purple-50 hover:text-purple-700"
+              >
+                Blog
+              </Link>
+            </div>
+
+            <div className="mt-6 grid gap-3 border-t border-slate-200 pt-6">
+              <Link
+                to="/login"
+                onClick={closeMenu}
+                className="rounded-xl border border-slate-200 px-5 py-3 text-center font-semibold text-slate-800"
+              >
+                Log in
+              </Link>
+
+              <Link
+                to="/signup"
+                onClick={closeMenu}
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-purple-700 px-5 py-3 font-semibold text-white"
+              >
+                Start free
+                <ArrowRight size={17} />
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
+    </nav>
+  );
+}
