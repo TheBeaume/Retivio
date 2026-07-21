@@ -1,4 +1,6 @@
-export default function HowItWorks() {
+from pathlib import Path
+
+content = r'''export default function HowItWorks() {
   const steps = [
     {
       number: "01",
@@ -27,7 +29,7 @@ export default function HowItWorks() {
   ];
 
   return (
-    <section id="how-it-works" className="bg-slate-50 py-24">
+    <section className="bg-slate-50 py-24">
       <div className="mx-auto max-w-7xl px-6">
 
         <div className="mx-auto max-w-3xl text-center">
@@ -78,3 +80,8 @@ export default function HowItWorks() {
     </section>
   );
 }
+'''
+
+Path("src/components/landing/HowItWorks.jsx").write_text(content)
+
+print("HowItWorks.jsx updated successfully.")

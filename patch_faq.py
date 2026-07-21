@@ -1,5 +1,6 @@
+from pathlib import Path
 
-export default function FAQ() {
+content = r'''export default function FAQ() {
 
   const faqs = [
     {
@@ -35,7 +36,7 @@ export default function FAQ() {
   ];
 
   return (
-    <section id="faq" className="bg-white py-24">
+    <section className="bg-white py-24">
 
       <div className="mx-auto max-w-5xl px-6">
 
@@ -83,3 +84,8 @@ export default function FAQ() {
     </section>
   );
 }
+'''
+
+Path("src/components/landing/FAQ.jsx").write_text(content)
+
+print("FAQ.jsx updated successfully.")

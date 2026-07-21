@@ -1,4 +1,6 @@
-import { Link } from "react-router-dom";
+from pathlib import Path
+
+content = r'''import { Link } from "react-router-dom";
 
 export default function GrowthTools() {
 
@@ -30,7 +32,7 @@ export default function GrowthTools() {
   ];
 
   return (
-    <section id="marketing" className="bg-white py-24">
+    <section className="bg-white py-24">
 
       <div className="mx-auto max-w-7xl px-6">
 
@@ -40,7 +42,7 @@ export default function GrowthTools() {
             Marketing
           </p>
 
-          <h2 className="mt-6 text-4xl font-semibold tracking-tight text-slate-950">
+          <h2 className="mt-6 text-4xl font-bold tracking-tight text-slate-950">
             Reach more customers with smarter marketing.
           </h2>
 
@@ -57,11 +59,7 @@ export default function GrowthTools() {
 
             <div
               key={tool.title}
-              className="rounded-3xl border border-slate-200 bg-white p-8
-transition-all duration-300
-hover:-translate-y-1
-hover:border-purple-300
-hover:shadow-xl"
+              className="rounded-3xl border border-slate-200 bg-white p-8"
             >
 
               <h3 className="text-xl font-semibold text-slate-950">
@@ -82,7 +80,7 @@ hover:shadow-xl"
 
           <Link
             to="/signup"
-            className="inline-flex rounded-xl bg-purple-700 px-6 py-3.5 font-semibold text-white transition hover:bg-purple-800"
+            className="inline-flex rounded-xl bg-purple-700 px-6 py-3 font-semibold text-white transition hover:bg-purple-800"
           >
             Explore Marketing Tools
           </Link>
@@ -94,3 +92,8 @@ hover:shadow-xl"
     </section>
   );
 }
+'''
+
+Path("src/components/landing/GrowthTools.jsx").write_text(content)
+
+print("GrowthTools updated successfully.")

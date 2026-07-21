@@ -1,62 +1,102 @@
-import { Link } from "react-router-dom";
+import { ExternalLink, LayoutTemplate } from "lucide-react";
+import aureliaShowcase from "../../assets/images/aurelia-showcase.png";
 
 export default function TemplatesPreview() {
   return (
-    <section className="py-24 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-6 text-center">
+    <section id="featured-websites" className="bg-white py-24">
 
-        <span className="text-purple-700 font-semibold uppercase tracking-widest">
-          Premium Templates
-        </span>
+      <div className="mx-auto max-w-7xl px-6">
 
-        <h2 className="mt-4 text-5xl font-bold">
-          Launch Your Salon Website Faster
-        </h2>
+        <div className="mx-auto max-w-3xl text-center">
 
-        <p className="mt-6 max-w-3xl mx-auto text-gray-600">
-          Beautiful, responsive website templates built for salons,
-          spas and beauty businesses. Pair them with Retivio CRM for a
-          complete business solution.
-        </p>
-
-        <div className="mt-14 max-w-md mx-auto rounded-3xl border bg-white p-8 shadow-lg">
-
-          <span className="inline-block rounded-full bg-purple-100 px-4 py-2 text-sm font-semibold text-purple-700">
-            Featured Template
-          </span>
-
-          <h3 className="mt-6 text-3xl font-bold">
-            AURELIA
-          </h3>
-
-          <p className="mt-4 text-gray-600">
-            Luxury Salon Website Template built with React, Vite and
-            Tailwind CSS.
+          <p className="text-sm font-semibold uppercase tracking-[0.25em] text-purple-700">
+            Featured Websites
           </p>
 
-          <div className="mt-8 flex justify-center gap-4">
+          <h2 className="mt-6 text-4xl font-semibold tracking-tight text-slate-950">
+            Professional websites built with Retivio.
+          </h2>
 
-            <Link
-              to="/templates/aurelia"
-              className="rounded-full bg-purple-700 px-6 py-3 text-white font-semibold"
-            >
-              View Template
-            </Link>
+          <p className="mt-6 text-lg leading-8 text-slate-600">
+            Explore websites created using Retivio. More customer websites
+            will be added as our community grows.
+          </p>
+
+        </div>
+
+        <div className="mt-16 grid gap-8 lg:grid-cols-4">
+
+          <div className="rounded-3xl border border-slate-200 bg-white overflow-hidden">
+
+            <div className="aspect-[4/3] overflow-hidden rounded-xl bg-white flex items-center justify-center">
+              <img
+                src={aureliaShowcase}
+                alt="AURELIA Luxury Salon Website"
+                className="w-full h-full object-contain bg-white p-4 transition duration-500 hover:scale-105"
+                loading="lazy"
+              />
+            </div>
+
+            <div className="p-7">
+
+              <h3 className="text-2xl font-semibold text-slate-950">
+                AURELIA
+              </h3>
+
+              <p className="mt-3 leading-7 text-slate-600">
+                Luxury salon website designed for modern beauty businesses.
+              </p>
+
+              <div className="mt-8 flex gap-3">
+
+                <a
+                  href="/templates/aurelia"
+                  className="inline-flex items-center gap-2 rounded-xl bg-purple-700 px-5 py-3.5 font-semibold text-white hover:bg-purple-800"
+                >
+                  <ExternalLink size={16} />
+                  View Live
+                </a>
+
+                <a
+                  href="/website-builder"
+                  className="inline-flex items-center gap-2 rounded-xl border border-slate-300 px-5 py-3.5 font-semibold text-slate-900 hover:border-purple-300 hover:text-purple-700"
+                >
+                  <LayoutTemplate size={16} />
+                  Use Design
+                </a>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div className="rounded-3xl border border-dashed border-purple-300 bg-purple-50 p-10 text-center">
+
+            <h3 className="text-2xl font-semibold text-slate-950">
+              Ready to showcase your business?
+            </h3>
+
+            <p className="mt-4 text-slate-600 leading-8">
+              Your business could be the next featured website built with
+              Retivio.
+            </p>
 
             <a
-href="https://aurelia-cyan.vercel.app/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rounded-full border border-purple-700 px-6 py-3 font-semibold text-purple-700"
+              href="/website-builder"
+              className="mt-8 inline-flex rounded-xl bg-purple-700 px-6 py-3.5 font-semibold text-white hover:bg-purple-800"
             >
-              Live Demo
+              Build Your Website
             </a>
 
           </div>
 
+
         </div>
 
       </div>
+
     </section>
   );
 }

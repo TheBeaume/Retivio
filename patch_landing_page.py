@@ -1,15 +1,14 @@
-import Navbar from "../components/landing/Navbar";
+from pathlib import Path
+
+content = r'''import Navbar from "../components/landing/Navbar";
 import Hero from "../components/landing/Hero";
 import Products from "../components/landing/Products";
 import WhyRetivio from "../components/landing/WhyRetivio";
 import HowItWorks from "../components/landing/HowItWorks";
 import WebsiteBuilderCTA from "../components/landing/WebsiteBuilderCTA";
-import TemplatesPreview from "../components/landing/TemplatesPreview";
 import DashboardPreview from "../components/landing/DashboardPreview";
 import GrowthTools from "../components/landing/GrowthTools";
 import Pricing from "../components/landing/Pricing";
-import ComparisonSection from "../components/landing/ComparisonSection";
-import Industries from "../components/landing/Industries";
 import FAQ from "../components/landing/FAQ";
 import BetaCTA from "../components/landing/BetaCTA";
 import Footer from "../components/landing/Footer";
@@ -50,19 +49,13 @@ export default function LandingPage() {
 
         <WhyRetivio />
 
-        <DashboardPreview />
-
         <HowItWorks />
-
-        <TemplatesPreview />
 
         <WebsiteBuilderCTA />
 
+        <DashboardPreview />
+
         <GrowthTools />
-
-        <Industries />
-
-        <ComparisonSection />
 
         <Pricing />
 
@@ -77,3 +70,8 @@ export default function LandingPage() {
     </>
   );
 }
+'''
+
+Path("src/pages/LandingPage.jsx").write_text(content)
+
+print("LandingPage.jsx updated successfully.")

@@ -1,4 +1,6 @@
-import { Link } from "react-router-dom";
+from pathlib import Path
+
+content = r'''import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
@@ -117,3 +119,8 @@ export default function Footer() {
     </footer>
   );
 }
+'''
+
+Path("src/components/landing/Footer.jsx").write_text(content)
+
+print("Footer.jsx updated successfully.")

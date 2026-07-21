@@ -1,4 +1,6 @@
-import { Link } from "react-router-dom";
+from pathlib import Path
+
+content = r'''import { Link } from "react-router-dom";
 
 export default function BetaCTA() {
   return (
@@ -10,7 +12,7 @@ export default function BetaCTA() {
           Get Started
         </p>
 
-        <h2 className="mt-6 text-4xl font-semibold tracking-tight text-white sm:text-5xl">
+        <h2 className="mt-6 text-4xl font-bold tracking-tight text-white sm:text-5xl">
           Build, manage and grow your business with Retivio.
         </h2>
 
@@ -43,3 +45,8 @@ export default function BetaCTA() {
     </section>
   );
 }
+'''
+
+Path("src/components/landing/BetaCTA.jsx").write_text(content)
+
+print("BetaCTA.jsx updated successfully.")

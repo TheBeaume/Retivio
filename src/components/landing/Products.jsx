@@ -1,138 +1,142 @@
 import { Link } from "react-router-dom";
 import {
-  ArrowRight,
+  Globe,
+  Wand2,
+  Palette,
+  Smartphone,
   Users,
-  ReceiptText,
-  BellRing,
+  Calendar,
+  Receipt,
+  BarChart3,
+  MessageCircle,
+  Megaphone,
+  Mail,
+  Search,
+  Star,
   TrendingUp,
-  MonitorSmartphone,
-  Sparkles,
-  Layers3,
+  ArrowRight,
 } from "lucide-react";
 
 export default function Products() {
+  const solutions = [
+    {
+      title: "Website Solutions",
+      description:
+        "Professional websites designed to help your business stand out and convert more visitors.",
+      cta: "Explore AURELIA",
+      href: "https://aurelia-cyan.vercel.app/",
+      features: [
+        { icon: Wand2, label: "AI Builder" },
+        { icon: Palette, label: "Custom Design" },
+        { icon: Globe, label: "Development" },
+        { icon: Smartphone, label: "SEO Ready" },
+        { icon: Globe, label: "Business Blogs" },
+        { icon: Globe, label: "Hosting" },
+      ],
+    },
+    {
+      title: "Salon CRM",
+      description:
+        "Everything you need to manage customers, appointments and daily operations.",
+      cta: "Explore CRM",
+      href: "/signup",
+      features: [
+        { icon: Users, label: "Customers" },
+        { icon: Calendar, label: "Appointments" },
+        { icon: Receipt, label: "Billing" },
+        { icon: BarChart3, label: "Reports" },
+        { icon: MessageCircle, label: "Follow-ups" },
+        { icon: MessageCircle, label: "WhatsApp" },
+      ],
+    },
+    {
+      title: "Marketing",
+      description:
+        "Reach more customers and grow your business with built-in marketing tools.",
+      cta: "Explore Marketing",
+      href: "/signup",
+      features: [
+        { icon: MessageCircle, label: "WhatsApp" },
+        { icon: Mail, label: "Email" },
+        { icon: Search, label: "SEO" },
+        { icon: Star, label: "Reviews" },
+        { icon: Megaphone, label: "Promotions" },
+        { icon: TrendingUp, label: "Growth" },
+      ],
+    },
+  ];
+
   return (
-    <section id="products" className="bg-white py-20 sm:py-24">
-      <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+    <section id="products" className="bg-white py-20">
+      <div className="mx-auto max-w-7xl px-6">
+
         <div className="mx-auto max-w-3xl text-center">
-          <p className="text-sm font-bold uppercase tracking-[0.2em] text-purple-700">
-            Retivio products
+          <p className="text-sm font-semibold uppercase tracking-[0.25em] text-purple-700">
+            Our Solutions
           </p>
-          <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl lg:text-5xl">
-            Built for the business behind the beauty.
+
+          <h2 className="mt-5 text-4xl font-bold text-slate-950">
+            Everything your business needs.
           </h2>
-          <p className="mt-5 text-lg leading-8 text-slate-600">
-            Explore digital products designed to help salons operate
-            better, look more professional and grow faster.
+
+          <p className="mt-5 text-lg text-slate-600">
+            Build your website, manage your business and grow with confidence.
           </p>
         </div>
 
-        <div className="mt-12 grid gap-5 lg:grid-cols-12">
-          <div className="group relative overflow-hidden rounded-3xl bg-purple-700 p-7 text-white shadow-xl shadow-purple-700/15 sm:p-9 lg:col-span-7">
-            <div className="absolute -right-20 -top-24 h-72 w-72 rounded-full bg-white/10 blur-2xl" />
+        <div className="mt-14 grid gap-8 lg:grid-cols-3">
 
-            <div className="relative">
-              <div className="inline-flex rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-xs font-semibold">
-                Flagship product
-              </div>
-
-              <h3 className="mt-6 text-3xl font-extrabold sm:text-4xl">
-                Retivio Salon CRM
+          {solutions.map((solution) => (
+            <div
+              key={solution.title}
+              className="rounded-3xl border border-slate-200 bg-white p-8 transition-all hover:-translate-y-1 hover:border-purple-300 hover:shadow-xl"
+            >
+              <h3 className="text-2xl font-semibold text-slate-950">
+                {solution.title}
               </h3>
 
-              <p className="mt-4 max-w-xl text-base leading-7 text-purple-100">
-                Customers, appointments, follow-ups, billing, reports and
-                growth tools connected in one salon workspace.
+              <p className="mt-3 text-slate-600 leading-7">
+                {solution.description}
               </p>
 
-              <div className="mt-7 grid grid-cols-2 gap-3 sm:grid-cols-4">
-                {[
-                  { icon: Users, label: "Customer CRM" },
-                  { icon: ReceiptText, label: "Billing" },
-                  { icon: BellRing, label: "Follow-ups" },
-                  { icon: TrendingUp, label: "Growth" },
-                ].map(({ icon: Icon, label }) => (
+              <div className="mt-8 grid grid-cols-2 gap-3">
+
+                {solution.features.map(({ icon: Icon, label }) => (
                   <div
                     key={label}
-                    className="rounded-xl border border-white/15 bg-white/10 p-3"
+                    className="flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-3"
                   >
-                    <Icon size={18} />
-                    <p className="mt-2 text-xs font-semibold">{label}</p>
+                    <Icon size={16} className="text-purple-700" />
+                    <span className="text-sm font-medium text-slate-700">
+                      {label}
+                    </span>
                   </div>
                 ))}
+
               </div>
 
-              <Link
-                to="/signup"
-                className="mt-8 inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 font-bold text-purple-700 transition hover:-translate-y-0.5"
-              >
-                Start free
-                <ArrowRight size={18} />
-              </Link>
+              {solution.href.startsWith("http") ? (
+                <a
+                  href={solution.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-8 inline-flex items-center gap-2 font-semibold text-purple-700 hover:text-purple-800"
+                >
+                  {solution.cta}
+                  <ArrowRight size={16} />
+                </a>
+              ) : (
+                <Link
+                  to={solution.href}
+                  className="mt-8 inline-flex items-center gap-2 font-semibold text-purple-700 hover:text-purple-800"
+                >
+                  {solution.cta}
+                  <ArrowRight size={16} />
+                </Link>
+              )}
             </div>
-          </div>
+          ))}
 
-          <div className="group relative overflow-hidden rounded-3xl bg-slate-950 p-7 text-white sm:p-9 lg:col-span-5">
-            <div className="absolute right-0 top-0 h-52 w-52 rounded-full bg-amber-300/10 blur-3xl" />
-
-            <div className="relative flex h-full flex-col">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-amber-300">
-                <MonitorSmartphone size={23} />
-              </div>
-
-              <p className="mt-8 text-xs font-bold uppercase tracking-[0.2em] text-amber-300">
-                Premium salon website
-              </p>
-
-              <h3 className="mt-3 text-3xl font-extrabold tracking-wide">
-                AURELIA
-              </h3>
-
-              <p className="mt-4 leading-7 text-slate-400">
-                A luxury digital storefront designed to give modern salons
-                a more premium online presence.
-              </p>
-
-              <Link
-                to="/templates/aurelia"
-                className="mt-auto inline-flex items-center gap-2 pt-8 font-bold text-white transition group-hover:gap-3"
-              >
-                Explore AURELIA
-                <ArrowRight size={18} />
-              </Link>
-            </div>
-          </div>
-
-          <div className="relative overflow-hidden rounded-3xl border border-purple-200 bg-purple-50 p-7 sm:p-9 lg:col-span-12">
-            <div className="grid items-center gap-7 lg:grid-cols-[auto_1fr_auto]">
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-purple-700 shadow-sm ring-1 ring-purple-100">
-                <Layers3 size={26} />
-              </div>
-
-              <div>
-                <div className="flex items-center gap-2 text-sm font-bold text-purple-700">
-                  <Sparkles size={16} />
-                  A growing salon product ecosystem
-                </div>
-                <h3 className="mt-2 text-2xl font-extrabold text-slate-950">
-                  More tools are being built for salons.
-                </h3>
-                <p className="mt-2 max-w-3xl leading-7 text-slate-600">
-                  Retivio is creating a growing collection of digital
-                  products for beauty businesses — built around real salon
-                  operations, customer experience and growth.
-                </p>
-              </div>
-
-              <Link
-                to="/templates"
-                className="inline-flex items-center justify-center gap-2 rounded-xl border border-purple-200 bg-white px-5 py-3 font-bold text-purple-700 transition hover:border-purple-300 hover:shadow-md"
-              >
-                Explore products
-                <ArrowRight size={18} />
-              </Link>
-            </div>
-          </div>
         </div>
       </div>
     </section>

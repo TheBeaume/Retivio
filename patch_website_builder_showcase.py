@@ -1,8 +1,10 @@
-import { Link } from "react-router-dom";
+from pathlib import Path
+
+content = r'''import { Link } from "react-router-dom";
 
 export default function WebsiteBuilderCTA() {
   return (
-    <section id="website-builder" className="bg-white py-24">
+    <section className="bg-white py-24">
       <div className="mx-auto max-w-7xl px-6">
 
         <div className="grid items-center gap-14 lg:grid-cols-2">
@@ -13,7 +15,7 @@ export default function WebsiteBuilderCTA() {
               Website Solutions
             </p>
 
-            <h2 className="mt-6 text-4xl font-semibold tracking-tight text-slate-950">
+            <h2 className="mt-6 text-4xl font-bold tracking-tight text-slate-950">
               Build it yourself or let us build it for you.
             </h2>
 
@@ -49,7 +51,7 @@ export default function WebsiteBuilderCTA() {
 
             <Link
               to="/website-builder"
-              className="mt-10 inline-flex rounded-xl bg-purple-700 px-6 py-3.5 text-white font-semibold hover:bg-purple-800 transition"
+              className="mt-10 inline-flex rounded-xl bg-purple-700 px-6 py-3 text-white font-semibold hover:bg-purple-800 transition"
             >
               Explore Website Builder
             </Link>
@@ -86,3 +88,8 @@ export default function WebsiteBuilderCTA() {
     </section>
   );
 }
+'''
+
+Path("src/components/landing/WebsiteBuilderCTA.jsx").write_text(content)
+
+print("WebsiteBuilderCTA updated successfully.")

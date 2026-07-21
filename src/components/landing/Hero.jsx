@@ -2,9 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import {
   ArrowRight,
-  Check,
   Users,
-  CalendarDays,
   IndianRupee,
   BellRing,
   TrendingUp,
@@ -12,18 +10,25 @@ import {
   LayoutDashboard,
   ReceiptText,
   BarChart3,
+MonitorSmartphone
 } from "lucide-react";
 
 const sidebarItems = [
-  { icon: LayoutDashboard, label: "Overview", active: true },
+  { icon: LayoutDashboard, label: "Dashboard", active: true },
+  { icon: MonitorSmartphone, label: "Websites" },
   { icon: Users, label: "Customers" },
-  { icon: CalendarDays, label: "Appointments" },
-  { icon: BellRing, label: "Follow-ups" },
-  { icon: ReceiptText, label: "Billing" },
+  { icon: TrendingUp, label: "Marketing" },
   { icon: BarChart3, label: "Reports" },
+  { icon: ReceiptText, label: "Settings" },
 ];
 
 const stats = [
+  {
+    label: "Website Leads",
+    value: "36",
+    detail: "This week",
+    icon: MonitorSmartphone,
+  },
   {
     label: "Customers",
     value: "248",
@@ -35,12 +40,6 @@ const stats = [
     value: "₹48.5K",
     detail: "+12.4% growth",
     icon: IndianRupee,
-  },
-  {
-    label: "Appointments",
-    value: "12",
-    detail: "Today",
-    icon: CalendarDays,
   },
 ];
 
@@ -59,22 +58,23 @@ export default function Hero() {
           <div className="max-w-2xl">
             <div className="inline-flex items-center gap-2 rounded-full border border-purple-200 bg-purple-50 px-3.5 py-2 text-sm font-semibold text-purple-700">
               <span className="h-2 w-2 rounded-full bg-purple-600" />
-              Salon management and growth, in one place
+              Business Growth Platform
             </div>
 
             <h1
               id="hero-title"
               className="mt-7 text-4xl font-extrabold leading-[1.08] tracking-tight text-slate-950 sm:text-5xl lg:text-6xl"
             >
-              The smarter way to
-              <span className="text-purple-700"> run and grow </span>
-              your salon.
+              Build your website.
+              <span className="text-purple-700"> Manage your business. </span>
+              Grow with confidence.
             </h1>
 
             <p className="mt-6 max-w-xl text-lg leading-8 text-slate-600">
-              Retivio brings customers, appointments, follow-ups, billing
-              and business growth into one connected platform built for
-              modern salons.
+              Retivio combines professional website solutions, salon CRM and
+              marketing tools into one platform, helping businesses build
+              their online presence, manage daily operations and grow with
+              confidence.
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -90,24 +90,28 @@ export default function Hero() {
                 href="#products"
                 className="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-6 py-3.5 font-semibold text-slate-800 transition hover:border-purple-300 hover:bg-purple-50 hover:text-purple-700"
               >
-                Explore products
+                Explore Solutions
               </a>
             </div>
 
-            <div className="mt-7 flex flex-wrap gap-x-5 gap-y-3 text-sm text-slate-600">
-              {[
-                "No credit card required",
-                "Built for salons",
-                "Start in minutes",
-              ].map((item) => (
-                <span key={item} className="inline-flex items-center gap-2">
-                  <span className="flex h-5 w-5 items-center justify-center rounded-full bg-purple-100 text-purple-700">
-                    <Check size={12} strokeWidth={3} />
-                  </span>
-                  {item}
-                </span>
-              ))}
-            </div>
+<div className="mt-7 flex flex-wrap items-center gap-3 text-sm">
+  {[
+    "Website Solutions",
+    "Salon CRM",
+    "Marketing",
+  ].map((item, index) => (
+    <React.Fragment key={item}>
+      <span className="font-medium text-slate-600">
+        {item}
+      </span>
+
+      {index < 2 && (
+        <span className="text-slate-300">•</span>
+      )}
+    </React.Fragment>
+  ))}
+</div>
+
           </div>
 
           <div className="relative mx-auto w-full max-w-3xl lg:mx-0">
@@ -130,7 +134,7 @@ export default function Hero() {
 
               <div className="flex min-h-[430px]">
                 <aside className="hidden w-40 flex-shrink-0 border-r border-slate-200 bg-slate-950 p-3 sm:block">
-                  <div className="px-2 py-3 text-lg font-bold text-white">
+                  <div className="px-2 py-3.5 text-lg font-semibold text-white">
                     Retivio
                   </div>
 
@@ -154,15 +158,18 @@ export default function Hero() {
                 <div className="min-w-0 flex-1 bg-slate-50 p-4 sm:p-5">
                   <div className="flex items-start justify-between gap-3">
                     <div>
-                      <p className="text-[10px] font-medium text-purple-700">
-                        OVERVIEW
-                      </p>
-                      <h2 className="mt-1 text-lg font-bold text-slate-950 sm:text-xl">
-                        Good morning
-                      </h2>
-                      <p className="mt-1 text-[10px] text-slate-500 sm:text-xs">
-                        Here is what is happening at your salon.
-                      </p>
+
+<p className="text-[10px] font-medium text-purple-700">
+  BUSINESS OVERVIEW
+</p>
+
+<h2 className="mt-1 text-lg font-semibold text-slate-950 sm:text-xl">
+  Welcome back
+</h2>
+
+<p className="mt-1 text-[10px] text-slate-500 sm:text-xs">
+  Your websites, customers, marketing and revenue in one place.
+</p>
                     </div>
 
                     <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-500">
@@ -180,7 +187,7 @@ export default function Hero() {
                           <p className="text-[10px] text-slate-500">{label}</p>
                           <Icon size={13} className="text-purple-700" />
                         </div>
-                        <p className="mt-2 text-lg font-bold text-slate-950">
+                        <p className="mt-2 text-lg font-semibold text-slate-950">
                           {value}
                         </p>
                         <p className="mt-1 text-[9px] font-medium text-emerald-600">
@@ -194,7 +201,7 @@ export default function Hero() {
                     <div className="rounded-xl border border-slate-200 bg-white p-4">
                       <div className="flex items-center justify-between">
                         <p className="text-xs font-semibold text-slate-800">
-                          Revenue overview
+Business Performance
                         </p>
                         <TrendingUp size={14} className="text-purple-700" />
                       </div>
@@ -227,14 +234,14 @@ export default function Hero() {
                     <div className="rounded-xl border border-slate-200 bg-white p-4">
                       <div className="flex items-center justify-between">
                         <p className="text-xs font-semibold text-slate-800">
-                          Follow-ups
+Marketing Activity
                         </p>
                         <BellRing size={14} className="text-purple-700" />
                       </div>
 
-                      <p className="mt-5 text-3xl font-bold text-slate-950">8</p>
+                      <p className="mt-5 text-3xl font-semibold text-slate-950">8</p>
                       <p className="mt-1 text-[10px] text-slate-500">
-                        customers need attention
+campaigns currently active
                       </p>
 
                       <div className="mt-5 space-y-2">
@@ -256,17 +263,17 @@ export default function Hero() {
               </div>
             </div>
 
-            <div className="absolute -bottom-5 -left-3 hidden items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-xl sm:flex">
+            <div className="absolute -bottom-5 -left-3 hidden items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3.5 shadow-xl sm:flex">
               <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-purple-100 text-purple-700">
                 <BellRing size={17} />
               </div>
               <div>
-                <p className="text-xs font-semibold text-slate-900">
-                  Follow-up opportunity
-                </p>
-                <p className="mt-0.5 text-[10px] text-slate-500">
-                  Customer ready to reconnect
-                </p>
+<p className="text-xs font-semibold text-slate-900">
+  Business Activity
+</p>
+<p className="mt-0.5 text-[10px] text-slate-500">
+  Website, CRM and marketing working together.
+</p>
               </div>
             </div>
           </div>

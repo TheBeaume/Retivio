@@ -3,11 +3,11 @@ import { Link } from "react-router-dom";
 import { Menu, X, ArrowRight } from "lucide-react";
 
 const navItems = [
-  { label: "Product", href: "/#product" },
-  { label: "Solutions", href: "/#features" },
-  { label: "How it works", href: "/#how-it-works" },
-  { label: "Products", href: "/#products" },
-  { label: "FAQ", href: "/#faq" },
+  { label: "Solutions", href: "/#products" },
+  { label: "Industries", href: "/#industries" },
+  { label: "Pricing", href: "/#pricing" },
+  { label: "Resources", href: "/#faq" },
+  { label: "Contact", href: "/contact" },
 ];
 
 export default function Navbar() {
@@ -49,7 +49,7 @@ export default function Navbar() {
             to="/blog"
             className="text-sm font-medium text-slate-600 transition hover:text-purple-700"
           >
-            Blog
+            Resources
           </Link>
         </div>
 
@@ -58,14 +58,14 @@ export default function Navbar() {
             to="/login"
             className="px-4 py-2 text-sm font-semibold text-slate-700 transition hover:text-purple-700"
           >
-            Log in
+            Login
           </Link>
 
           <Link
             to="/signup"
             className="inline-flex items-center gap-2 rounded-xl bg-purple-700 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-purple-800"
           >
-            Start free
+            Get Started
             <ArrowRight size={16} />
           </Link>
         </div>
@@ -101,7 +101,7 @@ export default function Navbar() {
                 onClick={closeMenu}
                 className="block rounded-xl px-4 py-3.5 text-base font-semibold text-slate-800 transition hover:bg-purple-50 hover:text-purple-700"
               >
-                Blog
+                Resources
               </Link>
             </div>
 
@@ -111,7 +111,7 @@ export default function Navbar() {
                 onClick={closeMenu}
                 className="rounded-xl border border-slate-200 px-5 py-3 text-center font-semibold text-slate-800"
               >
-                Log in
+                Login
               </Link>
 
               <Link
@@ -119,7 +119,7 @@ export default function Navbar() {
                 onClick={closeMenu}
                 className="inline-flex items-center justify-center gap-2 rounded-xl bg-purple-700 px-5 py-3 font-semibold text-white"
               >
-                Start free
+                Get Started
                 <ArrowRight size={17} />
               </Link>
             </div>
