@@ -1,15 +1,85 @@
 @tailwind base;
 @tailwind components;
-@tailwind utilities;body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@tailwind utilities;
+
+:root {
+  --bg: #050816;
+  --surface: #0b1120;
+  --surface-2: #111827;
+
+  --primary: #7c3aed;
+  --primary-hover: #6d28d9;
+  --secondary: #a855f7;
+  --accent: #22d3ee;
+
+  --text: #f8fafc;
+  --text-muted: #cbd5e1;
+  --border: rgba(255,255,255,.08);
+
+  --shadow-purple: 0 20px 60px rgba(124,58,237,.28);
+  --shadow-card: 0 18px 40px rgba(0,0,0,.35);
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen,
+    Ubuntu,Cantarell,"Fira Sans","Droid Sans","Helvetica Neue",sans-serif;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 15% 20%,rgba(124,58,237,.18),transparent 28%),
+    radial-gradient(circle at 85% 15%,rgba(34,211,238,.10),transparent 26%),
+    radial-gradient(circle at 60% 80%,rgba(168,85,247,.12),transparent 30%);
+  z-index:-1;
+}
+
+code{
+  font-family:source-code-pro,Menlo,Monaco,Consolas,"Courier New",monospace;
+}
+
+::selection{
+  background:#7c3aed;
+  color:white;
+}
+
+.glass{
+  background:rgba(11,17,32,.65);
+  backdrop-filter:blur(18px);
+  border:1px solid rgba(255,255,255,.08);
+}
+
+.card-premium{
+  background:var(--surface);
+  border:1px solid var(--border);
+  box-shadow:var(--shadow-card);
+}
+
+.btn-primary{
+  background:linear-gradient(135deg,#7c3aed,#a855f7);
+  color:white;
+  transition:.25s ease;
+}
+
+.btn-primary:hover{
+  transform:translateY(-2px);
+  box-shadow:var(--shadow-purple);
+}
+
+.text-gradient{
+  background:linear-gradient(135deg,#a855f7,#22d3ee);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
 }
