@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
   <url>
@@ -80,7 +79,6 @@
     <priority>0.5</priority>
   </url>
 
-
   <url>
     <loc>https://retivio.in/blog/best-salon-crm-software</loc>
     <lastmod>2026-07-12</lastmod>
@@ -120,5 +118,17 @@
   <url>
     <loc>https://retivio.in/blog/create-salon-website-manage-business-one-platform</loc>
     <lastmod>2026-07-12</lastmod>
+  </url>
+  <url>
+    <loc>https://retivio.in/blog/why-every-small-business-needs-a-professional-website-2026</loc>
+    <lastmod>2026-07-19</lastmod>
+  </url>
+  <url>
+    <loc>https://retivio.in/blog/website-vs-social-media-small-business</loc>
+    <lastmod>2026-07-23</lastmod>
+  </url>
+  <url>
+    <loc>https://retivio.in/blog/local-seo-for-small-businesses</loc>
+    <lastmod>2026-07-23</lastmod>
   </url>
 </urlset>

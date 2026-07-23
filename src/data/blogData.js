@@ -9,6 +9,8 @@ import aiSalonGrowth from "./blogs/aiSalonGrowth";
 import crmVsSoftware from "./blogs/crmVsSoftware";
 import websiteAndBusiness from "./blogs/websiteAndBusiness";
 import whyEverySmallBusinessNeedsWebsite from "./blogs/whyEverySmallBusinessNeedsWebsite";
+import websiteVsSocialMedia from "./blogs/websiteVsSocialMedia";
+import localSeoForSmallBusinesses from "./blogs/localSeoForSmallBusinesses";
 
 const blogData = [
   {
@@ -198,7 +200,7 @@ const blogData = [
   category: "Website Growth",
   excerpt: "Discover why every small business needs a professional website in 2026 and how it helps build trust, attract customers, improve Google visibility and support long-term business growth.",
   content: whyEverySmallBusinessNeedsWebsite,
-  image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200",
+  image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200",
   author: "Retivio Team",
   metaTitle: "Why Every Small Business Needs a Professional Website in 2026 | Retivio",
   metaDescription: "Learn why every small business needs a professional website in 2026. Discover how websites improve credibility, SEO, customer trust and business growth.",
@@ -215,6 +217,56 @@ const blogData = [
   updatedAt: "2026-07-19",
   readTime: "10 min read"
 },
+
+{
+  id: 12,
+  title: "Website vs Social Media: Which One Should Small Businesses Prioritize?",
+  slug: "website-vs-social-media-small-business",
+  category: "Website Growth",
+  excerpt: "Many small businesses rely entirely on social media, but is that enough? Learn the strengths and limitations of websites and social platforms, and discover how using both together creates a stronger long-term growth strategy.",
+  content: websiteVsSocialMedia,
+  image: "https://images.unsplash.com/photo-1526778548025-fa2f459cd5ce?w=1200",
+  author: "Retivio Team",
+  metaTitle: "Website vs Social Media: Which One Should Small Businesses Prioritize? | Retivio",
+  metaDescription: "Learn whether a website or social media should be your priority. Discover how small businesses can use both to build trust, attract customers and grow consistently.",
+  keywords: [
+    "website vs social media",
+    "small business website",
+    "business marketing",
+    "website builder",
+    "digital marketing",
+    "Retivio"
+  ],
+  featured: false,
+  publishedAt: "2026-07-23",
+  updatedAt: "2026-07-23",
+  readTime: "16 min read"
+},
+
+{
+  id: 13,
+  title: "Local SEO for Small Businesses: A Practical Guide to Getting More Local Customers",
+  slug: "local-seo-for-small-businesses",
+  category: "Website Growth",
+  excerpt: "Learn how local SEO helps small businesses attract nearby customers through Google Search, Google Business Profile, customer reviews and a professional website.",
+  content: localSeoForSmallBusinesses,
+  image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200",
+  author: "Retivio Team",
+  metaTitle: "Local SEO for Small Businesses: A Practical Guide | Retivio",
+  metaDescription: "Discover practical local SEO strategies that help small businesses improve Google visibility, attract nearby customers and grow consistently.",
+  keywords: [
+    "local SEO",
+    "local SEO for small businesses",
+    "Google Business Profile",
+    "small business SEO",
+    "local search",
+    "Retivio"
+  ],
+  featured: false,
+  publishedAt: "2026-07-23",
+  updatedAt: "2026-07-23",
+  readTime: "16 min read"
+}
 ];
 
 export default blogData;
