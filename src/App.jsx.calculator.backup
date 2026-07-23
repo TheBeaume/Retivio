@@ -36,7 +36,6 @@ const CommandCenter = lazy(() => import("./pages/CommandCenter"));
 const WebsiteBuilderPage = lazy(() => import("./pages/WebsiteBuilderPage"));
 const PublicWebsite = lazy(() => import("./pages/PublicWebsite"));
 const ToolsPage = lazy(() => import("./pages/ToolsPage"));
-const SalonProfitCalculator = lazy(() => import("./pages/SalonProfitCalculator"));
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -177,7 +176,7 @@ function App() {
 
           <Route
             path="/tools/salon-profit-calculator"
-            element={<SalonProfitCalculator />}
+            element={<ToolsPage />}
           />
 
 

@@ -177,7 +177,7 @@ function App() {
 
           <Route
             path="/tools/salon-profit-calculator"
-            element={<SalonProfitCalculator />}
+            element={<ToolsPage />}
           />
 
 

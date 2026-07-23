@@ -10,6 +10,7 @@ import crmVsSoftware from "./blogs/crmVsSoftware";
 import websiteAndBusiness from "./blogs/websiteAndBusiness";
 import whyEverySmallBusinessNeedsWebsite from "./blogs/whyEverySmallBusinessNeedsWebsite";
 import websiteVsSocialMedia from "./blogs/websiteVsSocialMedia";
+import googleBusinessProfileGuide from "./blogs/googleBusinessProfileGuide";
 import localSeoForSmallBusinesses from "./blogs/localSeoForSmallBusinesses";
 
 const blogData = [
@@ -267,6 +268,32 @@ const blogData = [
   updatedAt: "2026-07-23",
   readTime: "16 min read"
 }
+,
+  {
+    id: 14,
+    title: "Why Google Business Profile Matters More Than Ever",
+    slug: "why-google-business-profile-matters",
+    category: "Website Growth",
+    excerpt: "Discover why Google Business Profile has become one of the most important marketing tools for local businesses and learn practical ways to improve your visibility in Google Search and Google Maps.",
+    content: googleBusinessProfileGuide,
+    image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200",
+    author: "Retivio Team",
+    metaTitle: "Why Google Business Profile Matters More Than Ever | Retivio",
+    metaDescription: "Learn how Google Business Profile helps local businesses improve visibility, build trust and attract more customers through Google Search and Google Maps.",
+    keywords: [
+      "Google Business Profile",
+      "Google Maps",
+      "local SEO",
+      "small business marketing",
+      "Google Business",
+      "Retivio"
+    ],
+    featured: false,
+    publishedAt: "2026-07-23",
+    updatedAt: "2026-07-23",
+    readTime: "16 min read"
+  }
+
 ];
 
 export default blogData;
