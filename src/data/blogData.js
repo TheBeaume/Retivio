@@ -11,6 +11,9 @@ import websiteAndBusiness from "./blogs/websiteAndBusiness";
 import whyEverySmallBusinessNeedsWebsite from "./blogs/whyEverySmallBusinessNeedsWebsite";
 import websiteVsSocialMedia from "./blogs/websiteVsSocialMedia";
 import googleBusinessProfileGuide from "./blogs/googleBusinessProfileGuide";
+import customerReviewsBuyingDecisions from "./blogs/customerReviewsBuyingDecisions";
+import commonWebsiteMistakes from "./blogs/commonWebsiteMistakes";
+import getMoreCustomersWithoutAds from "./blogs/getMoreCustomersWithoutAds";
 import localSeoForSmallBusinesses from "./blogs/localSeoForSmallBusinesses";
 
 const blogData = [
@@ -292,6 +295,84 @@ const blogData = [
     publishedAt: "2026-07-23",
     updatedAt: "2026-07-23",
     readTime: "16 min read"
+  }
+
+,
+  {
+    id: 15,
+    title: "How Customer Reviews Influence Buying Decisions and Local SEO",
+    slug: "customer-reviews-buying-decisions-local-seo",
+    category: "Marketing",
+    excerpt: "Learn how customer reviews influence trust, purchasing decisions and local SEO, and discover practical strategies to build a stronger online reputation.",
+    content: customerReviewsBuyingDecisions,
+    image: "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=1200",
+    author: "Retivio Team",
+    metaTitle: "How Customer Reviews Influence Buying Decisions and Local SEO | Retivio",
+    metaDescription: "Discover how customer reviews build trust, improve local SEO and influence buying decisions. Learn practical review management strategies for small businesses.",
+    keywords: [
+      "customer reviews",
+      "Google reviews",
+      "local SEO",
+      "online reputation",
+      "small business marketing",
+      "Retivio"
+    ],
+    featured: false,
+    publishedAt: "2026-07-23",
+    updatedAt: "2026-07-23",
+    readTime: "17 min read"
+  }
+
+,
+  {
+    id: 16,
+    title: "Common Website Mistakes That Cost Small Businesses Customers",
+    slug: "common-website-mistakes-small-business",
+    category: "Website Growth",
+    excerpt: "Discover the most common website mistakes that reduce trust, hurt SEO and cost small businesses valuable customers, along with practical ways to fix them.",
+    content: commonWebsiteMistakes,
+    image: "https://images.unsplash.com/photo-1551434678-e076c223a692?w=1200",
+    author: "Retivio Team",
+    metaTitle: "Common Website Mistakes That Cost Small Businesses Customers | Retivio",
+    metaDescription: "Learn the most common website mistakes that hurt customer trust, SEO and conversions, and discover practical ways to improve your business website.",
+    keywords: [
+      "website mistakes",
+      "small business website",
+      "website SEO",
+      "website conversion",
+      "business website",
+      "Retivio"
+    ],
+    featured: false,
+    publishedAt: "2026-07-23",
+    updatedAt: "2026-07-23",
+    readTime: "17 min read"
+  }
+
+,
+  {
+    id: 17,
+    title: "How to Get More Customers from Your Website Without Spending on Ads",
+    slug: "get-more-customers-from-your-website-without-ads",
+    category: "Website Growth",
+    excerpt: "Discover practical strategies to generate more website enquiries without relying entirely on paid advertising. Learn how content, SEO, trust and customer experience work together to drive sustainable business growth.",
+    content: getMoreCustomersWithoutAds,
+    image: "https://images.unsplash.com/photo-1556740749-887f6717d7e4?w=1200",
+    author: "Retivio Team",
+    metaTitle: "How to Get More Customers from Your Website Without Spending on Ads | Retivio",
+    metaDescription: "Learn how to generate more customers from your website using SEO, helpful content, customer trust and Local SEO instead of depending only on paid ads.",
+    keywords: [
+      "website lead generation",
+      "get more website customers",
+      "SEO",
+      "small business website",
+      "website conversion",
+      "Retivio"
+    ],
+    featured: false,
+    publishedAt: "2026-07-23",
+    updatedAt: "2026-07-23",
+    readTime: "18 min read"
   }
 
 ];
