@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { ArrowLeft } from "lucide-react";
 import { getCustomerVisits } from "../services/customerVisitService";
 import useBusinessSettings from "../hooks/useBusinessSettings";
 import { formatCurrency } from "../utils/formatCurrency";
@@ -36,7 +37,13 @@ useEffect(() => {
 
       <div className="bg-white w-full md:w-[420px] h-full overflow-y-auto">
 
-        <div className="bg-purple-700 text-white p-5 flex justify-between items-center">
+<div className="bg-purple-700 text-white p-5 flex items-center gap-4">
+<button
+  onClick={onClose}
+  className="w-10 h-10 rounded-xl bg-white/10 hover:bg-white/20 flex items-center justify-center transition"
+>
+  <ArrowLeft size={22} />
+</button>
 
           <div>
             <h2 className="text-2xl font-bold">

@@ -173,7 +173,7 @@ const settings = useBusinessSettings();
 
                   <div className="flex items-center justify-between mb-5">
 
-                    <h2 className="text-xl font-bold">
+<h2 className="text-xl font-bold text-gray-900">
                       Today's Business
                     </h2>
 
@@ -190,13 +190,13 @@ Today's Snapshot
                         Appointments
                       </p>
 
-                      <h3 className="text-3xl font-bold mt-2">
+<h3 className="text-3xl font-bold mt-2 text-gray-900">
 {stats.todayAppointments}
                       </h3>
                     </div>
 
                     <div className="bg-green-50 rounded-xl border p-4">
-                      <p className="text-sm text-gray-500">
+<p className="text-sm font-medium text-gray-700">
                         Revenue
                       </p>
 
@@ -246,27 +246,30 @@ Today's Snapshot
                 <QuickActions
                   setActivePage={setActivePage}
                 />
-<div className="mt-6 rounded-3xl bg-gradient-to-r from-purple-700 via-violet-600 to-indigo-600 p-6 text-white shadow-xl">
-  <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-    <div>
-      <h2 className="text-2xl font-bold">
-        Grow Your Business
-      </h2>
 
-      <p className="mt-2 text-purple-100 max-w-2xl">
-        Discover nearby business opportunities, build partnerships,
-        save leads and grow your salon with Retivio Customer Finder.
-      </p>
-    </div>
+<div className="mt-6 bg-white rounded-2xl border shadow-sm p-5">
+  <div className="flex items-center justify-between mb-4">
+    <h2 className="text-xl font-bold text-gray-900">
+      Calendar
+    </h2>
 
-    <button
-      onClick={() => setActivePage("customerFinder")}
-      className="bg-white text-purple-700 font-semibold px-6 py-3 rounded-xl hover:bg-purple-50 transition"
-    >
-      Open Customer Finder →
-    </button>
+    <span className="text-sm text-purple-600 font-medium">
+      This Month
+    </span>
   </div>
+
+  <div className="rounded-xl border bg-gray-50 p-4">
+    <input
+      type="date"
+      className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 outline-none focus:border-purple-500"
+    />
+  </div>
+
+  <p className="mt-3 text-sm text-gray-500">
+    Upcoming appointments and events will appear here.
+  </p>
 </div>
+
 <div className="bg-white rounded-2xl shadow p-6 mt-6">
   <div className="flex justify-between items-center mb-4">
     <h2 className="text-xl font-bold">
