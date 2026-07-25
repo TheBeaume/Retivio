@@ -14,6 +14,8 @@ import googleBusinessProfileGuide from "./blogs/googleBusinessProfileGuide";
 import customerReviewsBuyingDecisions from "./blogs/customerReviewsBuyingDecisions";
 import commonWebsiteMistakes from "./blogs/commonWebsiteMistakes";
 import getMoreCustomersWithoutAds from "./blogs/getMoreCustomersWithoutAds";
+import whyEveryBusinessNeedsABlog from "./blogs/whyEveryBusinessNeedsABlog";
+import whyWebsiteSpeedMatters from "./blogs/whyWebsiteSpeedMatters";
 import localSeoForSmallBusinesses from "./blogs/localSeoForSmallBusinesses";
 
 const blogData = [
@@ -373,6 +375,56 @@ const blogData = [
     publishedAt: "2026-07-23",
     updatedAt: "2026-07-23",
     readTime: "18 min read"
+  }
+
+,
+  {
+    id: 18,
+    title: "Why Every Small Business Needs a Blog (Even If You Don't Like Writing)",
+    slug: "why-every-small-business-needs-a-blog",
+    category: "Content Marketing",
+    excerpt: "Discover why blogging remains one of the most powerful ways for small businesses to improve SEO, attract customers and build long-term trust.",
+    content: whyEveryBusinessNeedsABlog,
+    image: "https://images.unsplash.com/photo-1455390582262-044cdead277a?w=1200",
+    author: "Retivio Team",
+    metaTitle: "Why Every Small Business Needs a Blog | Retivio",
+    metaDescription: "Learn how blogging helps small businesses improve SEO, attract customers and build authority without relying only on paid advertising.",
+    keywords: [
+      "small business blog",
+      "business blogging",
+      "SEO blogging",
+      "content marketing",
+      "Retivio"
+    ],
+    featured: false,
+    publishedAt: "2026-07-25",
+    updatedAt: "2026-07-25",
+    readTime: "17 min read"
+  }
+
+,
+  {
+    id: 19,
+    title: "Why Website Speed Matters: Every Second Can Cost You Customers",
+    slug: "why-website-speed-matters",
+    category: "Website Performance",
+    excerpt: "Learn why website speed directly impacts SEO, customer experience and conversions, and discover practical ways to improve your site's performance.",
+    content: whyWebsiteSpeedMatters,
+    image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200",
+    author: "Retivio Team",
+    metaTitle: "Why Website Speed Matters | Retivio",
+    metaDescription: "Discover how website speed affects SEO, customer experience and business growth, along with practical tips to improve performance.",
+    keywords: [
+      "website speed",
+      "website performance",
+      "Core Web Vitals",
+      "SEO",
+      "Retivio"
+    ],
+    featured: false,
+    publishedAt: "2026-07-25",
+    updatedAt: "2026-07-25",
+    readTime: "16 min read"
   }
 
 ];
