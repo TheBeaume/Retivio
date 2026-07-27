@@ -4,10 +4,12 @@ import autoTable from "jspdf-autotable";
 import { supabase } from "../lib/supabase";
 import useBusinessSettings from "../hooks/useBusinessSettings";
 import { formatCurrency } from "../utils/formatCurrency";
+import { getDashboardFinancialStats } from "../services/financialService";
 
 export default function Reports() {
   const [customers, setCustomers] = useState([]);
   const [appointments, setAppointments] = useState([]);
+  const [totalRevenue, setTotalRevenue] = useState(0);
   const [loading, setLoading] = useState(true);
 
   const settings = useBusinessSettings();
@@ -52,6 +54,13 @@ export default function Reports() {
 
       setCustomers(customerResult.data || []);
       setAppointments(appointmentResult.data || []);
+
+      const financial =
+        await getDashboardFinancialStats(user.id);
+
+      setTotalRevenue(
+        Number(financial.totalRevenue || 0)
+      );
     } catch (error) {
       console.error("Report load error:", error);
     } finally {
@@ -59,11 +68,7 @@ export default function Reports() {
     }
   }
 
-  const totalRevenue = customers.reduce(
-    (sum, customer) =>
-      sum + (Number(customer.total_spend) || 0),
-    0
-  );
+  
 
   const completedAppointments = appointments.filter(
     (appointment) =>

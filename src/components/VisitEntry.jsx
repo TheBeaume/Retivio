@@ -100,9 +100,6 @@ function VisitEntry({ customers, setCustomers }) {
       }
 
       const newVisits = Number(customer.visits || 0) + 1;
-      const newSpend =
-        Number(customer.totalSpend || 0) + Number(amount);
-
       const followUpDays = getFollowUpDays(service);
       const visitDate = new Date();
 
@@ -122,10 +119,9 @@ function VisitEntry({ customers, setCustomers }) {
         .from("customers")
         .update({
           service,
+          visits: newVisits,
           last_visit: visitDate.toLocaleDateString(),
           next_due: `${followUpDays} Days`,
-          visits: newVisits,
-          total_spend: newSpend,
           loyalty,
           status: "Active",
         })
@@ -182,8 +178,6 @@ function VisitEntry({ customers, setCustomers }) {
               service,
               lastVisit: data.last_visit,
               nextDue: data.next_due,
-              visits: newVisits,
-              totalSpend: newSpend,
               loyalty,
               status: "Active",
             }

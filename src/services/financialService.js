@@ -2,23 +2,27 @@ import { supabase } from "../lib/supabase";
 
 /**
  * Financial Service
- * Single source of truth for all revenue calculations.
- * Patch 1:
- * Safe to add. Existing code is untouched.
+ * Single Source of Truth for all financial calculations.
  */
 
-export async function getTodayRevenue(userId) {
-  const today = new Date().toISOString().slice(0, 10);
-
+async function getPaidTransactions(userId) {
   const { data, error } = await supabase
     .from("transactions")
-    .select("amount,payment_status,created_at")
+    .select("id,amount,payment_status,created_at,customer_id")
     .eq("user_id", userId)
     .eq("payment_status", "Paid");
 
   if (error) throw error;
 
-  return (data || [])
+  return data || [];
+}
+
+export async function getTodayRevenue(userId) {
+  const today = new Date().toISOString().slice(0, 10);
+
+  const transactions = await getPaidTransactions(userId);
+
+  return transactions
     .filter(
       (t) => t.created_at?.slice(0, 10) === today
     )
@@ -28,44 +32,20 @@ export async function getTodayRevenue(userId) {
     );
 }
 
-export async function getCustomerLifetimeSpend(userId, customerId) {
-  const { data, error } = await supabase
-    .from("transactions")
-    .select("amount,payment_status")
-    .eq("user_id", userId)
-    .eq("customer_id", customerId)
-    .eq("payment_status", "Paid");
-
-  if (error) throw error;
-
-  return (data || []).reduce(
-    (sum, t) => sum + Number(t.amount || 0),
-    0
-  );
-}
-
 export async function getMonthlyRevenue(userId) {
   const now = new Date();
 
-  const month =
-    String(now.getMonth() + 1).padStart(2, "0");
-
+  const month = now.getMonth();
   const year = now.getFullYear();
 
-  const { data, error } = await supabase
-    .from("transactions")
-    .select("amount,payment_status,created_at")
-    .eq("user_id", userId)
-    .eq("payment_status", "Paid");
+  const transactions = await getPaidTransactions(userId);
 
-  if (error) throw error;
-
-  return (data || [])
+  return transactions
     .filter((t) => {
       const d = new Date(t.created_at);
       return (
-        d.getFullYear() === year &&
-        String(d.getMonth() + 1).padStart(2, "0") === month
+        d.getMonth() === month &&
+        d.getFullYear() === year
       );
     })
     .reduce(
@@ -74,33 +54,36 @@ export async function getMonthlyRevenue(userId) {
     );
 }
 
+export async function getTotalRevenue(userId) {
+  const transactions = await getPaidTransactions(userId);
+
+  return transactions.reduce(
+    (sum, t) => sum + Number(t.amount || 0),
+    0
+  );
+}
+
+export async function getCustomerLifetimeSpend(userId, customerId) {
+  const transactions = await getPaidTransactions(userId);
+
+  return transactions
+    .filter((t) => t.customer_id === customerId)
+    .reduce(
+      (sum, t) => sum + Number(t.amount || 0),
+      0
+    );
+}
+
 export async function getRevenueTrend(userId) {
-  const { data, error } = await supabase
-    .from("transactions")
-    .select("amount,created_at,payment_status")
-    .eq("user_id", userId)
-    .eq("payment_status", "Paid")
-    .order("created_at", { ascending: true });
-
-  if (error) throw error;
-
-  return data || [];
+  return await getPaidTransactions(userId);
 }
 
 export async function getTopCustomers(userId) {
-  const { data, error } = await supabase
-    .from("transactions")
-    .select(
-      "customer_id,amount,payment_status"
-    )
-    .eq("user_id", userId)
-    .eq("payment_status", "Paid");
-
-  if (error) throw error;
+  const transactions = await getPaidTransactions(userId);
 
   const totals = {};
 
-  for (const row of data || []) {
+  for (const row of transactions) {
     totals[row.customer_id] =
       (totals[row.customer_id] || 0) +
       Number(row.amount || 0);
@@ -109,28 +92,47 @@ export async function getTopCustomers(userId) {
   return totals;
 }
 
-
 export async function getDashboardFinancialStats(userId) {
+  const transactions = await getPaidTransactions(userId);
 
-  const todayRevenue = await getTodayRevenue(userId);
-  const monthlyRevenue = await getMonthlyRevenue(userId);
+  const today = new Date().toISOString().slice(0, 10);
 
-  const { data, error } = await supabase
-    .from("transactions")
-    .select("id,payment_status")
-    .eq("user_id", userId);
+  const now = new Date();
+  const month = now.getMonth();
+  const year = now.getFullYear();
 
-  if (error) throw error;
+  const todayRevenue = transactions
+    .filter(
+      (t) => t.created_at?.slice(0, 10) === today
+    )
+    .reduce(
+      (sum, t) => sum + Number(t.amount || 0),
+      0
+    );
 
-  const paidTransactions =
-    (data || []).filter(
-      (t) => t.payment_status === "Paid"
-    ).length;
+  const monthlyRevenue = transactions
+    .filter((t) => {
+      const d = new Date(t.created_at);
+      return (
+        d.getMonth() === month &&
+        d.getFullYear() === year
+      );
+    })
+    .reduce(
+      (sum, t) => sum + Number(t.amount || 0),
+      0
+    );
+
+  const totalRevenue = transactions.reduce(
+    (sum, t) => sum + Number(t.amount || 0),
+    0
+  );
 
   return {
     todayRevenue,
     monthlyRevenue,
-    totalTransactions: (data || []).length,
-    paidTransactions,
+    totalRevenue,
+    totalTransactions: transactions.length,
+    paidTransactions: transactions.length,
   };
 }
