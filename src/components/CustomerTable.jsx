@@ -93,7 +93,7 @@ return (
       <div className="overflow-x-auto">
         <table className="min-w-[1100px] border-collapse">
           <thead>
-            <tr className="bg-purple-100">
+            <tr className="bg-rose-100">
               <th className="border p-2">Name</th>
               <th className="border p-2">Phone</th>
               <th className="border p-2">Service</th>
@@ -110,11 +110,11 @@ return (
 
           <tbody>
             {visibleCustomers.map((c, i) => (
-              <tr key={i} className="hover:bg-gray-50">
+              <tr key={i} className="hover:bg-[#FFF7F8]">
 <td className="border p-2">
   <button
     onClick={() => setSelectedCustomer(c)}
-    className="text-purple-700 font-semibold hover:underline"
+    className="text-rose-700 font-semibold hover:underline"
   >
     {c.name}
   </button>
@@ -145,7 +145,7 @@ return (
 
                 <td className="border p-2">
                   {c.visits >= 10 ? (
-                    <span className="bg-purple-100 text-purple-700 px-2 py-1 rounded">
+                    <span className="bg-rose-100 text-rose-700 px-2 py-1 rounded">
                       VIP 20%
                     </span>
                   ) : c.visits >= 5 ? (
@@ -172,7 +172,7 @@ return (
       </div>
 
       {customers.length > PAGE_SIZE && (
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mt-5 pt-5 border-t border-gray-100">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mt-5 pt-5 border-t border-[#F3D6DB]">
           <p className="text-sm text-gray-500">
             Showing {(currentPage - 1) * PAGE_SIZE + 1}–
             {Math.min(currentPage * PAGE_SIZE, customers.length)} of{" "}
@@ -185,7 +185,7 @@ return (
                 setCurrentPage((page) => Math.max(1, page - 1))
               }
               disabled={currentPage === 1}
-              className="border border-gray-200 px-4 py-2 rounded-lg text-sm font-medium disabled:opacity-40 disabled:cursor-not-allowed"
+              className="border border-[#F3D6DB] px-4 py-2 rounded-lg text-sm font-medium disabled:opacity-40 disabled:cursor-not-allowed"
             >
               Previous
             </button>
@@ -201,7 +201,7 @@ return (
                 )
               }
               disabled={currentPage === totalPages}
-              className="border border-gray-200 px-4 py-2 rounded-lg text-sm font-medium disabled:opacity-40 disabled:cursor-not-allowed"
+              className="border border-[#F3D6DB] px-4 py-2 rounded-lg text-sm font-medium disabled:opacity-40 disabled:cursor-not-allowed"
             >
               Next
             </button>

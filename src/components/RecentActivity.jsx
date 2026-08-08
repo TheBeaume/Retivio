@@ -21,7 +21,7 @@ function RecentActivity({ customers }) {
           Recent Activity
         </h2>
 
-        <span className="text-sm text-purple-600 font-medium">
+        <span className="text-sm text-rose-600 font-medium">
           Last 5 Visits
         </span>
       </div>
@@ -42,7 +42,7 @@ function RecentActivity({ customers }) {
               className="flex items-center justify-between border-b last:border-0 pb-4"
             >
               <div className="flex items-center gap-3 min-w-0">
-                <div className="w-12 h-12 shrink-0 rounded-full bg-purple-100 text-purple-700 flex items-center justify-center">
+                <div className="w-12 h-12 shrink-0 rounded-full bg-rose-100 text-rose-700 flex items-center justify-center">
                   <Scissors size={20} />
                 </div>
 
@@ -71,7 +71,7 @@ function RecentActivity({ customers }) {
                   )}
                 </p>
 
-                <span className="inline-block mt-2 text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded-full">
+                <span className="inline-block mt-2 text-xs bg-rose-100 text-rose-700 px-2 py-1 rounded-full">
                   Completed
                 </span>
               </div>

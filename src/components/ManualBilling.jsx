@@ -482,7 +482,6 @@ export default function ManualBilling({ onInvoiceCreated }) {
         user_id: user.id,
         customer_id: billingCustomer.id,
         appointment_id: null,
-        transaction_id: null,
         invoice_number: invoiceNumber,
 
         customer_name: customerName.trim(),
@@ -595,23 +594,31 @@ export default function ManualBilling({ onInvoiceCreated }) {
 
       if (transactionError) throw transactionError;
 
-      await supabase
-        .from("invoices")
-        .update({
-          transaction_id: transaction.id,
-        })
-        .eq("id", invoice.id)
-        .eq("user_id", user.id);
-
       if (paymentStatus === "Paid") {
+        const { data: existingVisit } = await supabase
+          .from("customer_visits")
+          .select("id")
+          .eq("transaction_id", transaction.id)
+          .maybeSingle();
+
+        if (!existingVisit) {
+          await supabase.from("customer_visits").insert({
+            user_id: user.id,
+            customer_id: billingCustomer.id,
+            transaction_id: transaction.id,
+            service: validItems[0].name,
+            amount: Number(totalAmount.toFixed(2)),
+            visit_date: new Date()
+              .toISOString()
+              .split("T")[0],
+          });
+        }
+
 
         await supabase
           .from("customers")
           .update({
-            total_spend:
-              Number(billingCustomer.total_spend || 0) +
-              Number(totalAmount),
-            visits:
+visits:
               Number(billingCustomer.visits || 0) + 1,
             service: validItems[0].name,
             last_visit:
@@ -642,9 +649,9 @@ export default function ManualBilling({ onInvoiceCreated }) {
   }
 
   return (
-    <div className="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm">
+    <div className="bg-white border border-[#F3D6DB] rounded-2xl p-5 shadow-sm">
       <div>
-        <p className="text-sm font-semibold uppercase tracking-wider text-purple-600">
+        <p className="text-sm font-semibold uppercase tracking-wider text-rose-600">
           Point of Sale
         </p>
 
@@ -671,7 +678,7 @@ export default function ManualBilling({ onInvoiceCreated }) {
             }}
             onBlur={findCustomer}
             placeholder="Customer mobile number"
-            className="w-full border border-gray-200 rounded-xl px-4 py-3 mt-2 outline-none focus:border-purple-500"
+            className="w-full border border-[#F3D6DB] rounded-xl px-4 py-3 mt-2 outline-none focus:border-rose-500"
           />
         </div>
 
@@ -686,7 +693,7 @@ export default function ManualBilling({ onInvoiceCreated }) {
               setCustomerName(e.target.value)
             }
             placeholder="Customer name"
-            className="w-full border border-gray-200 rounded-xl px-4 py-3 mt-2 outline-none focus:border-purple-500"
+            className="w-full border border-[#F3D6DB] rounded-xl px-4 py-3 mt-2 outline-none focus:border-rose-500"
           />
         </div>
       </div>
@@ -711,7 +718,7 @@ export default function ManualBilling({ onInvoiceCreated }) {
 
           <button
             onClick={addItem}
-            className="text-purple-600 font-semibold text-sm"
+            className="text-rose-600 font-semibold text-sm"
           >
             Add Item
           </button>
@@ -721,14 +728,14 @@ export default function ManualBilling({ onInvoiceCreated }) {
           {items.map((item, index) => (
             <div
               key={index}
-              className="grid grid-cols-1 md:grid-cols-12 gap-3 border border-gray-200 rounded-xl p-4"
+              className="grid grid-cols-1 md:grid-cols-12 gap-3 border border-[#F3D6DB] rounded-xl p-4"
             >
               <select
                 value={item.name}
                 onChange={(e) =>
                   selectService(index, e.target.value)
                 }
-                className="md:col-span-5 border border-gray-200 rounded-lg px-3 py-2.5"
+                className="md:col-span-5 border border-[#F3D6DB] rounded-lg px-3 py-2.5"
               >
                 <option value="">Select service</option>
 
@@ -754,7 +761,7 @@ export default function ManualBilling({ onInvoiceCreated }) {
                   )
                 }
                 placeholder="Qty"
-                className="md:col-span-2 border border-gray-200 rounded-lg px-3 py-2.5"
+                className="md:col-span-2 border border-[#F3D6DB] rounded-lg px-3 py-2.5"
               />
 
               <input
@@ -769,7 +776,7 @@ export default function ManualBilling({ onInvoiceCreated }) {
                   )
                 }
                 placeholder="Price"
-                className="md:col-span-3 border border-gray-200 rounded-lg px-3 py-2.5"
+                className="md:col-span-3 border border-[#F3D6DB] rounded-lg px-3 py-2.5"
               />
 
               <button
@@ -794,7 +801,7 @@ export default function ManualBilling({ onInvoiceCreated }) {
             min="0"
             value={discount}
             onChange={(e) => setDiscount(e.target.value)}
-            className="w-full border border-gray-200 rounded-xl px-4 py-3 mt-2"
+            className="w-full border border-[#F3D6DB] rounded-xl px-4 py-3 mt-2"
           />
         </div>
 
@@ -808,7 +815,7 @@ export default function ManualBilling({ onInvoiceCreated }) {
             onChange={(e) =>
               setPaymentMethod(e.target.value)
             }
-            className="w-full border border-gray-200 rounded-xl px-4 py-3 mt-2"
+            className="w-full border border-[#F3D6DB] rounded-xl px-4 py-3 mt-2"
           >
             <option>Cash</option>
             <option>UPI</option>
@@ -828,7 +835,7 @@ export default function ManualBilling({ onInvoiceCreated }) {
             onChange={(e) =>
               setPaymentStatus(e.target.value)
             }
-            className="w-full border border-gray-200 rounded-xl px-4 py-3 mt-2"
+            className="w-full border border-[#F3D6DB] rounded-xl px-4 py-3 mt-2"
           >
             <option>Paid</option>
             <option>Pending</option>
@@ -841,7 +848,7 @@ export default function ManualBilling({ onInvoiceCreated }) {
         onChange={(e) => setNotes(e.target.value)}
         rows={3}
         placeholder="Billing notes"
-        className="w-full border border-gray-200 rounded-xl px-4 py-3 mt-4"
+        className="w-full border border-[#F3D6DB] rounded-xl px-4 py-3 mt-4"
       />
 
       <div className="bg-gray-50 rounded-xl p-5 mt-6">
@@ -862,7 +869,7 @@ export default function ManualBilling({ onInvoiceCreated }) {
           <span>{money(taxAmount)}</span>
         </div>
 
-        <div className="flex justify-between border-t border-gray-200 mt-4 pt-4">
+        <div className="flex justify-between border-t border-[#F3D6DB] mt-4 pt-4">
           <span className="font-bold text-gray-900">
             Total
           </span>
@@ -876,7 +883,7 @@ export default function ManualBilling({ onInvoiceCreated }) {
       <button
         onClick={createBill}
         disabled={loading}
-        className="w-full bg-purple-600 hover:bg-purple-700 disabled:opacity-50 text-white rounded-xl py-3.5 font-semibold mt-6"
+        className="w-full bg-rose-600 hover:bg-rose-700 disabled:opacity-50 text-white rounded-xl py-3.5 font-semibold mt-6"
       >
         {loading ? "Creating Invoice..." : "Create Invoice & PDF"}
       </button>

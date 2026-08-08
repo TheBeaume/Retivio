@@ -24,6 +24,7 @@ import { supabase } from "../lib/supabase";
 import useDashboardStats from "../hooks/useDashboardStats";
 import useBusinessSettings from "../hooks/useBusinessSettings";
 import { formatCurrency } from "../utils/formatCurrency";
+import { getCustomerLifetimeSpend } from "../services/financialService";
 import useTodayAppointments from "../hooks/useTodayAppointments";
 import CustomerFinder from "../components/customerFinder";
 import BillingInvoices from "../components/BillingInvoices";
@@ -64,67 +65,54 @@ const { data } = await supabase
         data: { user },
       } = await supabase.auth.getUser();
 
-      if (!user) return;
-
-      const { data: customerRows, error } = await supabase
+      if (!user) {
+return;
+    }
+const { data, error } = await supabase
         .from("customers")
         .select("*")
         .eq("user_id", user.id);
+if (error) throw error;
 
-      if (error) throw error;
+      const formatted = await Promise.all(
+        (data || []).map(async (c) => {
+          let totalSpend = 0;
 
-      // Fetch paid transactions only once
-      const {
-        data: transactions,
-        error: transactionError,
-      } = await supabase
-        .from("transactions")
-        .select("customer_id, amount, payment_status")
-        .eq("user_id", user.id)
-        .eq("payment_status", "Paid");
+          try {
+            totalSpend = await getCustomerLifetimeSpend(
+              user.id,
+              c.id
+            );
+          } catch (err) {
+            console.error(
+              "Lifetime spend failed:",
+              c.id,
+              err
+            );
+          }
 
-      if (transactionError) throw transactionError;
-
-      const {
-        data: visits,
-        error: visitError,
-      } = await supabase
-        .from("customer_visits")
-        .select("customer_id");
-
-      if (visitError) throw visitError;
-
-      const spendMap = {};
-      const visitMap = {};
-
-      (transactions || []).forEach((t) => {
-        spendMap[t.customer_id] =
-          (spendMap[t.customer_id] || 0) +
-          Number(t.amount || 0);
-      });
-
-      (visits || []).forEach((v) => {
-        visitMap[v.customer_id] =
-          (visitMap[v.customer_id] || 0) + 1;
-      });
-
-      const formatted = (customerRows || []).map((c) => ({
-        id: c.id,
-        name: c.name,
-        phone: c.phone,
-        service: c.service,
-        lastVisit: c.last_visit,
-        nextDue: c.next_due,
-        visits: visitMap[c.id] || 0,
-        totalSpend: spendMap[c.id] || 0,
-        loyalty: c.loyalty,
-        status: c.status,
-      }));
-
-      setCustomers(formatted);
+          return {
+            id: c.id,
+            name: c.name,
+            phone: c.phone,
+            service: c.service,
+            lastVisit: c.last_visit,
+            nextDue: c.next_due,
+            visits: c.visits,
+            totalSpend,
+            loyalty: c.loyalty,
+            status: c.status,
+          };
+        })
+      );
+setCustomers(formatted);
 
     } catch (err) {
       console.error("Dashboard customer load failed:", err);
+      alert(
+        "Dashboard customer load failed:\n\n" +
+        (err?.message || JSON.stringify(err))
+      );
     }
   };
 
@@ -158,7 +146,7 @@ const { data } = await supabase
 
   return (
     <>
-      <div className="min-h-screen flex bg-[#FFF7F8]">
+      <div className="min-h-screen flex bg-gray-50">
 
         {sidebarOpen && (
           <>
@@ -185,9 +173,9 @@ const { data } = await supabase
 
                 {/* Hero Section */}
 
-                <div className="bg-gradient-to-r from-rose-700 via-rose-600 to-rose-500 rounded-2xl text-white p-6 md:p-8 shadow-sm">
+                <div className="bg-gradient-to-r from-purple-700 via-violet-700 to-indigo-700 rounded-2xl text-white p-6 md:p-8 shadow-sm">
 
-                  <p className="text-rose-100 text-sm">
+                  <p className="text-purple-100 text-sm">
                     {today}
                   </p>
 
@@ -198,7 +186,7 @@ const { data } = await supabase
                       : ""}
                   </h1>
 
-                  <p className="text-rose-100 mt-2">
+                  <p className="text-purple-100 mt-2">
                     Welcome back to{" "}
                     <span className="font-semibold">
                       {profile?.salon_name || "Your Salon"}
@@ -215,7 +203,7 @@ const { data } = await supabase
                       Today's Business
                     </h2>
 
-                    <span className="text-sm text-rose-600 font-medium">
+                    <span className="text-sm text-purple-600 font-medium">
 Today's Snapshot
                     </span>
 
@@ -258,7 +246,7 @@ Today's Snapshot
                       </h3>
                     </div>
 
-                    <div className="bg-rose-50 rounded-xl border p-4">
+                    <div className="bg-purple-50 rounded-xl border p-4">
                       <p className="text-sm text-gray-500">
                         New Customers
                       </p>
@@ -291,15 +279,15 @@ Today's Snapshot
       Calendar
     </h2>
 
-    <span className="text-sm text-rose-600 font-medium">
+    <span className="text-sm text-purple-600 font-medium">
       This Month
     </span>
   </div>
 
-  <div className="rounded-xl border bg-[#FFF7F8] p-4">
+  <div className="rounded-xl border bg-gray-50 p-4">
     <input
       type="date"
-      className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 outline-none focus:border-rose-500"
+      className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 outline-none focus:border-purple-500"
     />
   </div>
 
@@ -345,12 +333,12 @@ todayAppointments.map((appointment) => (
             : appointment.id
         )
       }
-      className="w-full flex justify-between items-center p-4 md:p-5 hover:bg-[#FFF7F8] transition text-left"
+      className="w-full flex justify-between items-center p-4 md:p-5 hover:bg-gray-50 transition text-left"
     >
 
       <div className="flex items-center gap-3">
 
-        <span className="w-7 h-7 rounded-lg border border-[#F3D6DB] flex items-center justify-center text-gray-500 text-lg font-medium shrink-0">
+        <span className="w-7 h-7 rounded-lg border border-gray-200 flex items-center justify-center text-gray-500 text-lg font-medium shrink-0">
           {expandedAppointment === appointment.id ? "−" : "+"}
         </span>
 
@@ -376,7 +364,7 @@ todayAppointments.map((appointment) => (
 
     {expandedAppointment === appointment.id && (
 
-      <div className="border-t border-[#F3D6DB] bg-[#FFF7F8]/70 p-5 space-y-3 text-sm text-gray-600">
+      <div className="border-t border-gray-100 bg-gray-50/70 p-5 space-y-3 text-sm text-gray-600">
 
         <p>
           <strong className="text-gray-700">Service:</strong>{" "}
@@ -397,7 +385,7 @@ todayAppointments.map((appointment) => (
 
           <a
             href={`tel:${appointment.phone}`}
-            className="border border-[#F3D6DB] bg-white hover:bg-[#FFF7F8] text-gray-700 px-4 py-2.5 rounded-lg text-sm font-medium transition"
+            className="border border-gray-200 bg-white hover:bg-gray-50 text-gray-700 px-4 py-2.5 rounded-lg text-sm font-medium transition"
           >
             Call Customer
           </a>
@@ -406,7 +394,7 @@ todayAppointments.map((appointment) => (
             href={`https://wa.me/${appointment.phone}`}
             target="_blank"
             rel="noreferrer"
-            className="bg-rose-600 hover:bg-rose-700 text-white px-4 py-2.5 rounded-lg text-sm font-medium transition"
+            className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2.5 rounded-lg text-sm font-medium transition"
           >
             Open WhatsApp
           </a>

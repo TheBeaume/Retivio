@@ -87,7 +87,7 @@ async function handleSubmit() {
 <button
   onClick={handleSubmit}
   disabled={loading}
-  className="w-full mt-5 bg-purple-600 hover:bg-purple-700 disabled:bg-gray-400 text-white py-3 rounded-xl font-semibold"
+  className="w-full mt-5 bg-rose-600 hover:bg-rose-700 disabled:bg-gray-400 text-white py-3 rounded-xl font-semibold"
 >
   {loading ? "Submitting..." : " Submit Feedback"}
 </button>

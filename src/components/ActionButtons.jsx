@@ -45,7 +45,7 @@ return (
           "🎂 Happy Birthday!\n\nEnjoy a complimentary salon service on your special day.\nWe look forward to seeing you."
         )
       }
-      className="bg-purple-600 text-white px-4 py-2 rounded"
+      className="bg-rose-600 text-white px-4 py-2 rounded"
     >
       Birthday Campaign
     </button>

@@ -216,7 +216,7 @@ default_duration: appointmentDuration,
         <button
           onClick={saveSettings}
           disabled={loading}
-          className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg"
+          className="bg-rose-600 hover:bg-rose-700 text-white px-6 py-3 rounded-lg"
         >
           {loading ? "Saving..." : "Save Settings"}
         </button>

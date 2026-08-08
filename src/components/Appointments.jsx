@@ -516,13 +516,13 @@ if (error) {
   return (
 <>
     <div className="space-y-8">
-<div className="bg-gradient-to-r from-purple-700 to-indigo-700 rounded-3xl text-white p-8">
+<div className="bg-gradient-to-r from-[#18181B] to-rose-700 rounded-3xl text-white p-8">
 
         <h1 className="text-4xl font-bold">
            Appointments
         </h1>
 
-        <p className="mt-3 text-purple-100">
+        <p className="mt-3 text-rose-100">
           Manage all your salon appointments in one place.
         </p>
 
@@ -659,7 +659,7 @@ onClick={() => {
 
   setShowForm(true);
 }}
-          className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-xl"
+          className="bg-rose-600 hover:bg-rose-700 text-white px-6 py-3 rounded-xl"
         >
            New Appointment
         </button>
@@ -684,7 +684,7 @@ onClick={() => {
     setForm({ ...form, customer: e.target.value })
   }
   className={`border rounded-lg p-3 ${
-    customerFound ? "bg-gray-100 cursor-not-allowed" : ""
+    customerFound ? "bg-[#FFF1F2] cursor-not-allowed" : ""
   }`}
 />
 
@@ -883,7 +883,7 @@ onClick={() => {
     }
   }
 }}
-  className="bg-purple-600 hover:bg-purple-700 text-white rounded-lg p-3 md:col-span-2"
+  className="bg-rose-600 hover:bg-rose-700 text-white rounded-lg p-3 md:col-span-2"
 >
   {isEditing ? "Update Appointment" : "Save Appointment"}
 </button>
@@ -912,7 +912,7 @@ onClick={() => {
 {paginatedAppointments.map((appointment) => (
               <div
                 key={appointment.id}
-                className="border border-gray-200 rounded-2xl p-4 bg-white hover:shadow-md transition-shadow"
+                className="border border-[#F3D6DB] rounded-2xl p-4 bg-white hover:shadow-md transition-shadow"
               >
                 <div className="flex flex-col gap-4">
                   <div className="min-w-0 flex-1">
@@ -927,7 +927,7 @@ onClick={() => {
                             ? "bg-green-100 text-green-700"
                             : appointment.status === "Cancelled"
                             ? "bg-red-100 text-red-700"
-                            : "bg-purple-100 text-purple-700"
+                            : "bg-rose-100 text-rose-700"
                         }`}
                       >
                         {appointment.status}
@@ -958,7 +958,7 @@ onClick={() => {
                     </div>
 
                     {appointment.notes && (
-                      <div className="bg-gray-50 rounded-xl px-4 py-3 mt-4">
+                      <div className="bg-[#FFF7F8] rounded-xl px-4 py-3 mt-4">
                         <p className="text-xs font-medium text-gray-500">
                           Notes
                         </p>
@@ -981,7 +981,7 @@ onClick={() => {
                       disabled={
                         appointment.status !== "Pending"
                       }
-                      className="w-full bg-purple-600 hover:bg-purple-700 disabled:bg-gray-100 disabled:text-gray-500 disabled:cursor-not-allowed text-white px-4 py-3 rounded-xl text-sm font-semibold transition"
+                      className="w-full bg-rose-600 hover:bg-rose-700 disabled:bg-[#FFF1F2] disabled:text-gray-500 disabled:cursor-not-allowed text-white px-4 py-3 rounded-xl text-sm font-semibold transition"
                     >
                       {appointment.status === "Completed"
                         ? "Completed"
@@ -990,7 +990,7 @@ onClick={() => {
                         : "Mark Completed"}
                     </button>
 
-                    <div className="border-t border-gray-100 mt-4 pt-4 space-y-2">
+                    <div className="border-t border-[#F3D6DB] mt-4 pt-4 space-y-2">
                       <button
                         onClick={() => {
                           setSelectedAppointment(appointment);
@@ -1000,7 +1000,7 @@ onClick={() => {
                           appointment.status !== "Completed" ||
                           appointment.payment_status === "Paid"
                         }
-                        className="w-full border border-gray-200 hover:bg-gray-50 disabled:bg-gray-100 disabled:text-gray-500 disabled:cursor-not-allowed text-gray-700 px-4 py-2.5 rounded-lg text-sm font-medium transition"
+                        className="w-full border border-[#F3D6DB] hover:bg-[#FFF7F8] disabled:bg-[#FFF1F2] disabled:text-gray-500 disabled:cursor-not-allowed text-gray-700 px-4 py-2.5 rounded-lg text-sm font-medium transition"
                       >
                         {appointment.payment_status === "Paid"
                           ? "Payment Collected"
@@ -1013,7 +1013,7 @@ onClick={() => {
                             onClick={() =>
                               onOpenBilling?.(appointment)
                             }
-                            className="w-full border border-purple-200 bg-purple-50 hover:bg-purple-100 text-purple-700 px-4 py-2.5 rounded-lg text-sm font-semibold transition"
+                            className="w-full border border-rose-200 bg-rose-50 hover:bg-rose-100 text-rose-700 px-4 py-2.5 rounded-lg text-sm font-semibold transition"
                           >
                             Generate Invoice
                           </button>
@@ -1056,7 +1056,7 @@ onClick={() => {
                         disabled={
                           appointment.status !== "Pending"
                         }
-                        className="w-full border border-gray-200 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed text-gray-700 px-4 py-2.5 rounded-lg text-sm transition"
+                        className="w-full border border-[#F3D6DB] hover:bg-[#FFF7F8] disabled:opacity-40 disabled:cursor-not-allowed text-gray-700 px-4 py-2.5 rounded-lg text-sm transition"
                       >
                         Edit Appointment
                       </button>
@@ -1077,7 +1077,7 @@ onClick={() => {
                         disabled={
                           appointment.status !== "Pending"
                         }
-                        className="w-full border border-gray-200 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed text-gray-600 px-4 py-2.5 rounded-lg text-sm transition"
+                        className="w-full border border-[#F3D6DB] hover:bg-[#FFF7F8] disabled:opacity-40 disabled:cursor-not-allowed text-gray-600 px-4 py-2.5 rounded-lg text-sm transition"
                       >
                         Cancel Appointment
                       </button>
@@ -1101,7 +1101,7 @@ onClick={() => {
         )}
 
         {filteredAppointments.length > appointmentsPerPage && (
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-6 pt-5 border-t border-gray-100">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-6 pt-5 border-t border-[#F3D6DB]">
             <p className="text-sm text-gray-500">
               Showing{" "}
               {(currentPage - 1) * appointmentsPerPage + 1}
@@ -1120,7 +1120,7 @@ onClick={() => {
                   setCurrentPage((page) => Math.max(1, page - 1))
                 }
                 disabled={currentPage === 1}
-                className="border border-gray-200 px-4 py-2 rounded-lg text-sm font-medium disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-50"
+                className="border border-[#F3D6DB] px-4 py-2 rounded-lg text-sm font-medium disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#FFF7F8]"
               >
                 Previous
               </button>
@@ -1136,7 +1136,7 @@ onClick={() => {
                   )
                 }
                 disabled={currentPage === totalAppointmentPages}
-                className="border border-gray-200 px-4 py-2 rounded-lg text-sm font-medium disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-50"
+                className="border border-[#F3D6DB] px-4 py-2 rounded-lg text-sm font-medium disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#FFF7F8]"
               >
                 Next
               </button>
@@ -1176,7 +1176,7 @@ onClick={() => {
             setShowConflictModal(false);
             await saveAppointment(true);
           }}
-          className="bg-purple-600 text-white px-4 py-2 rounded-lg"
+          className="bg-rose-600 text-white px-4 py-2 rounded-lg"
         >
           Book Anyway
         </button>

@@ -4,7 +4,7 @@ import { supabase } from "../lib/supabase";
 import { countryConfig } from "../data/countryConfig";
 
 const inputClass =
-  "w-full border border-gray-200 rounded-xl px-4 py-3 bg-white text-gray-900 outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-100 transition";
+  "w-full border border-[#F3D6DB] rounded-xl px-4 py-3 bg-white text-gray-900 outline-none focus:border-rose-500 focus:ring-2 focus:ring-rose-100 transition";
 
 function Field({ label, children, description }) {
   return (
@@ -26,7 +26,7 @@ function Field({ label, children, description }) {
 
 function Section({ title, description, children }) {
   return (
-    <section className="border border-gray-200 rounded-2xl p-5 md:p-6">
+    <section className="border border-[#F3D6DB] rounded-2xl p-5 md:p-6">
       <div className="mb-5">
         <h3 className="text-lg font-semibold text-gray-900">
           {title}
@@ -211,7 +211,7 @@ export default function Settings() {
   return (
     <div className="max-w-5xl mx-auto">
       <div className="mb-8">
-        <p className="text-sm font-medium text-purple-600">
+        <p className="text-sm font-medium text-rose-600">
           BUSINESS CONFIGURATION
         </p>
 
@@ -425,7 +425,7 @@ export default function Settings() {
 
             <Field label="Phone Code">
               <input
-                className={`${inputClass} bg-gray-50`}
+                className={`${inputClass} bg-[#FFF7F8]`}
                 value={form.phone_code}
                 readOnly
               />
@@ -433,7 +433,7 @@ export default function Settings() {
 
             <Field label="Currency">
               <input
-                className={`${inputClass} bg-gray-50`}
+                className={`${inputClass} bg-[#FFF7F8]`}
                 value={form.currency}
                 readOnly
               />
@@ -441,7 +441,7 @@ export default function Settings() {
 
             <Field label="Timezone">
               <input
-                className={`${inputClass} bg-gray-50`}
+                className={`${inputClass} bg-[#FFF7F8]`}
                 value={form.timezone}
                 readOnly
               />
@@ -456,7 +456,7 @@ export default function Settings() {
           <div className="grid md:grid-cols-2 gap-5">
             <Field label="Tax Name">
               <input
-                className={`${inputClass} bg-gray-50`}
+                className={`${inputClass} bg-[#FFF7F8]`}
                 value={form.tax_name}
                 readOnly
               />
@@ -515,7 +515,7 @@ export default function Settings() {
             </Field>
           </div>
 
-          <div className="bg-gray-50 border border-gray-200 rounded-xl p-5 mt-5">
+          <div className="bg-[#FFF7F8] border border-[#F3D6DB] rounded-xl p-5 mt-5">
             <p className="text-sm text-gray-500">
               Price Preview
             </p>
@@ -554,7 +554,7 @@ export default function Settings() {
               label="Double Booking"
               description="Allow more than one appointment in the same time slot."
             >
-              <label className="flex items-center justify-between border border-gray-200 rounded-xl px-4 py-3 min-h-[50px]">
+              <label className="flex items-center justify-between border border-[#F3D6DB] rounded-xl px-4 py-3 min-h-[50px]">
                 <span className="text-sm text-gray-700">
                   Allow double booking
                 </span>
@@ -568,7 +568,7 @@ export default function Settings() {
                       e.target.checked
                     )
                   }
-                  className="h-5 w-5 accent-purple-600"
+                  className="h-5 w-5 accent-rose-600"
                 />
               </label>
             </Field>
@@ -579,7 +579,7 @@ export default function Settings() {
           <button
             onClick={saveSettings}
             disabled={loading}
-            className="w-full md:w-auto bg-purple-600 hover:bg-purple-700 disabled:opacity-50 text-white font-medium px-7 py-3 rounded-xl transition"
+            className="w-full md:w-auto bg-rose-600 hover:bg-rose-700 disabled:opacity-50 text-white font-medium px-7 py-3 rounded-xl transition"
           >
             {loading
               ? "Saving Settings..."

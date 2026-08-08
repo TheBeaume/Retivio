@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import { getCustomerVisits } from "../services/customerVisitService";
+import { getCustomerLifetimeSpend } from "../services/financialService";
+import { supabase } from "../lib/supabase";
 import useBusinessSettings from "../hooks/useBusinessSettings";
 import { formatCurrency } from "../utils/formatCurrency";
 
 export default function CustomerProfile({ customer, onClose }) {
   const [visits, setVisits] = useState([]);
+const [visitCount, setVisitCount] = useState(0);
+  const [lifetimeSpend, setLifetimeSpend] = useState(0);
 const settings = useBusinessSettings();
 
   useEffect(() => {
@@ -14,7 +18,24 @@ const settings = useBusinessSettings();
 
       try {
         const data = await getCustomerVisits(customer.id);
-        setVisits(data);
+        setVisits(data || []);
+        setVisitCount((data || []).length);
+
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+
+        if (user) {
+
+          const spend = await getCustomerLifetimeSpend(
+            user.id,
+            customer.id
+          );
+
+
+          setLifetimeSpend(spend);
+        }
+
       } catch (err) {
         console.error(err);
       }
@@ -37,7 +58,7 @@ useEffect(() => {
 
       <div className="bg-white w-full md:w-[420px] h-full overflow-y-auto">
 
-<div className="bg-purple-700 text-white p-5 flex items-center gap-4">
+<div className="bg-rose-700 text-white p-5 flex items-center gap-4">
 <button
   onClick={onClose}
   className="w-10 h-10 rounded-xl bg-white/10 hover:bg-white/20 flex items-center justify-center transition"
@@ -50,7 +71,7 @@ useEffect(() => {
               {customer.name}
             </h2>
 
-            <p className="text-purple-100">
+            <p className="text-rose-100">
               {customer.phone}
             </p>
           </div>
@@ -68,13 +89,13 @@ useEffect(() => {
 
           <div className="grid grid-cols-2 gap-4">
 
-            <div className="bg-purple-50 rounded-xl p-4">
+            <div className="bg-rose-50 rounded-xl p-4">
               <p className="text-gray-500 text-sm">
                 Total Visits
               </p>
 
               <h3 className="text-2xl font-bold">
-                {customer.visits}
+                {visitCount}
               </h3>
             </div>
 
@@ -85,7 +106,7 @@ useEffect(() => {
 
               <h3 className="text-2xl font-bold">
 {formatCurrency(
-  customer.totalSpend,
+  lifetimeSpend,
   settings?.currency_symbol,
   settings?.currency_position,
   settings?.decimal_places

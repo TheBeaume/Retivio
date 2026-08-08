@@ -18,7 +18,7 @@ function QuickActions({ setActivePage }) {
       title: "Campaigns",
       icon: "",
       page: "campaigns",
-      color: "bg-purple-50 border-purple-100",
+      color: "bg-rose-50 border-rose-100",
     },
     {
       title: "Reports",
@@ -36,7 +36,7 @@ function QuickActions({ setActivePage }) {
           Quick Actions
         </h2>
 
-        <span className="text-sm text-purple-600 font-medium">
+        <span className="text-sm text-rose-600 font-medium">
           One Click Access
         </span>
       </div>

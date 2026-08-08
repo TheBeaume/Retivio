@@ -66,7 +66,7 @@ if (data) {
       id: 4,
       name: "Modern",
       emoji: "",
-      color: "from-purple-500 to-indigo-600",
+      color: "from-rose-500 to-rose-600",
       description: "Clean & minimal look",
     },
   ];
@@ -84,17 +84,17 @@ return (
   return (
     <div className="space-y-8">
 
-      <div className="bg-gradient-to-r from-purple-700 to-indigo-700 rounded-3xl text-white p-10">
+      <div className="bg-gradient-to-r from-[#18181B] to-rose-700 rounded-3xl text-white p-10">
 
         <h1 className="text-4xl font-bold">
            Retivio Sites
         </h1>
 
-        <p className="mt-3 text-purple-100 text-lg">
+        <p className="mt-3 text-rose-100 text-lg">
           Create your salon website in under 5 minutes.
         </p>
 
-        <button className="mt-8 bg-white text-purple-700 font-bold px-8 py-3 rounded-xl hover:scale-105 transition">
+        <button className="mt-8 bg-white text-rose-700 font-bold px-8 py-3 rounded-xl hover:scale-105 transition">
            Create Website
         </button>
 
@@ -133,7 +133,7 @@ return (
 
 <button
   onClick={() => setShowPreview(true)}
-  className="mt-5 w-full bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700"
+  className="mt-5 w-full bg-rose-600 text-white py-2 rounded-lg hover:bg-rose-700"
 >
   Preview
 </button>

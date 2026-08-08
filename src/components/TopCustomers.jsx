@@ -25,7 +25,7 @@ function TopCustomers({ customers }) {
     if (index === 1) {
       return {
         Icon: Trophy,
-        style: "bg-gray-100 text-gray-600",
+        style: "bg-[#FFF1F2] text-gray-600",
       };
     }
 
@@ -38,7 +38,7 @@ function TopCustomers({ customers }) {
 
     return {
       Icon: Award,
-      style: "bg-purple-100 text-purple-700",
+      style: "bg-rose-100 text-rose-700",
     };
   }
 
@@ -49,7 +49,7 @@ function TopCustomers({ customers }) {
           Top Customers
         </h2>
 
-        <span className="text-sm text-purple-600 font-medium">
+        <span className="text-sm text-rose-600 font-medium">
           Top 5
         </span>
       </div>
@@ -88,7 +88,7 @@ function TopCustomers({ customers }) {
                       {customer.visits || 0} Visits
                     </p>
 
-                    <span className="inline-block mt-1 text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded-full">
+                    <span className="inline-block mt-1 text-xs bg-rose-100 text-rose-700 px-2 py-1 rounded-full">
                       {customer.loyalty || "Regular"}
                     </span>
                   </div>

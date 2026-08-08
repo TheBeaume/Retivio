@@ -89,7 +89,7 @@ function Sidebar({
   }
 
   return (
-    <div className="fixed top-5 left-5 z-50 w-72 h-[calc(100vh-40px)] rounded-3xl bg-white border border-gray-200 shadow-2xl flex flex-col">
+    <div className="fixed top-5 left-5 z-50 w-72 h-[calc(100vh-40px)] rounded-3xl bg-[#18181B] border border-zinc-800 shadow-2xl flex flex-col">
 
       {/* Header */}
 
@@ -97,17 +97,17 @@ function Sidebar({
 
         <div className="flex items-center gap-4">
 
-          <div className="w-12 h-12 rounded-2xl bg-purple-600 flex items-center justify-center text-white text-xl font-bold shadow-lg">
+          <div className="w-12 h-12 rounded-2xl bg-rose-600 flex items-center justify-center text-white text-xl font-bold shadow-lg">
             R
           </div>
 
           <div>
 
-            <h2 className="text-2xl font-extrabold tracking-tight text-purple-700">
+            <h2 className="text-2xl font-extrabold tracking-tight text-rose-700">
               RETIVIO
             </h2>
 
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-zinc-400">
               Business Operating System
             </p>
 
@@ -117,7 +117,7 @@ function Sidebar({
 
         <button
           onClick={() => setSidebarOpen(false)}
-          className="w-10 h-10 rounded-xl bg-gray-100 hover:bg-purple-100 text-purple-700 flex items-center justify-center transition-all"
+          className="w-10 h-10 rounded-xl bg-[#27272A] hover:bg-rose-100 text-rose-700 flex items-center justify-center transition-all"
         >
           <X size={20} />
         </button>
@@ -141,8 +141,8 @@ function Sidebar({
       }}
       className={`flex items-center gap-4 px-5 py-4 rounded-2xl cursor-pointer transition-all duration-300 ${
         activePage === item.id
-          ? "bg-purple-600 text-white shadow-lg"
-          : "text-gray-700 hover:bg-purple-50 hover:text-purple-700"
+          ? "bg-rose-600 text-white shadow-lg"
+          : "text-zinc-300 hover:bg-rose-50 hover:text-rose-700"
       }`}
     >
       <Icon size={20} strokeWidth={2} />
@@ -158,11 +158,11 @@ function Sidebar({
       </div>
       {/* Bottom */}
 
-      <div className="border-t border-gray-200 p-5">
+      <div className="border-t border-zinc-800 p-5">
 
-        <div className="rounded-2xl border border-gray-200 bg-gray-50 p-4">
+        <div className="rounded-2xl border border-zinc-800 bg-[#111113] p-4">
 
-          <p className="text-xs uppercase tracking-wider text-gray-500">
+          <p className="text-xs uppercase tracking-wider text-zinc-400">
             Logged in as
           </p>
 
@@ -170,7 +170,7 @@ function Sidebar({
             Owner
           </h3>
 
-          <p className="mt-1 text-sm text-purple-600">
+          <p className="mt-1 text-sm text-rose-600">
             Retivio Pro
           </p>
 

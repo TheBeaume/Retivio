@@ -16,7 +16,7 @@ export default function CustomerSelectionList({
     onClick={() =>
       setSelectedCustomers(customers.map((c) => c.id))
     }
-    className="bg-purple-600 text-white px-3 py-1 rounded-lg text-sm"
+    className="bg-rose-600 text-white px-3 py-1 rounded-lg text-sm"
   >
     Select All
   </button>
@@ -48,7 +48,7 @@ export default function CustomerSelectionList({
                   {customer.phone}
                 </p>
 
-                <p className="text-sm text-purple-600">
+                <p className="text-sm text-rose-600">
                   {customer.service}
                 </p>
               </div>

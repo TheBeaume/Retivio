@@ -8,19 +8,19 @@ const [hideCard, setHideCard] = useState(false);
 if (hideCard) return null;
 return (
   <>
-    <div className="mt-6 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-2xl p-6 shadow-lg">
+    <div className="mt-6 bg-gradient-to-r from-rose-600 to-rose-600 text-white rounded-2xl p-6 shadow-lg">
       <h2 className="text-2xl font-bold">
         Enjoying Retivio Beta?
       </h2>
 
-      <p className="mt-2 text-purple-100">
+      <p className="mt-2 text-rose-100">
         Your feedback helps us improve Retivio for salon owners.
       </p>
 
       <div className="mt-5 flex gap-3">
         <button
           onClick={() => setShowModal(true)}
-          className="bg-white text-purple-700 font-semibold px-5 py-3 rounded-xl hover:bg-purple-100 transition"
+          className="bg-white text-rose-700 font-semibold px-5 py-3 rounded-xl hover:bg-rose-100 transition"
         >
            Give Feedback
         </button>

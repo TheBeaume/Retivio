@@ -68,7 +68,7 @@ function AIRecommendations({ customers }) {
             </div>
 
             <button
-              className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg"
+              className="bg-rose-600 hover:bg-rose-700 text-white px-4 py-2 rounded-lg"
             >
               Take Action
             </button>

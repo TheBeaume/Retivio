@@ -32,6 +32,8 @@ function AnalyticsSummary({ customers }) {
     setFinancial(stats);
   }
 
+  alert("AnalyticsSummary customers: " + customers.length);
+
   const totalCustomers = customers.length;
 
   const totalRevenue = Number(financial.totalRevenue || 0);
@@ -85,8 +87,8 @@ function AnalyticsSummary({ customers }) {
       ),
       subtitle: "Revenue per customer",
       icon: TrendingUp,
-      color: "bg-rose-50 border-rose-100",
-      iconStyle: "bg-rose-100 text-rose-700",
+      color: "bg-purple-50 border-purple-100",
+      iconStyle: "bg-purple-100 text-purple-700",
     },
   ];
 

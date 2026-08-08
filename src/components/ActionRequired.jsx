@@ -20,7 +20,7 @@ function ActionRequired() {
             </p>
           </div>
 
-          <button className="bg-purple-600 text-white px-3 py-1 rounded">
+          <button className="bg-rose-600 text-white px-3 py-1 rounded">
             View
           </button>
         </div>
@@ -36,7 +36,7 @@ function ActionRequired() {
             </p>
           </div>
 
-          <button className="bg-purple-600 text-white px-3 py-1 rounded">
+          <button className="bg-rose-600 text-white px-3 py-1 rounded">
             View
           </button>
         </div>
@@ -52,7 +52,7 @@ function ActionRequired() {
             </p>
           </div>
 
-          <button className="bg-purple-600 text-white px-3 py-1 rounded">
+          <button className="bg-rose-600 text-white px-3 py-1 rounded">
             View
           </button>
         </div>

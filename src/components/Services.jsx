@@ -107,7 +107,7 @@ const settings = useBusinessSettings();
   return (
     <div className="space-y-8">
 
-      <div className="bg-gradient-to-r from-purple-700 to-indigo-700 rounded-3xl p-8 text-white">
+      <div className="bg-gradient-to-r from-rose-600 to-[#292524] rounded-3xl p-8 text-white">
 
         <h1 className="text-4xl font-bold">
            Services

@@ -38,9 +38,25 @@ export default function BlogPost() {
     );
   }
 
-  const relatedPosts = blogData
-    .filter((blog) => blog.id !== post.id)
-    .slice(0, 3);
+  // Prefer contextually related articles from the same category.
+  // Fall back to other recent articles so every post still has
+  // a useful set of internal links.
+  const sameCategoryPosts = blogData.filter(
+    (blog) =>
+      blog.id !== post.id &&
+      blog.category === post.category
+  );
+
+  const fallbackPosts = blogData.filter(
+    (blog) =>
+      blog.id !== post.id &&
+      blog.category !== post.category
+  );
+
+  const relatedPosts = [
+    ...sameCategoryPosts,
+    ...fallbackPosts,
+  ].slice(0, 3);
 
   const articleSchema = {
     "@context": "https://schema.org",

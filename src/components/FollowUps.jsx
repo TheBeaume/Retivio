@@ -56,7 +56,7 @@ export default function FollowUps() {
     if (item.status === "Done") {
       return {
         label: "Done",
-        style: "bg-gray-100 text-gray-600",
+        style: "bg-[#FFF1F2] text-gray-600",
       };
     }
 
@@ -100,7 +100,7 @@ export default function FollowUps() {
   return (
     <div className="space-y-6">
       <div>
-        <p className="text-sm font-semibold uppercase tracking-wider text-purple-600">
+        <p className="text-sm font-semibold uppercase tracking-wider text-rose-600">
           Customer Retention
         </p>
 
@@ -113,7 +113,7 @@ export default function FollowUps() {
         </p>
       </div>
 
-      <div className="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm">
+      <div className="bg-white border border-[#F3D6DB] rounded-2xl p-5 shadow-sm">
         <div className="flex items-center justify-between gap-4 mb-5">
           <div>
             <h2 className="text-xl font-bold text-gray-900">
@@ -127,12 +127,12 @@ export default function FollowUps() {
 
           <CalendarDays
             size={22}
-            className="text-purple-600"
+            className="text-rose-600"
           />
         </div>
 
         {followUps.length === 0 ? (
-          <div className="border border-dashed border-gray-200 rounded-xl py-12 text-center">
+          <div className="border border-dashed border-[#F3D6DB] rounded-xl py-12 text-center">
             <p className="font-medium text-gray-700">
               No follow-ups available
             </p>
@@ -150,7 +150,7 @@ export default function FollowUps() {
                 return (
                   <div
                     key={item.id}
-                    className="border border-gray-200 rounded-xl p-5"
+                    className="border border-[#F3D6DB] rounded-xl p-5"
                   >
                     <div className="flex items-start justify-between gap-3">
                       <div className="min-w-0">
@@ -170,7 +170,7 @@ export default function FollowUps() {
                       </span>
                     </div>
 
-                    <div className="bg-gray-50 rounded-xl p-4 mt-4">
+                    <div className="bg-[#FFF7F8] rounded-xl p-4 mt-4">
                       <p className="text-xs uppercase tracking-wider text-gray-500">
                         Service
                       </p>
@@ -202,7 +202,7 @@ Book your appointment today.
                             "_blank"
                           )
                         }
-                        className="flex items-center justify-center gap-2 border border-gray-200 hover:bg-gray-50 rounded-lg px-3 py-2.5 text-sm font-medium"
+                        className="flex items-center justify-center gap-2 border border-[#F3D6DB] hover:bg-[#FFF7F8] rounded-lg px-3 py-2.5 text-sm font-medium"
                       >
                         <MessageCircle size={16} />
                         Message
@@ -212,7 +212,7 @@ Book your appointment today.
                         onClick={() =>
                           window.open(`tel:${item.phone}`)
                         }
-                        className="flex items-center justify-center gap-2 border border-gray-200 hover:bg-gray-50 rounded-lg px-3 py-2.5 text-sm font-medium"
+                        className="flex items-center justify-center gap-2 border border-[#F3D6DB] hover:bg-[#FFF7F8] rounded-lg px-3 py-2.5 text-sm font-medium"
                       >
                         <Phone size={16} />
                         Call
@@ -221,7 +221,7 @@ Book your appointment today.
                       <button
                         onClick={() => markAsDone(item.id)}
                         disabled={item.status === "Done"}
-                        className="flex items-center justify-center gap-2 bg-purple-600 hover:bg-purple-700 disabled:bg-gray-100 disabled:text-gray-400 text-white rounded-lg px-3 py-2.5 text-sm font-medium"
+                        className="flex items-center justify-center gap-2 bg-rose-600 hover:bg-rose-700 disabled:bg-[#FFF1F2] disabled:text-gray-400 text-white rounded-lg px-3 py-2.5 text-sm font-medium"
                       >
                         <Check size={16} />
                         Done
@@ -233,7 +233,7 @@ Book your appointment today.
             </div>
 
             {followUps.length > PAGE_SIZE && (
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mt-5 pt-5 border-t border-gray-100">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mt-5 pt-5 border-t border-[#F3D6DB]">
                 <p className="text-sm text-gray-500">
                   Showing{" "}
                   {(currentPage - 1) * PAGE_SIZE + 1}–
@@ -252,7 +252,7 @@ Book your appointment today.
                       )
                     }
                     disabled={currentPage === 1}
-                    className="border border-gray-200 px-4 py-2 rounded-lg text-sm font-medium disabled:opacity-40"
+                    className="border border-[#F3D6DB] px-4 py-2 rounded-lg text-sm font-medium disabled:opacity-40"
                   >
                     Previous
                   </button>
@@ -268,7 +268,7 @@ Book your appointment today.
                       )
                     }
                     disabled={currentPage === totalPages}
-                    className="border border-gray-200 px-4 py-2 rounded-lg text-sm font-medium disabled:opacity-40"
+                    className="border border-[#F3D6DB] px-4 py-2 rounded-lg text-sm font-medium disabled:opacity-40"
                   >
                     Next
                   </button>

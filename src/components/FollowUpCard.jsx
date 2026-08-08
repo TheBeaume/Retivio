@@ -39,7 +39,7 @@ export default function FollowUpCard({
           {item.status !== "Done" && (
             <button
               onClick={() => onDone(item.id)}
-              className="bg-purple-600 text-white px-3 py-1 rounded-lg text-sm"
+              className="bg-rose-600 text-white px-3 py-1 rounded-lg text-sm"
             >
                Done
             </button>

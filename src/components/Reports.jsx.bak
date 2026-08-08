@@ -10,6 +10,7 @@ export default function Reports() {
   const [customers, setCustomers] = useState([]);
   const [appointments, setAppointments] = useState([]);
   const [totalRevenue, setTotalRevenue] = useState(0);
+  const [debugFinancial, setDebugFinancial] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const settings = useBusinessSettings();
@@ -62,6 +63,11 @@ export default function Reports() {
 
       console.log("Financial Stats:", financial);
 
+      setDebugFinancial({
+        userId: user.id,
+        ...financial,
+      });
+
       setTotalRevenue(
         Number(financial.totalRevenue || 0)
       );
@@ -106,13 +112,6 @@ export default function Reports() {
 
     return `${settings?.currency || "INR"} ${amount}`;
   };
-
-
-  const cards = [
-    ["Total Customers", customers.length],
-    ["Total Revenue", currency(totalRevenue)],
-    ["Appointments", appointments.length],
-  ];
 
   const generatePDF = () => {
     const doc = new jsPDF();
@@ -280,14 +279,44 @@ export default function Reports() {
   };
 
   if (loading) {
+    
+  if (loading) {
     return <div className="p-6">Loading reports...</div>;
   }
+
+  return (
+    <>
+      {debugFinancial && (
+        <div className="mb-6 rounded-lg border border-red-500 bg-red-50 p-4 text-sm">
+          <h3 className="font-bold mb-2">DEBUG INFO</h3>
+
+          <div>User ID: {debugFinancial.userId}</div>
+          <div>Total Revenue: ₹{debugFinancial.totalRevenue}</div>
+          <div>Today Revenue: ₹{debugFinancial.todayRevenue}</div>
+          <div>Monthly Revenue: ₹{debugFinancial.monthlyRevenue}</div>
+          <div>Total Transactions: {debugFinancial.totalTransactions}</div>
+          <div>Paid Transactions: {debugFinancial.paidTransactions}</div>
+        </div>
+      )}
+
+
+      <div className="py-16 text-center text-gray-500">
+        Loading business report...
+      </div>
+    );
+  }
+
+  const cards = [
+    ["Total Revenue", currency(totalRevenue)],
+    ["Total Customers", customers.length],
+    ["Total Appointments", appointments.length],
+  ];
 
   return (
     <div className="max-w-6xl mx-auto space-y-6">
       <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-5">
         <div>
-          <p className="text-sm font-medium text-rose-600">
+          <p className="text-sm font-medium text-purple-600">
             BUSINESS ANALYTICS
           </p>
 
@@ -303,7 +332,7 @@ export default function Reports() {
 
         <button
           onClick={generatePDF}
-          className="bg-rose-600 hover:bg-rose-700 text-white px-6 py-3 rounded-xl font-medium transition"
+          className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-xl font-medium transition"
         >
           Download PDF Report
         </button>
@@ -313,7 +342,7 @@ export default function Reports() {
         {cards.map(([label, value]) => (
           <div
             key={label}
-            className="bg-white border border-[#F3D6DB] rounded-2xl p-6"
+            className="bg-white border border-gray-200 rounded-2xl p-6"
           >
             <p className="text-sm text-gray-500">
               {label}
@@ -326,7 +355,7 @@ export default function Reports() {
         ))}
       </div>
 
-      <section className="bg-white border border-[#F3D6DB] rounded-2xl p-5 md:p-6">
+      <section className="bg-white border border-gray-200 rounded-2xl p-5 md:p-6">
         <h2 className="text-xl font-semibold text-gray-900">
           Appointment Summary
         </h2>
@@ -346,7 +375,7 @@ export default function Reports() {
           ].map(([label, value]) => (
             <div
               key={label}
-              className="border border-[#F3D6DB] rounded-xl p-5"
+              className="border border-gray-200 rounded-xl p-5"
             >
               <p className="text-sm text-gray-500">
                 {label}
@@ -360,8 +389,8 @@ export default function Reports() {
         </div>
       </section>
 
-      <section className="bg-white border border-[#F3D6DB] rounded-2xl overflow-hidden">
-        <div className="p-5 md:p-6 border-b border-[#F3D6DB]">
+      <section className="bg-white border border-gray-200 rounded-2xl overflow-hidden">
+        <div className="p-5 md:p-6 border-b border-gray-100">
           <h2 className="text-xl font-semibold text-gray-900">
             Appointment Report
           </h2>
@@ -374,7 +403,7 @@ export default function Reports() {
 
         <div className="overflow-x-auto">
           <table className="w-full text-left">
-            <thead className="bg-[#FFF7F8] text-sm text-gray-500">
+            <thead className="bg-gray-50 text-sm text-gray-500">
               <tr>
                 {[
                   "Date",

@@ -675,7 +675,7 @@ export default function BillingInvoices() {
         <button
           onClick={onPrevious}
           disabled={page === 1}
-          className="border border-gray-200 px-4 py-2 rounded-lg text-sm font-medium disabled:opacity-40 disabled:cursor-not-allowed"
+          className="border border-[#F3D6DB] px-4 py-2 rounded-lg text-sm font-medium disabled:opacity-40 disabled:cursor-not-allowed"
         >
           Previous
         </button>
@@ -687,7 +687,7 @@ export default function BillingInvoices() {
         <button
           onClick={onNext}
           disabled={page === pages}
-          className="border border-gray-200 px-4 py-2 rounded-lg text-sm font-medium disabled:opacity-40 disabled:cursor-not-allowed"
+          className="border border-[#F3D6DB] px-4 py-2 rounded-lg text-sm font-medium disabled:opacity-40 disabled:cursor-not-allowed"
         >
           Next
         </button>
@@ -698,7 +698,7 @@ export default function BillingInvoices() {
   return (
     <div className="space-y-6">
       <div>
-        <p className="text-sm font-semibold uppercase tracking-wider text-purple-600">
+        <p className="text-sm font-semibold uppercase tracking-wider text-rose-600">
           Finance
         </p>
 
@@ -719,7 +719,7 @@ export default function BillingInvoices() {
         }}
       />
 
-      <div className="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm">
+      <div className="bg-white border border-[#F3D6DB] rounded-2xl p-5 shadow-sm">
         <label className="text-sm font-medium text-gray-700">
           Customer Mobile Number
         </label>
@@ -732,13 +732,13 @@ export default function BillingInvoices() {
               if (e.key === "Enter") searchCustomer();
             }}
             placeholder="Enter mobile number"
-            className="flex-1 border border-gray-200 rounded-xl px-4 py-3 outline-none focus:border-purple-500"
+            className="flex-1 border border-[#F3D6DB] rounded-xl px-4 py-3 outline-none focus:border-rose-500"
           />
 
           <button
             onClick={() => searchCustomer()}
             disabled={loading}
-            className="bg-purple-600 hover:bg-purple-700 disabled:opacity-50 text-white px-6 py-3 rounded-xl font-semibold"
+            className="bg-rose-600 hover:bg-rose-700 disabled:opacity-50 text-white px-6 py-3 rounded-xl font-semibold"
           >
             {loading ? "Please wait..." : "Find Customer"}
           </button>
@@ -747,7 +747,7 @@ export default function BillingInvoices() {
 
       {customer && (
         <>
-          <div className="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm">
+          <div className="bg-white border border-[#F3D6DB] rounded-2xl p-5 shadow-sm">
             <p className="text-xs uppercase tracking-wider text-gray-500">
               Customer
             </p>
@@ -761,7 +761,7 @@ export default function BillingInvoices() {
             </p>
           </div>
 
-          <div className="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm">
+          <div className="bg-white border border-[#F3D6DB] rounded-2xl p-5 shadow-sm">
             <h2 className="text-xl font-bold text-gray-900">
               Service History
             </h2>
@@ -786,7 +786,7 @@ export default function BillingInvoices() {
                     return (
                       <div
                         key={appointment.id}
-                        className="border border-gray-200 rounded-xl p-4"
+                        className="border border-[#F3D6DB] rounded-xl p-4"
                       >
                         <h3 className="font-semibold text-gray-900">
                           {appointment.service}
@@ -818,7 +818,7 @@ export default function BillingInvoices() {
                             appointment.status !== "Completed" ||
                             appointment.payment_status !== "Paid"
                           }
-                          className="w-full mt-4 bg-purple-600 hover:bg-purple-700 disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed text-white px-4 py-2.5 rounded-lg text-sm font-semibold"
+                          className="w-full mt-4 bg-rose-600 hover:bg-rose-700 disabled:bg-[#FFF1F2] disabled:text-gray-400 disabled:cursor-not-allowed text-white px-4 py-2.5 rounded-lg text-sm font-semibold"
                         >
                           {savedInvoice
                             ? "Download Invoice"
@@ -847,7 +847,7 @@ export default function BillingInvoices() {
             )}
           </div>
 
-          <div className="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm">
+          <div className="bg-white border border-[#F3D6DB] rounded-2xl p-5 shadow-sm">
             <h2 className="text-xl font-bold text-gray-900">
               Invoice History
             </h2>
@@ -869,7 +869,7 @@ export default function BillingInvoices() {
                     return (
                       <div
                         key={invoice.id}
-                        className="border border-gray-200 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
+                        className="border border-[#F3D6DB] rounded-xl p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
                       >
                         <div>
                           <p className="font-semibold text-gray-900">
@@ -911,7 +911,7 @@ export default function BillingInvoices() {
                                 appointment
                               );
                             }}
-                            className="border border-gray-200 hover:bg-gray-50 px-4 py-2 rounded-lg text-sm font-medium"
+                            className="border border-[#F3D6DB] hover:bg-gray-50 px-4 py-2 rounded-lg text-sm font-medium"
                           >
                             Download PDF
                           </button>

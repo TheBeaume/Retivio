@@ -64,7 +64,7 @@ function Header({ setSidebarOpen }) {
   }
 
   return (
-    <header className="bg-gradient-to-r from-purple-900 via-purple-700 to-purple-600 text-white shadow-xl px-5 py-4">
+    <header className="bg-gradient-to-r from-[#18181B] via-[#27272A] to-rose-700 text-white shadow-xl px-5 py-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center">
           <button
@@ -80,7 +80,7 @@ function Header({ setSidebarOpen }) {
               Retivio
             </h1>
 
-            <p className="text-[11px] text-purple-200 tracking-wide">
+            <p className="text-[11px] text-rose-200 tracking-wide">
               Turn Visitors into Regular Customers
             </p>
           </div>

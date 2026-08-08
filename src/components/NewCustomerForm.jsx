@@ -103,7 +103,7 @@ user_id: user.id,
 
       <button
         onClick={saveCustomer}
-        className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded"
+        className="bg-rose-600 hover:bg-rose-700 text-white px-4 py-2 rounded"
       >
         Register Customer
       </button>

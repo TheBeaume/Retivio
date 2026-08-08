@@ -70,8 +70,8 @@ function GrowthSnapshot({ customers }) {
       icon: TrendingUp,
       title: "Repeat Rate",
       value: `${repeatRate}%`,
-      color: "bg-purple-50 border-purple-100",
-      iconStyle: "bg-purple-100 text-purple-700",
+      color: "bg-rose-50 border-rose-100",
+      iconStyle: "bg-rose-100 text-rose-700",
     },
   ];
 
@@ -82,7 +82,7 @@ function GrowthSnapshot({ customers }) {
           Growth Snapshot
         </h2>
 
-        <span className="text-sm text-purple-600 font-medium">
+        <span className="text-sm text-rose-600 font-medium">
           Business Overview
         </span>
       </div>

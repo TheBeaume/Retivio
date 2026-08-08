@@ -424,7 +424,7 @@ const openNextCustomer = () => {
         <h3 className="text-xl font-bold mb-4">
            Campaign Preview
         </h3>
-<div className="mb-4 text-sm font-medium text-purple-700">
+<div className="mb-4 text-sm font-medium text-rose-700">
   Selected Customers: {selectedCustomers.length}
 </div>
         <div className="grid grid-cols-2 gap-4">
@@ -566,7 +566,7 @@ setAverageBill(e.target.value)
 
 <button
   onClick={() => setShowPreview(true)}
-  className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg"
+  className="bg-rose-600 hover:bg-rose-700 text-white px-6 py-3 rounded-lg"
 >
   Preview Campaign
 </button>
